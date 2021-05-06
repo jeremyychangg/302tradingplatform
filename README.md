@@ -4,3 +4,5 @@ Project Members
 * Jeremy Chang
 * Natalie Smith
 * Nicole Truong
+
+Database Schema
