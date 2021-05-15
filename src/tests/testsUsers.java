@@ -4,10 +4,15 @@ package tests;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import user.UserException;
+import tests.UserException;
 
-import user.User;
+import tradingPlatform.user.User;
 
+enum UserType {
+    Employee,
+    Admin,
+    Lead
+}
 
 public class UserTests {
     /* Test 1: Testing whether the user exists */
@@ -51,9 +56,9 @@ public class UserTests {
     /* Test 5: Can't add user who already exists - is unique */
     @Test
     public void duplicateUser() {
-        assertThrows(UserExceptions, () -> {
-            users.addUser("blahblah123");
-            users.addUser("blahblah123");
+        assertThrows(UserException, () -> {
+            addUser("blahblah123");
+            addUser("blahblah123");
         })
     }
 
