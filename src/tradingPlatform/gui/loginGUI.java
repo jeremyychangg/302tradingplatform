@@ -3,6 +3,7 @@ package tradingPlatform.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.FocusListener;
 
 public class loginGUI implements ActionListener {
     int count = 0;
@@ -21,7 +22,7 @@ public class loginGUI implements ActionListener {
         button.addActionListener(this);
 
 //        label = new JLabel("Hello, welcome Steve");
-        usernameField = new JTextField();
+        usernameField = new JTextField("Username");
         passwordField = new JPasswordField(25);
 
         //Aligning the text within the field
@@ -45,13 +46,34 @@ public class loginGUI implements ActionListener {
         frame.setVisible(true);
 
     }
+
     public static void main(String[] args){
-        new loginGUI();
+        loginGUI display = new loginGUI();
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
-        count++;
-        label.setText("Number of clicks: " + count);
+//        count++;
+//        label.setText("Number of clicks: " + count);
+        String usernameInput = usernameField.getText();
+        System.out.println("The username inputted " + usernameInput);
+        char[] passwordInput = passwordField.getPassword();
+        for (char x: passwordInput){
+            System.out.print(x);
+        }
     }
+
+//    /**
+//     * In the circumstance where the user actually focuses on the input field. Delete the default text.
+//     * @param e
+//     */
+//    @Override
+//    public void focusGained(FocusEvent e){
+//        passwordField.setText("");
+//    }
+//
+//    @Override
+//    public void focusLost(FocusEvent e){
+//        passwordField.setText("Password");
+//    }
 }
