@@ -1,6 +1,6 @@
 # CAB302 Electronic Trading Platform
 
-Brief
+## Brief
 
 The system designed was an electronic trading platform, used to trade assets within an organisation. Users would be able to buy and sell assets on behalf of their organisational unit. In addition to this, the system would enable users to view different assets on the market.
 
@@ -9,6 +9,5 @@ Project Members
 * Natalie Smith
 * Nicole Truong
 
-Database Schema
-
-https://dbdiagram.io/d/609f390fb29a09603d14f354
+## Resources
+* https://dbdiagram.io/d/609f390fb29a09603d14f354
