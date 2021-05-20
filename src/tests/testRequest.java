@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import tradingPlatform.Request;
-import tradingPlatform.requestType;
+import tradingPlatform.enumerators.requestType;
 // import user.User
 
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
+//import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
 
-public class TestRequest {
+public class testRequest {
     Request request;
 
     // - Test 1: check if request exists
@@ -58,6 +58,6 @@ public class TestRequest {
     // - Test 8: check if request type is an enum value (request for user / request for asset info)
     @Test
     public void invalidRequestType() throws Exception {
-        Request testRequest = new Request(100, 3, requestType.designRequest, "Password Change required");
+        Request testRequest = new Request(100, "3", requestType.designRequest, "Password Change required");
     }
 }

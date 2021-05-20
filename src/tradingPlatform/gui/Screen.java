@@ -1,2 +1,4 @@
-package tradingPlatform.gui;public class Screen {
+package tradingPlatform.gui;
+
+public class Screen {
 }

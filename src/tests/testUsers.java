@@ -9,7 +9,7 @@ import user.UserException;
 import user.User;
 
 
-public class UserTests {
+public class testUsers{
     /* Test 1: Testing whether the user exists */
     @BeforeEach @Test
     public void setUpUsers(){
@@ -54,7 +54,7 @@ public class UserTests {
         assertThrows(UserExceptions, () -> {
             users.addUser("blahblah123");
             users.addUser("blahblah123");
-        })
+        });
     }
 
     /* Test 6: Test that user always has a password */

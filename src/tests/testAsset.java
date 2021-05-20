@@ -20,9 +20,18 @@
 
 
 package tests;
+import tradingPlatform.Asset;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import tradingPlatform.exceptions.NegativePriceException;
+
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class testAsset {
 
@@ -33,51 +42,22 @@ public class testAsset {
 
 	@BeforeEach @Test
 	public void ConstructAsset() {
-		asset1 = new Asset();
 		asset2 = new Asset("CPU Hours", "Computing");
 		asset3 = new Asset("CPU Hours", "Computing", 34.23);
-	}
-
-	//	Test 1: Base case ID
-	@Test
-	public void defaultAssetID() {
-		assertEquals(0, asset1.assetID);
-	}
-
-	//	Test 2: Base case Name
-	@Test
-	public void defaultAssetName() {
-		assertEquals("Unnamed Asset", asset1.assetName);
-	}
-
-	//	Test 3: Base case Price
-	@Test
-	public void defaultAssetPrice() {
-		assertEquals(0, asset1.currentPrice);
-	}
-
-	//	Test 4: Base case Name
-	@Test
-	public void defaultAssetName() {
-		assertEquals("Miscellaneous", asset1.assetType);
 	}
 
 	//	Check that assetID is not null
 	@Test
 	public void NotNullAssetID() {
-		assertNotNUll(asset1.assetID);
-		assertTrue(asset1.GetAssetID() != NULL);
-		assertTrue(asset2.GetAssetID() != NULL);
-		assertTrue(asset3.GetAssetID() != NULL);
+		assertTrue(asset2.GetAssetID() != "");
+		assertTrue(asset3.GetAssetID() != "");
 	}
 
 	//	Check that assetName is not null
 	@Test
 	public void NotNullAssetName() {
-		assertNotNUll(asset1.assetName);
-		assertTrue(asset1.GetAssetName() != NULL);
-		assertTrue(asset2.GetAssetName() != NULL);
-		assertTrue(asset3.GetAssetName() != NULL);
+		assertTrue(asset2.GetAssetName() != "");
+		assertTrue(asset3.GetAssetName() != "");
 	}
 
 	//	Check asset >= 0 as current price (edge case)
@@ -86,14 +66,6 @@ public class testAsset {
 		assertTrue(asset1.GetPrice() >= 0);
 		assertTrue(asset2.GetPrice() >= 0);
 		assertTrue(asset3.GetPrice() >= 0);
-	}
-
-	//	Check that asset price is not null
-	@Test
-	public void AssetNotNullPrice() {
-		assertTrue(asset1.GetPrice() != NULL);
-		assertTrue(asset2.GetPrice() != NULL);
-		assertTrue(asset3.GetPrice() != NULL);
 	}
 
 	// Set 0 Price (Edge Case)
@@ -111,9 +83,9 @@ public class testAsset {
 		asset2.setPrice(1);
 		asset3.setPrice(0.1);
 
-		assertEquals(42.84, asset1.currentPrice);
-		assertEquals(42.00, asset2.currentPrice);
-		assertEquals(42.00, asset3.currentPrice);
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
 	}
 
 	//	Change Asset Price
@@ -123,9 +95,9 @@ public class testAsset {
 		asset2.setPrice(42);
 		asset3.setPrice(42.00);
 
-		assertEquals(42.84, asset1.currentPrice);
-		assertEquals(42.00, asset2.currentPrice);
-		assertEquals(42.00, asset3.currentPrice);
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
 	}
 
 	// Set Negative Price (Edge Case)
@@ -147,17 +119,11 @@ public class testAsset {
 	// Get Price of Asset
 	@Test
 	public void ReturnAssetPrice() {
-		assertEquals(42.84, asset1.currentPrice);
-		assertEquals(42.00, asset2.currentPrice);
-		assertEquals(42.00, asset3.currentPrice);
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
 	}
 
-	// Test search asset returns array list of asset details
-	@Test
-	public void FindExistingAsset() {
-		ArrayList<Asset> searchedAsset;
-		searchedAsset = findAsset(0);	// Search on AssetID
-		assertEquals({0, "UnnamedAsset", "Miscellaneous", 0}, searchedAsset);
-	}
+
 
 }
