@@ -26,6 +26,9 @@ public class User {
         this.accountType = accountType;
     }
 
+    public User() {
+    }
+
     public UserType getAccountType(){
         return this.accountType;
     }
@@ -33,6 +36,7 @@ public class User {
     public int getCredits(){
         // search the Units database and return the credit of the given unit
         // return the credits in int
+        return 0;
     }
 
     public String getName(){
@@ -40,13 +44,10 @@ public class User {
     }
 
     public boolean usernameExists(){
-
+        return true;
     }
 
-    //GUI
-    public boolean passwordCorrect(){
 
-    }
 
     /**
      * Returns the assets associated with the userID
@@ -68,6 +69,7 @@ public class User {
         //search the database for the usrID
         //idExists = (query()) ? true : false;
         // return idExists;
+        return true;
     }
 
     public void changePassword(String passMod){

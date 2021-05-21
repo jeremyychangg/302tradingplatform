@@ -2,20 +2,19 @@ package tradingPlatform.gui;
 
 import javax.swing.*;
 import java.awt.*;
-
-import java.awt.event.*;
-import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class loginGUI implements ActionListener {
     int count = 0;
-    private JLabel logo;
-    private JLabel label;
+    private JLabel logo = new JLabel();
+//    private JLabel label;
     private JFrame frame;
     private JPanel panel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+
+    private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
 
     public loginGUI() {
         frame = new JFrame();
@@ -23,6 +22,14 @@ public class loginGUI implements ActionListener {
 
         JButton button = new JButton("Login");
         button.addActionListener(this);
+
+        // Logo
+        // Resizing the size of Main Logo
+//        Image mainImg = mainIcon.getImage();
+//        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
+//        ImageIcon newMainIcon = new ImageIcon(mainScale);
+//        logo.setIcon(newMainIcon);
+//        logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
 
 //        label = new JLabel("Hello, welcome Steve");
         usernameField = new JTextField("Username");
@@ -38,6 +45,7 @@ public class loginGUI implements ActionListener {
         panel.setLayout(new GridLayout(0, 1));
 //        panel.add(label);
 
+        panel.add(logo, BorderLayout.CENTER);
         panel.add(usernameField, BorderLayout.CENTER);
         panel.add(passwordField, BorderLayout.CENTER);
         panel.add(button);

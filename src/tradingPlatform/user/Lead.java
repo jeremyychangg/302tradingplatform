@@ -1,12 +1,14 @@
 package tradingPlatform.user;
 
-import user.User;
 
 public class Lead extends User {
-
-    public Lead(){
+    private int username;
+    public Lead(int user){
+        this.username = user;
     }
 
-    public void requestUser(String username, String firstName, String lastName, )
+    public void requestUser(String username, String firstName, String lastName){
+
+    }
 
 }

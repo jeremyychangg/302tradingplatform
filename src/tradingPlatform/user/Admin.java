@@ -1,7 +1,5 @@
 package tradingPlatform.user;
 
-import user.User;
-
 public class Admin extends User {
 
     public Admin(){
@@ -19,23 +17,23 @@ public class Admin extends User {
         }
     }
 
-    public addAsset(){
+    public void addAsset(){
         //new asset
     }
 
-    public addUnit(){
+    public void addUnit(){
         //new unit
     }
 
-    public editCredits(){
+    public void editCredits(){
 
     }
 
-    public editAssets(){
+    public void editAssets(){
 
     }
 
-    public viewRequests(){
+    public void viewRequests(){
 
     }
 
