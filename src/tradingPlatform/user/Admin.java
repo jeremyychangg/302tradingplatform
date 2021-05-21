@@ -1,4 +1,6 @@
-package user;
+package tradingPlatform.user;
+
+import user.User;
 
 public class Admin extends User {
 

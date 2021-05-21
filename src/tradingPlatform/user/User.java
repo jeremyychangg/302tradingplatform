@@ -1,29 +1,3 @@
-// 	******************************************************************************************
-// 	**																        **
-// 	**	Filename: User.java									             **
-// 	**																	   **
-// 	**	Description: User Class						   **
-// 	**													   	                  **
-// 	**																	   **
-// 	**	Contributors: Natalie Smith (n10524215)									   **
-// 	**																	   **
-// 	**																        **
-// 	**	Date Created: 16/05/2021												   **
-// 	**																	   **
-// 	**																	   **
-// 	**	Change Documentation											        **
-// 	**		> Updated version										        **
-// 	**																        **
-// 	**																	   **
-// 	**																	   **
-// 	******************************************************************************************
-//
-
-package user;
-
-
-import tradingPlatform.user.UserType;
-
 package tradingPlatform.user;
 
 public class User {
@@ -53,7 +27,6 @@ public class User {
     }
 
     public UserType getAccountType(){
-        return accountType;
         return this.accountType;
     }
 
@@ -88,7 +61,7 @@ public class User {
 
     public void getWatchList(){
         //
-        return this.firstName + " " + this.lastName;
+//        return this.firstName + " " + this.lastName;
     }
 
     public boolean usernameExists(int userID){
