@@ -1,112 +1,141 @@
 package tradingPlatform.gui;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class Screen implements ActionListener {
-
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+public class Screen implements ActionListener {
 
     int count = 0;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
     private JPanel sidebarPanel;
+    private JPanel logoutPane;
 
-    // Buttons and icons
+    // Buttons
     private JLabel logo = new JLabel();
-    private JButton portfolioButton = new JButton("Portfolio");
-    private JButton dashboardButton = new JButton("Dashboard");
-    private JButton watchlistButton = new JButton("Watchlist");
-    private JButton ordersButton = new JButton("Orders");
+    private JButton portfolioButton = new JButton();
+    private JButton dashboardButton = new JButton();
+    private JButton watchlistButton = new JButton();
+    private JButton ordersButton = new JButton();
+    private JButton logoutButton = new JButton();
+
+    //images
+    private ImageIcon portfolioIcon = new ImageIcon("src/img/portfolio-01.jpg");
+    private ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
+    private ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
+    private ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
+    private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
+    private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
 
 
-    public dashboardGUI(){
+    public Screen(){
+        // Setting up the frame and panels
         frame = new JFrame();
         panel = new JPanel();
-
+        logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 400, 0));
+
+        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 800));
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
-//        logo.setIcon(new ImageIcon("src/img/logo.png"));
-        sidebarPanel.add(logo);
-//        portfolioButton.setIcon(new ImageIcon())
+        // Resizing the size of Main Logo
+        Image mainImg = mainIcon.getImage();
+        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
+        ImageIcon newMainIcon = new ImageIcon(mainScale);
+        logo.setIcon(newMainIcon);
+        logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
 
+        // Setting the Portfolio icon image
+        Image portImg = portfolioIcon.getImage();
+        Image portScale = portImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newPortIcon = new ImageIcon(portScale);
+        portfolioButton.setIcon(newPortIcon);
+        portfolioButton.setBorder(BorderFactory.createEmptyBorder());
+        portfolioButton.setContentAreaFilled(false);
+
+        // Setting the Dashboard icon image
+        Image dashImg = dashboardIcon.getImage();
+        Image dashScale = dashImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newDashIcon = new ImageIcon(dashScale);
+        dashboardButton.setIcon(newDashIcon);
+        dashboardButton.setBorder(BorderFactory.createEmptyBorder());
+        dashboardButton.setContentAreaFilled(false);
+
+        // Setting the Watchlist icon image
+        Image watchImg = watchlistIcon.getImage();
+        Image watchScale = watchImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newWatchIcon = new ImageIcon(watchScale);
+        watchlistButton.setIcon(newWatchIcon);
+        watchlistButton.setBorder(BorderFactory.createEmptyBorder());
+        watchlistButton.setContentAreaFilled(false);
+
+        // Setting the Orders Icon Image
+        Image orderImg = ordersIcon.getImage();
+        Image orderScale = orderImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newOrderIcon = new ImageIcon(orderScale);
+        ordersButton.setIcon(newOrderIcon);
+        ordersButton.setBorder(BorderFactory.createEmptyBorder());
+        ordersButton.setContentAreaFilled(false);
+
+        // Setting the Logout Icon Image
+        Image logoutImg = logoutIcon.getImage();
+        Image logoutScale = logoutImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newLogoutIcon = new ImageIcon(logoutScale);
+        logoutButton.setIcon(newLogoutIcon);
+        logoutButton.setBorder(BorderFactory.createEmptyBorder());
+        logoutButton.setContentAreaFilled(false);
+
+        // Setting the alignment
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
         portfolioButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        portfolioButton.setBackground(Color.blue);
-        dashboardButton.setBackground(Color.blue);
-        watchlistButton.setBackground(Color.blue);
-        ordersButton.setBackground(Color.blue);
-
-        portfolioButton.setPreferredSize(new Dimension(100, 10));
-
-//        portfolioButton.setBorder(new );
-        portfolioButton.setBorder(null);
-
-//        Border line = new LineBorder(Color.BLACK);
-//        Border margin = new EmptyBorder(30, 100, 30, 100);
-//        Border compound = new CompoundBorder(line, margin);
-//        portfolioButton.setBorder(compound);
-
-        portfolioButton.setFocusPainted(true);
-        dashboardButton.setFocusPainted(false);
-        watchlistButton.setFocusPainted(false);
-        ordersButton.setFocusPainted(false);
-
-
-        sidebarPanel.add(portfolioButton);
+        // Adding each of the buttons to the sidebar
+        sidebarPanel.add(logo);
         sidebarPanel.add(dashboardButton);
+        sidebarPanel.add(portfolioButton);
         sidebarPanel.add(watchlistButton);
         sidebarPanel.add(ordersButton);
 
+        // Adding logout pane to sidebar
+        logoutPane.add(logoutButton);
+        sidebarPanel.add(logoutPane);
 
-        JButton button = new JButton("Home");
-        button.addActionListener(this);
-
-        label = new JLabel("Hello, welcome Steve");
-
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 400));
-        panel.setLayout(new GridLayout(0,1));
-//        panel.add(button);
-//        panel.add(label);
-
+        // Background Colour
         Color baseBlue = new Color(0, 140, 237);
         sidebarPanel.setBackground(baseBlue);
+        logoutPane.setBackground(baseBlue);
 
+        // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.CENTER);
         frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Dashboard");
+        frame.setTitle("Venda - Dashboard");
         frame.pack();
-
         frame.setVisible(true);
-
     }
 
 
 
     public static void main(String[] args){
-        new dashboardGUI();
+        new Screen();
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
-        count++;
-        label.setText("Number of clicks: " + count);
+//            count++;
+//            label.setText("Number of clicks: " + count);
     }
 
 
@@ -121,3 +150,4 @@ import java.awt.event.*;
         return button;
     }
 }
+
