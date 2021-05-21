@@ -53,11 +53,8 @@ public class User {
     }
 
     public UserType getAccountType(){
-<<<<<<< HEAD
         return accountType;
-=======
         return this.accountType;
->>>>>>> f16c823d7f90eb00a590eeb41c0ffc4245f37b9c
     }
 
     public int getCredits(){
@@ -66,7 +63,6 @@ public class User {
     }
 
     public String getName(){
-<<<<<<< HEAD
         return firstName;
     }
 
@@ -92,7 +88,6 @@ public class User {
 
     public void getWatchList(){
         //
-=======
         return this.firstName + " " + this.lastName;
     }
 
@@ -116,6 +111,5 @@ public class User {
         if (validType){
             this.accountType = inputType;
         }
->>>>>>> f16c823d7f90eb00a590eeb41c0ffc4245f37b9c
     }
 }
