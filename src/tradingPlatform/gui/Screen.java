@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Screen implements ActionListener {
-
-    int count = 0;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
