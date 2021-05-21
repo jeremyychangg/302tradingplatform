@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class dashboardGUI implements ActionListener {
+public class DashboardGUI implements ActionListener {
     int count = 0;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
 
-    public dashboardGUI(){
+    public DashboardGUI(){
         frame = new JFrame();
         panel = new JPanel();
 

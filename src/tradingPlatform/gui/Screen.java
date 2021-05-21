@@ -1,13 +1,13 @@
 package tradingPlatform.gui;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class Screen implements ActionListener {
     private JLabel label;
@@ -122,18 +122,38 @@ public class Screen implements ActionListener {
         frame.setTitle("Venda - Dashboard");
         frame.pack();
         frame.setVisible(true);
+
+        dashboardButton.addActionListener(this);
+        portfolioButton.addActionListener(this);
+        watchlistButton.addActionListener(this);
+        ordersButton.addActionListener(this);
+        logoutButton.addActionListener(this);
     }
 
 
 
     public static void main(String[] args){
         new Screen();
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
-//            count++;
-//            label.setText("Number of clicks: " + count);
+        if (e.getSource() == dashboardButton){
+            System.out.println("Dashboard GUI");
+        }
+        else if (e.getSource() == portfolioButton){
+            System.out.println("Portfolio GUI");
+        }
+        else if (e.getSource() == watchlistButton){
+            System.out.println("Watchlist GUI");
+        }
+        else if (e.getSource() == ordersButton){
+            System.out.println("Orders GUI");
+        }
+        else if (e.getSource() == logoutButton){
+            System.out.println("Portfolio GUI");
+        }
     }
 
 
