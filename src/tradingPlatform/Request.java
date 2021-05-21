@@ -2,11 +2,11 @@ package tradingPlatform;
 
 public class Request{
     public int requestID;
-    public int userID;
+    public String userID;
     public Enum requestType;
     public String requestMessage;
 
-    public Request(int requestID, int userID, Enum requestType, String requestMessage) {
+    public Request(int requestID, String userID, Enum requestType, String requestMessage) {
         this.requestID = requestID;
         this.userID = userID;
         this.requestType = requestType;
@@ -20,13 +20,13 @@ public class Request{
     // CLASSES: not written properly- just an idea of what they will do.
 
     // Gets the user ID to validate member of organisation / admin
-    public int getUserID() {
+    public String getUserID() {
 
         return userID;
     }
 
     // Sets the user ID
-    public void setUserID (int userID) {
+    public void setUserID (String userID) {
 
         this.userID = userID;
     }

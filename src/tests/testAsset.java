@@ -1,102 +1,129 @@
+// 	******************************************************************************************
+// 	**																						**	
+// 	**	Filename: testAsset.java															**		
+// 	**																						**					
+// 	**	Description: Testing Code for Asset Class											**		
+// 	**																						**		
+// 	**																						**		
+// 	**	Contributors: Jeremy Chang (n10462040)												**					
+// 	**																						**		
+// 	**																						**		
+// 	**	Date Created: 13/05/2021															**		
+// 	**																						**					
+// 	**																						**		
+// 	**	Change Documentation																**		
+// 	**		> Initial Version																**		
+// 	**																						**		
+// 	**																						**		
+// 	**																						**		
+// 	******************************************************************************************
+
+
 package tests;
+import tradingPlatform.Asset;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-
-public class testsOrders {
-
-/*    *//* Test 0: Declaring MovieList objects
-     * [This test obliges you to create a class called "MovieList".]
-     *//*
-//	MovieList movies;*/
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import tradingPlatform.exceptions.NegativePriceException;
 
 
-    /* Test 1: Constructing a MovieList object
-     */
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class testAsset {
+
+	//	Test 0: Declaring Asset objects for testing
+	Asset asset1;
+	Asset asset2;
+	Asset asset3;
+
 	@BeforeEach @Test
-	public void setUpMovieList() {
-		movies = new MovieList();
+	public void ConstructAsset() {
+		asset2 = new Asset("CPU Hours", "Computing");
+		asset3 = new Asset("CPU Hours", "Computing", 34.23);
 	}
 
-    /* Test 2: Adding a new movie to the list
-     */
-//	@Test
-//	public void addAMovie() throws MovieListException {
-//		movies.addMovie("Star Wars");
-//		assertEquals("No rating", movies.getRating("Star Wars"),
-//				"Adding movie failed");
-//	}
+	//	Check that assetID is not null
+	@Test
+	public void NotNullAssetID() {
+		assertTrue(asset2.GetAssetID() != "");
+		assertTrue(asset3.GetAssetID() != "");
+	}
 
-    /* Test 3: Associating a rating with a movie
-     */
-//	@Test
-//	public void setARating() throws MovieListException {
-//		movies.addMovie("Goldfinger");
-//		movies.setRating("Goldfinger", 4);
-//		assertEquals("****", movies.getRating("Goldfinger"),
-//				"Couldn't set a rating");
-//	}
+	//	Check that assetName is not null
+	@Test
+	public void NotNullAssetName() {
+		assertTrue(asset2.GetAssetName() != "");
+		assertTrue(asset3.GetAssetName() != "");
+	}
 
-    /* Test 4: Getting a printable list of movies
-     */
-//	@Test
-//	public void listAlphabetically() throws MovieListException {
-//		String orderedListing =
-//				"Casablanca\n" +
-//						"Maltese Bippy, The\n" +
-//						"Star Wars\n";
-//		movies.addMovie("Star Wars");
-//		movies.addMovie("Casablanca");
-//		movies.addMovie("Maltese Bippy, The");
-//		assertEquals(orderedListing, movies.getList(), "Listing not alphabetical");
-//	}
+	//	Check asset >= 0 as current price (edge case)
+	@Test
+	public void AssetPositivePrice() {
+		assertTrue(asset1.GetPrice() >= 0);
+		assertTrue(asset2.GetPrice() >= 0);
+		assertTrue(asset3.GetPrice() >= 0);
+	}
 
-    /* Test 5: Can't get a rating for an unrated movie
-     */
-//	@Test
-//	public void nonexistentRating() {
-//		assertThrows(MovieListException.class, () -> {
-//			movies.getRating("The Ghost in the Invisible Bikini");
-//		});
-//	}
+	// Set 0 Price (Edge Case)
+	@Test
+	public void SetZeroPrice() {
+		asset1.setPrice(0);
+		asset2.setPrice(0);
+		asset3.setPrice(0);
+	}
 
-    /* Test 6: Can't add the same movie twice
-     */
-//	@Test
-//	public void duplicateMovie() {
-//		assertThrows(MovieListException.class, () -> {
-//			movies.addMovie("Earth Versus the Flying Saucers");
-//			movies.addMovie("Earth Versus the Flying Saucers");
-//		});
-//	}
+	// Set 1 Price (Edge Case)
+	@Test
+	public void SetOnePrice() {
+		asset1.setPrice(0.0001);
+		asset2.setPrice(1);
+		asset3.setPrice(0.1);
 
-    /* Test 7: Even a bomb gets a single star
-     */
-//	@Test
-//	public void ratingTooLow() {
-//		assertThrows(MovieListException.class, () -> {
-//			movies.addMovie("Plan Nine From Outer Space");
-//			movies.setRating("Plan Nine From Outer Space", 0);
-//		});
-//	}
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
+	}
 
-    /* Test 8: No movie gets more than five stars
-     */
-//	@Test
-//	public void ratingTooHigh() {
-//		assertThrows(MovieListException.class, () -> {
-//			movies.addMovie("Citizen Kane");
-//			movies.setRating("Citizen Kane", 6);
-//		});
-//	}
+	//	Change Asset Price
+	@Test
+	public void ChangeAssetPrice(){
+		asset1.setPrice(42.84);
+		asset2.setPrice(42);
+		asset3.setPrice(42.00);
 
-    /* Test 9: Can't rate an unknown movie
-     */
-//	@Test
-//	public void ratingUnknownMovie() {
-//		assertThrows(MovieListException.class, () -> {
-//			movies.setRating("Them!", 4);
-//		});
-//	}
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
+	}
+
+	// Set Negative Price (Edge Case)
+	@Test
+	public void SetNegativePrice() {
+		assertThrows(NegativePriceException.class, () -> {
+			asset1.setPrice(-0.0001);
+		});
+		
+		assertThrows(NegativePriceException.class, () -> {
+			asset2.setPrice(-1);
+		});
+
+		assertThrows(NegativePriceException.class, () -> {
+			asset3.setPrice(-0.1);
+		});
+	}
+
+	// Get Price of Asset
+	@Test
+	public void ReturnAssetPrice() {
+		assertEquals(42.84, asset1.getPrice());
+		assertEquals(42.00, asset2.getPrice());
+		assertEquals(42.00, asset3.getPrice());
+	}
+
+
+
 }
-

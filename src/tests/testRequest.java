@@ -43,6 +43,12 @@ public class TestRequest {
         assertNull(request.requestMessage);
     }
 
+    // - Test 7: check if request is empty
+    @Test
+    public void emptyRequest() throws Exception {
+        Request testRequest = new Request(100, 3, requestType.userRequest, "");
+        assertEquals("This is a request", request.getRequestMessage());
+    }
     // - Test 6: check if user (userID) exists
     @Test
     // need to input User Class to check if the user exists

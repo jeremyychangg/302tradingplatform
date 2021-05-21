@@ -14,7 +14,7 @@ enum UserType {
     Lead
 }
 
-public class UserTests {
+public class testUsers{
     /* Test 1: Testing whether the user exists */
     @BeforeEach @Test
     public void setUpUsers(){
@@ -56,10 +56,17 @@ public class UserTests {
     /* Test 5: Can't add user who already exists - is unique */
     @Test
     public void duplicateUser() {
+<<<<<<< HEAD:src/tests/testsUsers.java
         assertThrows(UserException, () -> {
             addUser("blahblah123");
             addUser("blahblah123");
         })
+=======
+        assertThrows(UserExceptions, () -> {
+            users.addUser("blahblah123");
+            users.addUser("blahblah123");
+        });
+>>>>>>> f16c823d7f90eb00a590eeb41c0ffc4245f37b9c:src/tests/testUsers.java
     }
 
     /* Test 6: Test that user always has a password */

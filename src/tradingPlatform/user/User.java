@@ -1,7 +1,30 @@
+// 	******************************************************************************************
+// 	**																        **
+// 	**	Filename: User.java									             **
+// 	**																	   **
+// 	**	Description: User Class						   **
+// 	**													   	                  **
+// 	**																	   **
+// 	**	Contributors: Natalie Smith (n10524215)									   **
+// 	**																	   **
+// 	**																        **
+// 	**	Date Created: 16/05/2021												   **
+// 	**																	   **
+// 	**																	   **
+// 	**	Change Documentation											        **
+// 	**		> Updated version										        **
+// 	**																        **
+// 	**																	   **
+// 	**																	   **
+// 	******************************************************************************************
+//
+
 package user;
 
 
 import tradingPlatform.user.UserType;
+
+package tradingPlatform.user;
 
 public class User {
 
@@ -30,7 +53,11 @@ public class User {
     }
 
     public UserType getAccountType(){
+<<<<<<< HEAD
         return accountType;
+=======
+        return this.accountType;
+>>>>>>> f16c823d7f90eb00a590eeb41c0ffc4245f37b9c
     }
 
     public int getCredits(){
@@ -39,6 +66,7 @@ public class User {
     }
 
     public String getName(){
+<<<<<<< HEAD
         return firstName;
     }
 
@@ -64,5 +92,30 @@ public class User {
 
     public void getWatchList(){
         //
+=======
+        return this.firstName + " " + this.lastName;
+    }
+
+    public boolean usernameExists(int userID){
+        //search the database for the usrID
+        //idExists = (query()) ? true : false;
+        // return idExists;
+    }
+
+    public void changePassword(String passMod){
+        this.password = passMod;
+    }
+
+    public void setUserType(UserType inputType){
+        boolean validType = false;
+        for (UserType u : UserType.values()){
+            if(u.name().equals(inputType)){
+                validType = true;
+            }
+        }
+        if (validType){
+            this.accountType = inputType;
+        }
+>>>>>>> f16c823d7f90eb00a590eeb41c0ffc4245f37b9c
     }
 }

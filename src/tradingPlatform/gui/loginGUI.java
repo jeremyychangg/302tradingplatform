@@ -2,8 +2,11 @@ package tradingPlatform.gui;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.*;
 import java.awt.event.FocusListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class loginGUI implements ActionListener {
     int count = 0;
@@ -47,23 +50,30 @@ public class loginGUI implements ActionListener {
 
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         loginGUI display = new loginGUI();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
 //        count++;
 //        label.setText("Number of clicks: " + count);
         String usernameInput = usernameField.getText();
         System.out.println("The username inputted " + usernameInput);
         char[] passwordInput = passwordField.getPassword();
-        for (char x: passwordInput){
+        for (char x : passwordInput) {
             System.out.print(x);
         }
     }
 
-//    /**
+    //
+//    //GUI
+//    public boolean passwordCorrect(){
+//
+//    }
+
+}
+    //    /**
 //     * In the circumstance where the user actually focuses on the input field. Delete the default text.
 //     * @param e
 //     */
@@ -76,4 +86,3 @@ public class loginGUI implements ActionListener {
 //    public void focusLost(FocusEvent e){
 //        passwordField.setText("Password");
 //    }
-}
