@@ -19,7 +19,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-	// write your code here
-        connection = (Connection) new JBDCConnection();
+        // write your code here
+        new JBDCConnection();
+
     }
 }
