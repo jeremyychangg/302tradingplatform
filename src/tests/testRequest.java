@@ -24,12 +24,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.NullString;
 import tradingPlatform.Request;
 import tradingPlatform.enumerators.requestType;
 // import user.User
-import javax.lang.model.type.NullType;
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
 
 public class testRequest {
     // Declare objects for testing
