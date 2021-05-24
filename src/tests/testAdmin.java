@@ -16,7 +16,7 @@ public class testAdmin {
     //add this to the admin tests
     /* Test 3: Determine user permissions to add user */
     @Test
-    public void testPermissions() throws PermissionException {
+    public void testPermissions(){
 
     }
 
