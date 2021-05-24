@@ -21,11 +21,12 @@
 
 package tests;
 
+import tests.UserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import user.User;
+import tradingPlatform.user.User;
 import tradingPlatform.user.UserType;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class testUsers {

@@ -1,6 +1,6 @@
 package tests;
 
-public class UserException {
+public class UserException extends Throwable {
     public UserException(){
 
     }
