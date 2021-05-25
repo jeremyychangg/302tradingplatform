@@ -28,8 +28,8 @@ CREATE TABLE assets (
 
 CREATE TABLE inventory (
 	unitID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
-    assetID         CHAR(10)             				NOT NULL    ,
-    quantity		INT(8)                                          ,
+    assetID         CHAR(10)                            NOT NULL    ,
+    quantity        INT(8)                                          ,
 	orderID         CHAR(10)
 );
 
@@ -48,10 +48,10 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE requests (
-	requestID       CHAR(10)            PRIMARY KEY     NOT NULL    ,
-    userID          CHAR(10)              			    NOT NULL    ,
-    requestType	    VARCHAR(144)                                    ,
-	requestMessage	VARCHAR(512)
+    requestID       CHAR(10)            PRIMARY KEY     NOT NULL    ,
+    userID          CHAR(10)                            NOT NULL    ,
+    requestType     VARCHAR(144)                                    ,
+    requestMessage  VARCHAR(512)
 );
 
 CREATE TABLE notifications (
@@ -61,7 +61,7 @@ CREATE TABLE notifications (
 );
 
 CREATE TABLE watchlists (
-	unitID          CHAR(10)                            NOT NULL    ,
-	assetID         CHAR(10)                            NOT NULL    ,
+    unitID          CHAR(10)                            NOT NULL    ,
+    assetID         CHAR(10)                            NOT NULL    ,
     CONSTRAINT      pk_watchlists       PRIMARY KEY (unitID, assetID)
 );

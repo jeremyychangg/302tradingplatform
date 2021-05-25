@@ -11,7 +11,7 @@ public class JBDCConnection {
         try {
 
             // specify the data source, username and password
-            String url = "jdbc:mysql://localhost:3308/myDB";
+            String url = "jdbc:mysql://localhost:3308/tradingPlatform";
             String username = "root";
             String password = "password.1";
 
