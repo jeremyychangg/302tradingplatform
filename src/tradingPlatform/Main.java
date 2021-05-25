@@ -19,8 +19,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // write your code here
-        new JBDCConnection();
+        try {
+            // write your code here
+            new JBDCConnection();
+            System.out.println("Test working");
+
+        } catch (Exception e){
+            // Add Error handling
+            // Apply overlay to text box GUI
+        }
+
 
     }
 }
