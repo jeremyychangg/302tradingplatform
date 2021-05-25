@@ -24,9 +24,11 @@ import tradingPlatform.Asset;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.exceptions.NegativePriceException;
 
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,7 +43,7 @@ public class testAsset {
 	Asset asset3;
 
 	@BeforeEach @Test
-	public void ConstructAsset() {
+	public void ConstructAsset() throws SQLException, AssetTypeException {
 		asset2 = new Asset("CPU Hours", "Computing");
 		asset3 = new Asset("CPU Hours", "Computing", 34.23);
 	}
@@ -70,58 +72,58 @@ public class testAsset {
 
 	// Set 0 Price (Edge Case)
 	@Test
-	public void SetZeroPrice() {
-		asset1.setPrice(0);
-		asset2.setPrice(0);
-		asset3.setPrice(0);
+	public void SetZeroPrice() throws SQLException, NegativePriceException {
+		asset1.SetPrice(0);
+		asset2.SetPrice(0);
+		asset3.SetPrice(0);
 	}
 
 	// Set 1 Price (Edge Case)
 	@Test
-	public void SetOnePrice() {
-		asset1.setPrice(0.0001);
-		asset2.setPrice(1);
-		asset3.setPrice(0.1);
+	public void SetOnePrice() throws SQLException, NegativePriceException {
+		asset1.SetPrice(0.0001);
+		asset2.SetPrice(1);
+		asset3.SetPrice(0.1);
 
-		assertEquals(42.84, asset1.getPrice());
-		assertEquals(42.00, asset2.getPrice());
-		assertEquals(42.00, asset3.getPrice());
+		assertEquals(42.84, asset1.GetPrice());
+		assertEquals(42.00, asset2.GetPrice());
+		assertEquals(42.00, asset3.GetPrice());
 	}
 
 	//	Change Asset Price
 	@Test
-	public void ChangeAssetPrice(){
-		asset1.setPrice(42.84);
-		asset2.setPrice(42);
-		asset3.setPrice(42.00);
+	public void ChangeAssetPrice() throws SQLException, NegativePriceException {
+		asset1.SetPrice(42.84);
+		asset2.SetPrice(42);
+		asset3.SetPrice(42.00);
 
-		assertEquals(42.84, asset1.getPrice());
-		assertEquals(42.00, asset2.getPrice());
-		assertEquals(42.00, asset3.getPrice());
+		assertEquals(42.84, asset1.GetPrice());
+		assertEquals(42.00, asset2.GetPrice());
+		assertEquals(42.00, asset3.GetPrice());
 	}
 
 	// Set Negative Price (Edge Case)
 	@Test
 	public void SetNegativePrice() {
 		assertThrows(NegativePriceException.class, () -> {
-			asset1.setPrice(-0.0001);
+			asset1.SetPrice(-0.0001);
 		});
 		
 		assertThrows(NegativePriceException.class, () -> {
-			asset2.setPrice(-1);
+			asset2.SetPrice(-1);
 		});
 
 		assertThrows(NegativePriceException.class, () -> {
-			asset3.setPrice(-0.1);
+			asset3.SetPrice(-0.1);
 		});
 	}
 
 	// Get Price of Asset
 	@Test
 	public void ReturnAssetPrice() {
-		assertEquals(42.84, asset1.getPrice());
-		assertEquals(42.00, asset2.getPrice());
-		assertEquals(42.00, asset3.getPrice());
+		assertEquals(42.84, asset1.GetPrice());
+		assertEquals(42.00, asset2.GetPrice());
+		assertEquals(42.00, asset3.GetPrice());
 	}
 
 
