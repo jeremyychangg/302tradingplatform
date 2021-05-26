@@ -15,7 +15,7 @@
 // 	**																						**
 // 	**																						**
 // 	******************************************************************************************
-package tradingPlatform.user;
+package tradingPlatform.exceptions;
 
 public class UserException extends Exception {
     /**
