@@ -24,13 +24,20 @@ public class Screen implements ActionListener {
     private JButton ordersButton = new JButton();
     private JButton logoutButton = new JButton();
 
-    //images
+    //images when unselected
     private ImageIcon portfolioIcon = new ImageIcon("src/img/portfolio-01.jpg");
     private ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
     private ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
     private ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
     private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
     private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
+
+    //images when selected
+    private ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
+    private ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
+    private ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
+    private ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
+    private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
 
     public Screen(){
@@ -52,45 +59,12 @@ public class Screen implements ActionListener {
         logo.setIcon(newMainIcon);
         logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
 
-        // Setting the Portfolio icon image
-        Image portImg = portfolioIcon.getImage();
-        Image portScale = portImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
-        ImageIcon newPortIcon = new ImageIcon(portScale);
-        portfolioButton.setIcon(newPortIcon);
-        portfolioButton.setBorder(BorderFactory.createEmptyBorder());
-        portfolioButton.setContentAreaFilled(false);
-
-        // Setting the Dashboard icon image
-        Image dashImg = dashboardIcon.getImage();
-        Image dashScale = dashImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
-        ImageIcon newDashIcon = new ImageIcon(dashScale);
-        dashboardButton.setIcon(newDashIcon);
-        dashboardButton.setBorder(BorderFactory.createEmptyBorder());
-        dashboardButton.setContentAreaFilled(false);
-
-        // Setting the Watchlist icon image
-        Image watchImg = watchlistIcon.getImage();
-        Image watchScale = watchImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
-        ImageIcon newWatchIcon = new ImageIcon(watchScale);
-        watchlistButton.setIcon(newWatchIcon);
-        watchlistButton.setBorder(BorderFactory.createEmptyBorder());
-        watchlistButton.setContentAreaFilled(false);
-
-        // Setting the Orders Icon Image
-        Image orderImg = ordersIcon.getImage();
-        Image orderScale = orderImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
-        ImageIcon newOrderIcon = new ImageIcon(orderScale);
-        ordersButton.setIcon(newOrderIcon);
-        ordersButton.setBorder(BorderFactory.createEmptyBorder());
-        ordersButton.setContentAreaFilled(false);
-
-        // Setting the Logout Icon Image
-        Image logoutImg = logoutIcon.getImage();
-        Image logoutScale = logoutImg.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
-        ImageIcon newLogoutIcon = new ImageIcon(logoutScale);
-        logoutButton.setIcon(newLogoutIcon);
-        logoutButton.setBorder(BorderFactory.createEmptyBorder());
-        logoutButton.setContentAreaFilled(false);
+        // Setting up the sidebar buttons
+        changeButton(portfolioIcon, portfolioButton);
+        changeButton(dashboardIcon, dashboardButton);
+        changeButton(watchlistIcon, watchlistButton);
+        changeButton(ordersIcon, ordersButton);
+        changeButton(logoutIcon, logoutButton);
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -117,7 +91,7 @@ public class Screen implements ActionListener {
         logoutPane.setBackground(baseBlue);
 
         // Adding the panes to the final sidebar frame
-        frame.add(panel, BorderLayout.CENTER);
+        frame.add(panel, BorderLayout.EAST);
         frame.add(sidebarPanel, BorderLayout.WEST);
         frame.setTitle("Venda - Dashboard");
         frame.pack();
@@ -134,25 +108,70 @@ public class Screen implements ActionListener {
 
     public static void main(String[] args){
         new Screen();
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == dashboardButton){
             System.out.println("Dashboard GUI");
+
+            // Changing the image for the button
+            changeButton(dashboardIconS, dashboardButton);
+            // Changing each of the other buttons
+            changeButton(ordersIcon, ordersButton);
+            changeButton(portfolioIcon, portfolioButton);
+            changeButton(watchlistIcon, watchlistButton);
+            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == portfolioButton){
             System.out.println("Portfolio GUI");
+            frame.remove(panel);
+            panel.removeAll();
+            frame.add(new portfolioGUI(), BorderLayout.CENTER);
+            frame.setTitle("Portfolio");
+            frame.pack();
+            panel.setVisible(true);
+
+            // Changing the image for the button
+            changeButton(portfolioIconS, portfolioButton);
+            // Changing each of the other buttons
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == watchlistButton){
             System.out.println("Watchlist GUI");
+
+            // Changing the image for the button
+            changeButton(watchlistIconS, watchlistButton);
+            // Changing each of the other buttons
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == ordersButton){
             System.out.println("Orders GUI");
+
+            // Changing the image for the button
+            changeButton(ordersIconS, ordersButton);
+            // Changing each of the other buttons
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == logoutButton){
-            System.out.println("Portfolio GUI");
+            System.out.println("Logout GUI");
+
+            // Changing the image for the button
+            changeButton(logoutIconS, logoutButton);
+            // Changing each of the other buttons
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(watchlistIcon, watchlistButton);
         }
     }
 
@@ -166,6 +185,15 @@ public class Screen implements ActionListener {
         Border compound = new CompoundBorder(line, margin);
         button.setBorder(compound);
         return button;
+    }
+
+    private static void changeButton(ImageIcon change, JButton button){
+        Image changed = change.getImage();
+        Image changedScale = changed.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        ImageIcon newButtonIcon = new ImageIcon(changedScale);
+        button.setIcon(newButtonIcon);
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setContentAreaFilled(false);
     }
 }
 

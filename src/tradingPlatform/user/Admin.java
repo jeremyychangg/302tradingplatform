@@ -1,9 +1,7 @@
 package tradingPlatform.user;
 
-public class Admin extends User {
-
+public class Admin extends User{
     public Admin(){
-
     }
 
     public void addUser(User user){

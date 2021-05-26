@@ -1,3 +1,20 @@
+// 	******************************************************************************************
+// 	**																						**
+// 	**	Filename: UserException.java														**
+// 	**																						**
+// 	**	Description: User Exception class for User											**
+// 	**																						**
+// 	**																						**
+// 	**	Contributors: Natalie Smith										                    **
+// 	**																						**
+// 	**																						**
+// 	**	Date Created: 															            **
+// 	**																						**
+// 	**																						**
+// 	**	Change Documentation																**
+// 	**																						**
+// 	**																						**
+// 	******************************************************************************************
 package tradingPlatform.user;
 
 public class User {
@@ -11,12 +28,6 @@ public class User {
     private UserType accountType = UserType.Employee;
 
 
-    // Public variables
-    public String _username = this.username;
-    public String _firstName = this.firstName;
-    public String _lastName = this.lastName;
-
-
     public User(String username, String firstName, String lastName, int unitID, String password, UserType accountType) {
         this.username = username;
         this.firstName = firstName;
@@ -26,13 +37,18 @@ public class User {
         this.accountType = accountType;
     }
 
-    public User() {
-    }
-
+    /**
+     * This function is used to get the account type of the user
+     * @return
+     */
     public UserType getAccountType(){
         return this.accountType;
     }
 
+    /**
+     * The getCredits function is used to retrieve the credits of the user
+     * @return
+     */
     public int getCredits(){
         // search the Units database and return the credit of the given unit
         // return the credits in int
@@ -52,18 +68,18 @@ public class User {
     /**
      * Returns the assets associated with the userID
      */
-    public void returnAssests(){
-        //this.unitID
-        //take the unitID and query the orders table to determine their orders
-    }
+//    public void returnAssests(){
+//        //this.unitID
+//        //take the unitID and query the orders table to determine their orders
+//    }
 
-    public void getNotifications(){
-    }
+//    public void getNotifications(){
+//    }
 
-    public void getWatchList(){
-        //
-//        return this.firstName + " " + this.lastName;
-    }
+//    public void getWatchList(){
+//        //
+////        return this.firstName + " " + this.lastName;
+//    }
 
     public boolean usernameExists(int userID){
         //search the database for the usrID
