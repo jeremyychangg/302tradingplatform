@@ -157,8 +157,13 @@ public class User {
      * The getName function returns the first name of the user
      * @return
      */
-    public final String getName(){
+    public final String getFirstName(){
         return this.firstName;
+    }
+
+
+    public final String getLastName(){
+        return this.lastName;
     }
 
 
