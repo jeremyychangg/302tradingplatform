@@ -1,7 +1,13 @@
 package tradingPlatform.user;
 
 public class Admin extends User{
-    public Admin(){
+    private int unitID;
+    private UserType accountType;
+
+    public Admin(String username, String firstName, String lastName, int unitID, String password, UserType accountType) {
+        super(username, firstName, lastName, unitID, password, accountType);
+        this.unitID = unitID;
+        this.accountType = accountType;
     }
 
     public void addUser(User user){

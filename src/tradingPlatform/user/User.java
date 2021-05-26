@@ -17,6 +17,10 @@
 // 	******************************************************************************************
 package tradingPlatform.user;
 
+/**
+ * This class is used to
+ * @author Natalie Smith
+ */
 public class User {
 
     private int userID;
@@ -51,19 +55,26 @@ public class User {
      */
     public int getCredits(){
         // search the Units database and return the credit of the given unit
+        String query = "SELECT units.creditBalance " +
+                "FROM units LEFT JOIN users " +
+                "ON units.unitID = users.unitID " +
+                "WHERE user.userID = " + this.userID;
         // return the credits in int
         return 0;
     }
 
     public String getName(){
-        return firstName;
-    }
-
-    public boolean usernameExists(){
-        return true;
+        return this.firstName;
     }
 
 
+    public boolean usernameExists(int findUserID){
+        String query = "SELECT * FROM users WHERE userID = " + findUserID;
+        //search the database for the usrID
+        //idExists = (query()) ? true : false;
+        // return idExists;
+         return true;
+    }
 
     /**
      * Returns the assets associated with the userID
@@ -81,15 +92,11 @@ public class User {
 ////        return this.firstName + " " + this.lastName;
 //    }
 
-    public boolean usernameExists(int userID){
-        //search the database for the usrID
-        //idExists = (query()) ? true : false;
-        // return idExists;
-        return true;
-    }
+
 
     public void changePassword(String passMod){
         this.password = passMod;
+        // input the SQL query for the database
     }
 
     public void setUserType(UserType inputType){
