@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class loginGUI implements ActionListener {
+    Font btnFont = new Font("Avenir", Font.PLAIN, 15);
+
     int count = 0;
     private JLabel logo = new JLabel();
 //    private JLabel label;
@@ -13,42 +15,63 @@ public class loginGUI implements ActionListener {
     private JPanel panel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JButton button;
 
-    private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
+    private ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
     public loginGUI() {
         frame = new JFrame();
         panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JButton button = new JButton("Login");
+        JPanel side = new JPanel();
+        side.setBorder(BorderFactory.createEmptyBorder(0,300, 0,0));
+        side.setBackground(new Color(0, 140, 237));
+
+        frame.add(side, BorderLayout.WEST);
+
+        button = new JButton("LOGIN");
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
+        button.setMargin(new Insets(5,20, 5, 20));
+//        button.setPadding(new Insets(5,20, 5, 20));
+        button.setFont(btnFont);
+        button.setBackground(new Color(0, 140, 237));
 
         // Logo
         // Resizing the size of Main Logo
-//        Image mainImg = mainIcon.getImage();
-//        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
-//        ImageIcon newMainIcon = new ImageIcon(mainScale);
-//        logo.setIcon(newMainIcon);
-//        logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
+        Image mainImg = mainIcon.getImage();
+        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
+        ImageIcon newMainIcon = new ImageIcon(mainScale);
+        logo.setIcon(newMainIcon);
+        logo.setBorder(BorderFactory.createEmptyBorder(150, 0, 50, 0));
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-//        label = new JLabel("Hello, welcome Steve");
         usernameField = new JTextField("Username");
         passwordField = new JPasswordField(25);
 
         //Aligning the text within the field
-        usernameField.setHorizontalAlignment(JTextField.CENTER);
-        passwordField.setHorizontalAlignment(JTextField.CENTER);
+        usernameField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
+        passwordField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
+        usernameField.setHorizontalAlignment(JTextField.LEFT);
+        passwordField.setHorizontalAlignment(JTextField.LEFT);
+
+
+        JPanel invisible = new JPanel();
+        invisible.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        JPanel invisible2 = new JPanel();
+        invisible2.setBorder(BorderFactory.createEmptyBorder(20,0,5,0));
 
 //        passwordField.setActionCommand(Login);
 
-        panel.setBorder(BorderFactory.createEmptyBorder(200, 200, 200, 200));
-        panel.setLayout(new GridLayout(0, 1));
-//        panel.add(label);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 200, 200, 200));
 
         panel.add(logo, BorderLayout.CENTER);
         panel.add(usernameField, BorderLayout.CENTER);
+        panel.add(invisible, BorderLayout.CENTER);
         panel.add(passwordField, BorderLayout.CENTER);
-        panel.add(button);
+        panel.add(invisible2, BorderLayout.CENTER);
+        panel.add(button, BorderLayout.CENTER);
 
         frame.add(panel, BorderLayout.CENTER);
         frame.setTitle("Login");

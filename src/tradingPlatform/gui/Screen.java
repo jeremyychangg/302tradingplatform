@@ -29,11 +29,11 @@ public class Screen implements ActionListener {
     private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
 
     //images when selected
-    private ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
-    private ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
-    private ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
-    private ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
-    private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
+//    private ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
+//    private ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
+//    private ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
+//    private ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
+//    private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
 
     public Screen(){
@@ -45,7 +45,7 @@ public class Screen implements ActionListener {
 
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 800));
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
@@ -99,6 +99,7 @@ public class Screen implements ActionListener {
         ordersButton.addActionListener(this);
         logoutButton.addActionListener(this);
         System.out.println(frame.getWidth());
+        System.out.println(panel.getWidth());
     }
 
 
@@ -128,6 +129,7 @@ public class Screen implements ActionListener {
             frame.pack();
             panel.setVisible(true);
 
+            System.out.println(frame.getWidth());
             // Changing the image for the button
 //            changeButton(portfolioIconS, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);

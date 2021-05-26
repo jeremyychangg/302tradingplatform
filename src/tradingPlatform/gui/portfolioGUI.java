@@ -7,8 +7,9 @@ public class portfolioGUI extends JPanel {
 
     public portfolioGUI() {
         // Font styling
-        Font font1 = new Font("SansSerif", Font.BOLD, 40);
-        Font heading = new Font("SansSerif", Font.PLAIN, 50);
+        Font font1 = new Font("Avenir", Font.BOLD, 40);
+        Font heading = new Font("Avenir", Font.PLAIN, 50);
+        Font h1 = new Font("Avenir", Font.PLAIN, 25);
 
 
         // setting up black JPanel
@@ -29,7 +30,7 @@ public class portfolioGUI extends JPanel {
 
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
-        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
+        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
 
         JLabel chart = new JLabel("Chart");
         chart.setBorder(BorderFactory.createEmptyBorder(50, 0,100,0));
@@ -45,14 +46,14 @@ public class portfolioGUI extends JPanel {
         JLabel oustandingUser = new JLabel("5");
         oustandingUser.setFont(heading);
 
-
-        oustandingUser.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 200));
         creditsUser.setBorder(BorderFactory.createEmptyBorder(10,300, 10, 100));
+        oustandingUser.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 400));
 
         summaryInfo.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
         summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         summaryInfo.add(creditsUser);
         summaryInfo.add(oustandingUser);
+
 
 //        JLabel creditsUnitsL = new JLabel("Credit Units");
 //        creditsUnitsL.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -61,6 +62,18 @@ public class portfolioGUI extends JPanel {
         summaryInfo.setBackground(Color.white);
 
         panel.add(summaryInfo);
+
+        // Order History section
+        JLabel orderHistoryHeading = new JLabel("Order History");
+        orderHistoryHeading.setFont(h1);
+        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 10));
+        panel.add(orderHistoryHeading);
+        JPanel orderHistoryList = new JPanel();
+        orderHistoryList.add(new Table());
+        orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
+        orderHistoryList.setBackground(Color.WHITE);
+
+        panel.add(orderHistoryList);
 
         // adding blackJPanel
         add(panel);
