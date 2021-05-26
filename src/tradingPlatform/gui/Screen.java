@@ -1,10 +1,6 @@
 package tradingPlatform.gui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,6 +98,7 @@ public class Screen implements ActionListener {
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
         logoutButton.addActionListener(this);
+        System.out.println(frame.getWidth());
     }
 
 
@@ -116,12 +113,11 @@ public class Screen implements ActionListener {
             System.out.println("Dashboard GUI");
 
             // Changing the image for the button
-            changeButton(dashboardIconS, dashboardButton);
-            // Changing each of the other buttons
-            changeButton(ordersIcon, ordersButton);
-            changeButton(portfolioIcon, portfolioButton);
-            changeButton(watchlistIcon, watchlistButton);
-            changeButton(logoutIcon, logoutButton);
+//            changeButton(dashboardIconS, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == portfolioButton){
             System.out.println("Portfolio GUI");
@@ -133,8 +129,7 @@ public class Screen implements ActionListener {
             panel.setVisible(true);
 
             // Changing the image for the button
-            changeButton(portfolioIconS, portfolioButton);
-            // Changing each of the other buttons
+//            changeButton(portfolioIconS, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(ordersIcon, ordersButton);
 //            changeButton(watchlistIcon, watchlistButton);
@@ -144,8 +139,7 @@ public class Screen implements ActionListener {
             System.out.println("Watchlist GUI");
 
             // Changing the image for the button
-            changeButton(watchlistIconS, watchlistButton);
-            // Changing each of the other buttons
+//            changeButton(watchlistIconS, watchlistButton);
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(ordersIcon, ordersButton);
@@ -155,8 +149,7 @@ public class Screen implements ActionListener {
             System.out.println("Orders GUI");
 
             // Changing the image for the button
-            changeButton(ordersIconS, ordersButton);
-            // Changing each of the other buttons
+//            changeButton(ordersIconS, ordersButton);
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(watchlistIcon, watchlistButton);
@@ -166,25 +159,12 @@ public class Screen implements ActionListener {
             System.out.println("Logout GUI");
 
             // Changing the image for the button
-            changeButton(logoutIconS, logoutButton);
-            // Changing each of the other buttons
+//            changeButton(logoutIconS, logoutButton);
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(ordersIcon, ordersButton);
 //            changeButton(watchlistIcon, watchlistButton);
         }
-    }
-
-
-    private static JButton createSimpleButton(String text) {
-        JButton button = new JButton(text);
-        button.setForeground(Color.BLACK);
-        button.setBackground(Color.WHITE);
-        Border line = new LineBorder(Color.BLACK);
-        Border margin = new EmptyBorder(5, 15, 5, 15);
-        Border compound = new CompoundBorder(line, margin);
-        button.setBorder(compound);
-        return button;
     }
 
     private static void changeButton(ImageIcon change, JButton button){
