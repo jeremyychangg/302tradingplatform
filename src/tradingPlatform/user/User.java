@@ -30,7 +30,6 @@ import static tradingPlatform.Main.connection;
  * @author Natalie Smith
  */
 public class User {
-
     private int userID;
     private String username;
     private String firstName;
@@ -38,6 +37,10 @@ public class User {
     private int unitID;
     private String password;
     private UserType accountType = UserType.Employee;
+
+    public int getUserID(){
+        return this.userID;
+    }
 
 
     public User(String username, String firstName, String lastName, int unitID, String password, UserType accountType) throws UserException, SQLException {
@@ -122,7 +125,6 @@ public class User {
     }
 
 
-
     /**
      * This function is used to get the account type of the user
      * @return
@@ -130,7 +132,6 @@ public class User {
     public UserType getAccountType(){
         return this.accountType;
     }
-
 
 
     /**
@@ -152,15 +153,13 @@ public class User {
     }
 
 
-
     /**
      * The getName function returns the first name of the user
      * @return
      */
-    public String getName(){
+    public final String getName(){
         return this.firstName;
     }
-
 
 
     /**
@@ -214,7 +213,6 @@ public class User {
             this.accountType = inputType;
         }
     }
-
 
 
     /**
