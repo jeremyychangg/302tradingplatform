@@ -28,6 +28,7 @@ public class Main {
 
             System.out.println("Test working");
 //            Asset asset3 = new Asset( "Big Desk", "Furniture", 8.22);
+            Order order1 = new BuyOrder("EM00000018", "CA00000001",97.34, 2);
             connection.close();
 
         } catch (Exception e){

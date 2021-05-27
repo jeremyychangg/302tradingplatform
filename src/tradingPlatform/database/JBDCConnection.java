@@ -18,6 +18,8 @@ public class JBDCConnection {
 
             // get a connection
             Main.connection = DriverManager.getConnection(url, username, password);
+
+            // Testing code
             if (Main.connection == null){
                 System.out.println("No connection!");
             } else {
@@ -25,8 +27,8 @@ public class JBDCConnection {
             }
 
 
-        } catch (Exception sqle) {
-            System.err.println(sqle);
+        } catch (Exception e) {
+            System.err.println(e);
         }
     }
 

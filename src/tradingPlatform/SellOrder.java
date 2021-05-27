@@ -35,23 +35,24 @@ public class SellOrder extends Order{
 
     public SellOrder(String userID, String assetID, OrderStatus orderStatus, OrderType orderType,
                      double orderPrice, int orderQuant) throws SQLException {
-        super(userID, assetID, orderStatus, orderType, orderPrice, orderQuant);
 
-        // Create order ID
-        // Get highest ID value existing in database
-        int maxID;
-        Statement statement = connection.createStatement();
-        String sqlMaxID
-                = "SELECT max(substring(orderID, 3, 8)) as maxID FROM orders WHERE orderType = 'SELL';";
-        ResultSet getMaxID = statement.executeQuery(sqlMaxID);
+        super(userID, assetID, OrderType.SELL, orderPrice, orderQuant);
 
-        // Extract string result and parse as integer
-        maxID = Integer.parseInt(getMaxID.getString("maxID"));
-
-        // Add 1 to current max ID to get new ID number for this asset and append to asset type code
-        String newID = "SL" + String.format("%08d", maxID + 1);
-
-        // Assign SELL orderID to order
-        this.orderID = newID;
+//        // Create order ID
+//        // Get highest ID value existing in database
+//        int maxID;
+//        Statement statement = connection.createStatement();
+//        String sqlMaxID
+//                = "SELECT max(substring(orderID, 3, 8)) as maxID FROM orders WHERE orderType = 'SELL';";
+//        ResultSet getMaxID = statement.executeQuery(sqlMaxID);
+//
+//        // Extract string result and parse as integer
+//        maxID = Integer.parseInt(getMaxID.getString("maxID"));
+//
+//        // Add 1 to current max ID to get new ID number for this asset and append to asset type code
+//        String newID = "SL" + String.format("%08d", maxID + 1);
+//
+//        // Assign SELL orderID to order
+//        this.orderID = newID;
     }
 }

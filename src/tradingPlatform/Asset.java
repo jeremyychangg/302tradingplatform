@@ -58,6 +58,12 @@ public class Asset {
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
 
+
+//        ADD IF NO RESULT IN QUERY FOR BOTH CONSTRUCTORS
+
+
+
+
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);
         this.assetID = newID;

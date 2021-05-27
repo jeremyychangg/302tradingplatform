@@ -4,7 +4,6 @@ USE tradingPlatform;
 
 CREATE TABLE users (
     userID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
-    userName        VARCHAR(144)                        NOT NULL    ,
     firstName       VARCHAR(144)                        NOT NULL    ,
     lastName        VARCHAR(144)                        NOT NULL    ,
     unitID          CHAR(10)                                        ,
