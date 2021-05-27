@@ -1,11 +1,16 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.exceptions.UserException;
+import tradingPlatform.user.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Screen implements ActionListener {
+    User currentUser;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
@@ -37,6 +42,8 @@ public class Screen implements ActionListener {
 
 
     public Screen(){
+//        this.currentUser = user;
+
         // Setting up the frame and panels
         frame = new JFrame();
         panel = new JPanel();
@@ -89,7 +96,7 @@ public class Screen implements ActionListener {
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
         frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda - Dashboard");
+        frame.setTitle("Venda");
         frame.pack();
         frame.setVisible(true);
 
@@ -104,7 +111,9 @@ public class Screen implements ActionListener {
 
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException, UserException {
+//        User user = new User("123", 10, "password", UserType.Employee);
+//        new Screen(user);
         new Screen();
     }
 
@@ -124,7 +133,7 @@ public class Screen implements ActionListener {
             System.out.println("Portfolio GUI");
             frame.remove(panel);
             panel.removeAll();
-            frame.add(new portfolioGUI(), BorderLayout.CENTER);
+            frame.add(new portfolioGUI(currentUser), BorderLayout.CENTER);
             frame.setTitle("Portfolio");
             frame.pack();
             panel.setVisible(true);

@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DashboardGUI implements ActionListener {
+public class dashboardGUI implements ActionListener {
     int count = 0;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
 
-    public DashboardGUI(){
+    public dashboardGUI(){
         frame = new JFrame();
         panel = new JPanel();
 
@@ -31,9 +31,9 @@ public class DashboardGUI implements ActionListener {
         frame.setVisible(true);
 
     }
-//    public static void main(String[] args){
+    public static void main(String[] args){
 //        new dashboardGUI();
-//    }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e){

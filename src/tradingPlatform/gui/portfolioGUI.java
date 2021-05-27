@@ -1,11 +1,16 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.user.User;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class portfolioGUI extends JPanel {
+    private final User currentUser;
 
-    public portfolioGUI() {
+    public portfolioGUI(User user) {
+        this.currentUser = user;
+
         // Font styling
         Font font1 = new Font("Avenir", Font.BOLD, 40);
         Font heading = new Font("Avenir", Font.PLAIN, 50);
@@ -24,6 +29,7 @@ public class portfolioGUI extends JPanel {
         panel.add(welcome, BorderLayout.NORTH);
 
         JLabel name = new JLabel("Peter");
+//        JLabel name = new JLabel(currentUser.getFirstName());
         name.setFont(font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         panel.add(name, BorderLayout.WEST);
@@ -41,7 +47,8 @@ public class portfolioGUI extends JPanel {
         // Setting up the container for the summary
         JPanel summaryInfo = new JPanel();
 
-        JLabel creditsUser = new JLabel("87542");
+        // input getCredits thing here
+        JLabel creditsUser = new JLabel(Float.toString(500));
         creditsUser.setFont(heading);
         JLabel oustandingUser = new JLabel("5");
         oustandingUser.setFont(heading);

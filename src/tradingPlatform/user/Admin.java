@@ -25,10 +25,6 @@ public class Admin extends User{
         }
     }
 
-    public void addAsset(){
-        //new asset
-    }
-
     public void addUnit(){
         //new unit
     }

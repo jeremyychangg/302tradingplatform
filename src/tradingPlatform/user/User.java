@@ -30,18 +30,20 @@ import static tradingPlatform.Main.connection;
  * @author Natalie Smith
  */
 public class User {
-
-    private int userID;
-    private String username;
+    private String userID;
     private String firstName;
     private String lastName;
     private int unitID;
     private String password;
     private UserType accountType = UserType.Employee;
 
+    public String getUserID(){
+        return this.userID;
+    }
 
-    public User(String username, String firstName, String lastName, int unitID, String password, UserType accountType) throws UserException, SQLException {
-        this.username = username;
+
+    public User(String userID, String firstName, String lastName, int unitID, String password, UserType accountType) throws UserException, SQLException {
+        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.unitID = unitID;
@@ -49,8 +51,8 @@ public class User {
         this.accountType = accountType;
 
         // Throw exceptions if requirements not met
-        if(username == null || username == "") {
-            throw new UserException("Username cannot be null or empty.");
+        if(userID == null || userID == "") {
+            throw new UserException("UserID cannot be null or empty.");
         }
         if(unitID == 0) {
             throw new UserException("Username cannot be null or empty.");
@@ -62,7 +64,7 @@ public class User {
             throw new UserException("Username cannot be null or empty.");
         }
 
-        int userID;
+        String userID;
         Statement statement = connection.createStatement();
 
 //        // Get highest ID value existing in database
@@ -91,47 +93,15 @@ public class User {
 //        newAsset.execute();
     }
 
-    public User(String username, int unitID, String password, UserType accountType) throws UserException, SQLException {
-        this.username = username;
-        this.unitID = unitID;
-        this.password = password;
-        this.accountType = accountType;
-
-        // Throw exceptions if requirements not met
-        if(username == null || username == "") {
-            throw new UserException("Username cannot be null or empty.");
-        }
-        // Throw exception if unit ID doesn't exist
-        Statement statement = connection.createStatement();
-        String unitQuery = "SELECT unitID FROM units WHERE unitID = '" + userID + "';";
-        ResultSet unitIDQuery = statement.executeQuery(unitQuery);
-        int unitIDtest = Integer.parseInt(unitIDQuery.getString("unitID"));
-        if(unitIDtest != 0) {
-            throw new UserException("Unit ID doesn't exist.");
-        }
-        // If password not filled
-        if(password == null || password == "") {
-            throw new UserException("Password field cannot be empty.");
-        }
-        // Throw exception is account type invalid
-        for (UserType u : UserType.values()){
-            if(!u.name().equals(accountType)){
-                throw new UserException("Account Type doesn't exist.");
-            }
-        }
-    }
-
-
 
     /**
      * This function is used to get the account type of the user
      * @return
      */
     public UserType getAccountType(){
+
         return this.accountType;
     }
-
-
 
     /**
      * The getCredits function is used to retrieve the credits of the user
@@ -144,23 +114,41 @@ public class User {
         String queryCredits = "SELECT units.creditBalance " +
                 "FROM units LEFT JOIN users " +
                 "ON units.unitID = users.unitID " +
-                "WHERE user.userID = '" + this.userID + "';";
+                "WHERE user.userID = '" + getUserID() + "';";
         ResultSet creditsBalance = statement.executeQuery(queryCredits);
         credits = Float.parseFloat(creditsBalance.getString("creditBalance"));
-        // Extract the integer value of
+        // Extract the integer value of credits
         return credits;
     }
-
-
 
     /**
      * The getName function returns the first name of the user
      * @return
      */
-    public String getName(){
+    public final String getFirstName(String userID) throws SQLException {
+        String firstName;
+        Statement statement = connection.createStatement();
+        String queryFirst = "SELECT firstName " +
+                "FROM users" +
+                "WHERE userID = '" + userID + "';";
+        ResultSet firstNameQuery = statement.executeQuery(queryFirst);
+        firstName = firstNameQuery.getString("firstName");
+        this.firstName = firstName;
         return this.firstName;
     }
 
+
+    public final String getLastName(String userID) throws SQLException {
+        String lastNameResult;
+        Statement statement = connection.createStatement();
+        String queryLast = "SELECT lastName " +
+                "FROM users" +
+                "WHERE userID = '" + userID + "';";
+        ResultSet lastNameQuery = statement.executeQuery(queryLast);
+        lastNameResult = lastNameQuery.getString("lastName");
+        this.lastName = lastName;
+        return this.lastName;
+    }
 
 
     /**
@@ -168,12 +156,12 @@ public class User {
      * @param findUserID
      * @return
      */
-    public boolean usernameExists(int findUserID) throws SQLException {
-        int exists;
+    public boolean usernameExists(String findUserID) throws SQLException {
+        String exists;
         Statement statement = connection.createStatement();
         String existUserQuery = "SELECT userID FROM users WHERE userID = " + findUserID + ";";
         ResultSet userIDFind = statement.executeQuery(existUserQuery);
-        exists = Integer.parseInt(userIDFind.getString("userID"));
+        exists = userIDFind.getString("userID");
         if (exists == findUserID){
             return true;
         }
@@ -194,7 +182,7 @@ public class User {
         PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
         updatePassword.clearParameters();
         updatePassword.setString(1, passMod);
-        updatePassword.setInt(2, userID);
+        updatePassword.setString(2, userID);
         updatePassword.executeUpdate();
     }
 
@@ -214,7 +202,6 @@ public class User {
             this.accountType = inputType;
         }
     }
-
 
 
     /**

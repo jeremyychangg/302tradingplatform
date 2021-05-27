@@ -23,8 +23,11 @@ package tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tradingPlatform.exceptions.UserException;
 import tradingPlatform.user.User;
 import tradingPlatform.user.UserType;
+
+import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,8 +38,7 @@ public class testUsers {
     User user2;
 
     @BeforeEach @Test
-    public void setUpUsers(){
-        user = new User();
+    public void setUpUsers() throws UserException, SQLException {
         user1 = new User("neo123", "Patrick", "Star", 4, "password123", UserType.Admin);
         user2 = new User("mik434", "Michael", "Jackson", 2, "password456", UserType.Employee);
     }
@@ -44,14 +46,14 @@ public class testUsers {
     // Test 0 : Base case ID
     @Test
     public void baseUserID(){
-        assertEquals(0, user._username);
+        assertEquals(0, user.getUserID());
     }
 
     // Test 1: Adding same user to database.
     @Test
     public void duplicateUser() throws UserException {
         user = new User("neo123", "Patrick", "Star", 4, "password123", UserType.Admin);
-        assertEquals("neo123", user._username, "Adding same user failed");
+        assertEquals("neo123", user.getUserID(), "Adding same user failed");
     }
 
     //double check editing this
@@ -77,14 +79,14 @@ public class testUsers {
     // Test 5: Test that user belongs to valid unit ID
     @Test
     public void userValidID() {
-        assertEquals("mik434", user2._username);
+        assertEquals("mik434", user2.getUserID());
     }
 
     // Test 6: Test that the firstname and lastname match the user ID
     @Test
     public void userNameMatch() {
-        assertEquals("Michael", user2._firstName);
-        assertEquals("Jackson", user2._lastName);
+        assertEquals("Michael", user2.getFirstName());
+        assertEquals("Jackson", user2.getLastName());
     }
 
     //double check testing this
@@ -103,8 +105,8 @@ public class testUsers {
     // Test 9: Test user always has name
     @Test
     public void userSameName(){
-        assertEquals("Harry", user2._firstName);
-        assertEquals("Jackson", user2._firstName);
+        assertEquals("Harry", user2.getFirstName());
+        assertEquals("Jackson", user2.getLastName());
     }
 
     //double check testing this
