@@ -1,6 +1,5 @@
 package tradingPlatform.gui;
 
-import tradingPlatform.exceptions.UserException;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -42,8 +41,6 @@ public class Screen implements ActionListener {
 
 
     public Screen(){
-//        this.currentUser = user;
-
         // Setting up the frame and panels
         frame = new JFrame();
         panel = new JPanel();
@@ -109,13 +106,13 @@ public class Screen implements ActionListener {
         System.out.println(panel.getWidth());
     }
 
-
-
-    public static void main(String[] args) throws SQLException, UserException {
-//        User user = new User("123", 10, "password", UserType.Employee);
-//        new Screen(user);
-        new Screen();
-    }
+//
+//
+//    public static void main(String[] args) throws SQLException, UserException {
+////        User user = new User("123", 10, "password", UserType.Employee);
+////        new Screen(user);
+//
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e){
@@ -133,7 +130,11 @@ public class Screen implements ActionListener {
             System.out.println("Portfolio GUI");
             frame.remove(panel);
             panel.removeAll();
-            frame.add(new portfolioGUI(currentUser), BorderLayout.CENTER);
+            try {
+                frame.add(new portfolioGUI(), BorderLayout.CENTER);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.setTitle("Portfolio");
             frame.pack();
             panel.setVisible(true);

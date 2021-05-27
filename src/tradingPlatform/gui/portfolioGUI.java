@@ -4,13 +4,11 @@ import tradingPlatform.user.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class portfolioGUI extends JPanel {
-    private final User currentUser;
 
-    public portfolioGUI(User user) {
-        this.currentUser = user;
-
+    public portfolioGUI() throws SQLException {
         // Font styling
         Font font1 = new Font("Avenir", Font.BOLD, 40);
         Font heading = new Font("Avenir", Font.PLAIN, 50);
@@ -28,8 +26,9 @@ public class portfolioGUI extends JPanel {
         welcome.setFont(font1);
         panel.add(welcome, BorderLayout.NORTH);
 
-        JLabel name = new JLabel("Peter");
-//        JLabel name = new JLabel(currentUser.getFirstName());
+//        JLabel name = new JLabel("Peter");
+//        JLabel name = new JLabel(getFirstName(getCurrentUser()));
+        JLabel name = new JLabel(User.getFirstName());
         name.setFont(font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         panel.add(name, BorderLayout.WEST);
@@ -48,7 +47,8 @@ public class portfolioGUI extends JPanel {
         JPanel summaryInfo = new JPanel();
 
         // input getCredits thing here
-        JLabel creditsUser = new JLabel(Float.toString(500));
+//        JLabel creditsUser = new JLabel(Float.toString(500));
+        JLabel creditsUser = new JLabel(Float.toString(User.getCredits()));
         creditsUser.setFont(heading);
         JLabel oustandingUser = new JLabel("5");
         oustandingUser.setFont(heading);

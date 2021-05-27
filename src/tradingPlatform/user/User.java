@@ -16,6 +16,7 @@
 // 	**																						**
 // 	******************************************************************************************
 package tradingPlatform.user;
+
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.Main.getCurrentUser;
 
 /**
  * This class is used to
@@ -64,7 +66,6 @@ public class User {
             throw new UserException("Username cannot be null or empty.");
         }
 
-        String userID;
         Statement statement = connection.createStatement();
 
 //        // Get highest ID value existing in database
@@ -98,25 +99,32 @@ public class User {
      * This function is used to get the account type of the user
      * @return
      */
-    public UserType getAccountType(){
-
-        return this.accountType;
+    public UserType getAccountType(String inputType){
+        UserType outputType;
+        for (UserType u : UserType.values()){
+            if(u.name().equals(inputType)){
+                return u;
+            }
+        }
+        return null;
     }
 
     /**
      * The getCredits function is used to retrieve the credits of the user
      * @return
      */
-    public float getCredits() throws SQLException {
+    public static float getCredits() throws SQLException {
         // search the Units database and return the credit of the given unit
-        float credits;
+        float credits = 0.0F;
         Statement statement = connection.createStatement();
         String queryCredits = "SELECT units.creditBalance " +
                 "FROM units LEFT JOIN users " +
                 "ON units.unitID = users.unitID " +
-                "WHERE user.userID = '" + getUserID() + "';";
+                "WHERE users.userID = '" + getCurrentUser() + "';";
         ResultSet creditsBalance = statement.executeQuery(queryCredits);
-        credits = Float.parseFloat(creditsBalance.getString("creditBalance"));
+        while (creditsBalance.next()){
+            credits = Float.parseFloat(creditsBalance.getString("creditBalance"));
+        }
         // Extract the integer value of credits
         return credits;
     }
@@ -125,16 +133,15 @@ public class User {
      * The getName function returns the first name of the user
      * @return
      */
-    public final String getFirstName(String userID) throws SQLException {
-        String firstName;
+    public static String getFirstName() throws SQLException {
+        String firstName = "";
         Statement statement = connection.createStatement();
-        String queryFirst = "SELECT firstName " +
-                "FROM users" +
-                "WHERE userID = '" + userID + "';";
-        ResultSet firstNameQuery = statement.executeQuery(queryFirst);
-        firstName = firstNameQuery.getString("firstName");
-        this.firstName = firstName;
-        return this.firstName;
+        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "'");
+        while(rs.next()){
+            firstName = rs.getString("firstName");
+        }
+        System.out.println(firstName);
+        return firstName;
     }
 
 
@@ -142,14 +149,22 @@ public class User {
         String lastNameResult;
         Statement statement = connection.createStatement();
         String queryLast = "SELECT lastName " +
-                "FROM users" +
-                "WHERE userID = '" + userID + "';";
+                "FROM users WHERE userID = '" + userID + "'";
         ResultSet lastNameQuery = statement.executeQuery(queryLast);
         lastNameResult = lastNameQuery.getString("lastName");
         this.lastName = lastName;
         return this.lastName;
     }
 
+    public static void hi() throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "';");
+        String name = "";
+        while(rs.next()){
+            name = rs.getString("firstName");
+        }
+        System.out.println(name);
+    }
 
     /**
      * The method is used to determine if the user inputted actually exists within the database
@@ -182,7 +197,7 @@ public class User {
         PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
         updatePassword.clearParameters();
         updatePassword.setString(1, passMod);
-        updatePassword.setString(2, userID);
+        updatePassword.setString(2, this.userID);
         updatePassword.executeUpdate();
     }
 
@@ -202,6 +217,34 @@ public class User {
             this.accountType = inputType;
         }
     }
+
+
+//    public void getUserByID(String userID) throws SQLException {
+//        String userDetails;
+//        Statement statement = connection.createStatement();
+//        String queryUser = "SELECT * FROM users WHERE userID = '" + userID + "';";
+//        ResultSet userQuery = statement.executeQuery(queryUser);
+//        String firstName = null;
+//        String lastName = null;
+//        int unitID = 0;
+//        String password = null;
+//        UserType accountType = null;
+//
+//        while(userQuery.next()){
+//            firstName = userQuery.getString("firstName");
+//            lastName = userQuery.getString("lastName");
+//            unitID = Integer.parseInt(userQuery.getString("unitID"));
+//            password = userQuery.getString("password");
+//            String accountString = userQuery.getString("accountType");
+//            accountType = getAccountType(accountString);
+//        }
+////
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.unitID = unitID;
+//        this.password = password;
+//        this.accountType = accountType;
+//    }
 
 
     /**
