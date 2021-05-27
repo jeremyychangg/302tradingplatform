@@ -96,7 +96,7 @@ public class Screen implements ActionListener {
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
         frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda - Dashboard");
+        frame.setTitle("Venda");
         frame.pack();
         frame.setVisible(true);
 
