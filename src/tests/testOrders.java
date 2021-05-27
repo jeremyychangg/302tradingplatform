@@ -12,10 +12,10 @@ public class testOrders {
      Order order2;
 
 
-     @BeforeEach @Test
-     public void ConstructOrder() {
-          order1 = new Order(1,1,1);
-     }
+//     @BeforeEach @Test
+//     public void ConstructOrder() {
+//          order1 = new Order(1,1,1);
+//     }
 //
 //     //	Test 1: Base case ID
 //     @Test
