@@ -3,7 +3,7 @@ package tests;
 public class testSearch  {
     // Check to see that they go to the right pages:
 
-    // If the search query is "Dashboard" or "Dashboard page" or "Dash board", return the dashboard page
+    // If the search query is "Dashboard", return the dashboard page
     // Else if the search query is "Portfolio", return the portfolio page
     // Else if the search query is "Watchlist" or "Watch List", return the watch list page
     // Else if the search query is "Order" or "Orders", return the order page
