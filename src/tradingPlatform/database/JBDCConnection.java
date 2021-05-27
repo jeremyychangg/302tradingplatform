@@ -5,6 +5,7 @@ import tradingPlatform.Main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class JBDCConnection {
     public JBDCConnection() {
@@ -17,7 +18,14 @@ public class JBDCConnection {
 
             // get a connection
             Main.connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException sqle) {
+            if (Main.connection == null){
+                System.out.println("No connection!");
+            } else {
+                System.out.println("Connection!");
+            }
+
+
+        } catch (Exception sqle) {
             System.err.println(sqle);
         }
     }
