@@ -22,21 +22,21 @@ public class dashboardGUI extends JPanel implements ActionListener {
         // setting up black JPanel
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
+        panel.setPreferredSize(new Dimension(1380, 1050));
         panel.setLayout(new BorderLayout());
-        panel.setBackground(Color.green);
+        panel.add(Box.createHorizontalGlue());
 
         left = new JPanel();
-        left.setBorder(BorderFactory.createEmptyBorder(100,0,0,600));
+        left.setBorder(BorderFactory.createEmptyBorder(80,0,0,600));
+        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
         summary = new JPanel();
         summary.setBackground(Color.white);
-        summary.setBorder(BorderFactory.createEmptyBorder(0, 200, 1040, 200));
+        summary.setPreferredSize(new Dimension(500, 1200));
 
         JLabel welcome = new JLabel("Hi,");
         welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-//        welcome.setSize(200,200);
         welcome.setFont(font1);
-        panel.add(welcome, BorderLayout.NORTH);
 
         JLabel name = new JLabel(User.getFirstName());
         name.setFont(font1);

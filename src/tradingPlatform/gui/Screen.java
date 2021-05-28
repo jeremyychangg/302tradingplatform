@@ -49,7 +49,8 @@ public class Screen implements ActionListener {
 
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
+//        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
+        panel.setPreferredSize(new Dimension(1380, 1000));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
@@ -102,8 +103,10 @@ public class Screen implements ActionListener {
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
         logoutButton.addActionListener(this);
-//        System.out.println(frame.getWidth());
-//        System.out.println(panel.getWidth());
+        System.out.println("Sidebar " + sidebarPanel.getHeight());
+        System.out.println(frame.getWidth());
+        System.out.println(panel.getWidth());
+        System.out.println(frame.getHeight());
     }
 
     @Override
