@@ -34,7 +34,7 @@ public class dashboardGUI extends JPanel implements ActionListener {
         summary.setBackground(Color.white);
         summary.setLayout(new BoxLayout(summary, BoxLayout.Y_AXIS));
         summary.setPreferredSize(new Dimension(500, 1200));
-        Screen.creditBalancePanel(summary);
+        employeeScreen.creditBalancePanel(summary);
         summary.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         Screen.welcomeMessage(left);

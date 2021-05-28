@@ -43,7 +43,6 @@ public class User {
         return this.userID;
     }
 
-
     public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws UserException, SQLException {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -159,6 +158,7 @@ public class User {
         return null;
     }
 
+
     /**
      * The getCredits function is used to retrieve the credits of the user
      * @return
@@ -178,6 +178,7 @@ public class User {
         // Extract the integer value of credits
         return credits;
     }
+
 
     /**
      * The getName function returns the first name of the user
@@ -255,6 +256,19 @@ public class User {
         else{
             return false;
         }
+    }
+
+
+
+    public String GetUnitID() throws SQLException {
+        String exists = null;
+        Statement statement = connection.createStatement();
+        String existUserQuery = "SELECT unitID FROM users WHERE userID = " + this.userID + ";";
+        ResultSet userIDFind = statement.executeQuery(existUserQuery);
+        if (userIDFind.next() && userIDFind.getString("unitID") != null) {
+            exists = userIDFind.getString("unitID");
+        }
+        return exists;
     }
 
 

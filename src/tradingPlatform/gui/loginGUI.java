@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
 import static tradingPlatform.Main.setCurrentUser;
+import static tradingPlatform.user.User.getAccountType;
 
 public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
@@ -87,27 +88,33 @@ public class loginGUI implements ActionListener {
 
     }
 
-    public static void main(String[] args) {
-        loginGUI display = new loginGUI();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String usernameInput = usernameField.getText();
         System.out.println("The username inputted " + usernameInput);
         char[] passwordInput = passwordField.getPassword();
-//        for (char x : passwordInput) {
-//            System.out.print(x);
-//        }
         try {
             if (passwordCorrect(usernameInput, passwordInput)){
-                System.out.println("Works");
                 frame.dispose();
                 setCurrentUser(usernameInput);
-                new Screen();
+                switch(getAccountType()){
+                    case Employee:
+                        new employeeScreen();
+                        break;
+                    case Lead:
+                        new leadScreen();
+                        break;
+                    case Admin:
+                        new adminScreen();
+                        break;
+                    default:
+                        throw new Exception("Not a valid user");
+                }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -126,8 +133,6 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-//        System.out.println(usernameInput + "- and -" + getString(passwordInput));
-//        System.out.println(userReturn + "- and -" + passwordReturn);
 
         if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))){
             return true;
@@ -146,16 +151,3 @@ public class loginGUI implements ActionListener {
     }
 
 }
-    //    /**
-//     * In the circumstance where the user actually focuses on the input field. Delete the default text.
-//     * @param e
-//     */
-//    @Override
-//    public void focusGained(FocusEvent e){
-//        passwordField.setText("");
-//    }
-//
-//    @Override
-//    public void focusLost(FocusEvent e){
-//        passwordField.setText("Password");
-//    }

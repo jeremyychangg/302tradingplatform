@@ -31,7 +31,7 @@ public class portfolioGUI extends JPanel {
 
         // Setting up the container for the summary
         JPanel summaryInfo = new JPanel();
-        Screen.creditBalancePanel(summaryInfo);
+        employeeScreen.creditBalancePanel(summaryInfo);
         summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, -20, 0));
         panel.add(summaryInfo);
