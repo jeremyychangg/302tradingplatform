@@ -44,12 +44,41 @@ public class employeeScreen extends Screen {
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
 
-        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
         panel.setPreferredSize(new Dimension(1380, 1000));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+
         panel = new dashboardGUI();
+
+        employeeSidebar();
+
+        // Background Colour
+        Color baseBlue = new Color(0, 140, 237);
+        sidebarPanel.setBackground(baseBlue);
+        logoutPane.setBackground(baseBlue);
+
+        // Adding the panes to the final sidebar frame
+        frame.add(panel, BorderLayout.EAST);
+        frame.add(sidebarPanel, BorderLayout.WEST);
+        frame.setTitle("Venda");
+        frame.pack();
+        frame.setVisible(true);
+
+        dashboardButton.addActionListener(this);
+        portfolioButton.addActionListener(this);
+        watchlistButton.addActionListener(this);
+        ordersButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+        System.out.println("Sidebar " + sidebarPanel.getHeight());
+        System.out.println(frame.getWidth());
+        System.out.println(sidebarPanel.getWidth());
+        System.out.println(frame.getHeight());
+    }
+
+
+    private void employeeSidebar(){
+        sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
@@ -84,30 +113,7 @@ public class employeeScreen extends Screen {
         // Adding logout pane to sidebar
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
-
-        // Background Colour
-        Color baseBlue = new Color(0, 140, 237);
-        sidebarPanel.setBackground(baseBlue);
-        logoutPane.setBackground(baseBlue);
-
-        // Adding the panes to the final sidebar frame
-        frame.add(panel, BorderLayout.EAST);
-        frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda");
-        frame.pack();
-        frame.setVisible(true);
-
-        dashboardButton.addActionListener(this);
-        portfolioButton.addActionListener(this);
-        watchlistButton.addActionListener(this);
-        ordersButton.addActionListener(this);
-        logoutButton.addActionListener(this);
-        System.out.println("Sidebar " + sidebarPanel.getHeight());
-        System.out.println(frame.getWidth());
-        System.out.println(sidebarPanel.getWidth());
-        System.out.println(frame.getHeight());
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

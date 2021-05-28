@@ -97,6 +97,7 @@ public class loginGUI implements ActionListener {
             if (passwordCorrect(usernameInput, passwordInput)){
                 frame.dispose();
                 setCurrentUser(usernameInput);
+
                 switch(getAccountType()){
                     case Employee:
                         new employeeScreen();

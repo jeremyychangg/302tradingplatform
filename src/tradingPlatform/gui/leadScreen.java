@@ -18,7 +18,6 @@ public class leadScreen extends Screen {
     private JButton logoutButton = new JButton();
     private JButton requestButton = new JButton();
 
-
     // Images when unselected
     private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
     private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");

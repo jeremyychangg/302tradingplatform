@@ -45,11 +45,6 @@ public class dashboardGUI extends JPanel implements ActionListener {
         add(panel);
     }
 
-    public static void main(String[] args) throws SQLException {
-
-        new dashboardGUI();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
     }
