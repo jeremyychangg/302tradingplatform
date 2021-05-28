@@ -17,7 +17,7 @@ public class loginGUI implements ActionListener {
 
     int count = 0;
     private JLabel logo = new JLabel();
-//    private JLabel label;
+    //    private JLabel label;
     private JFrame frame;
     private JPanel panel;
     private JTextField usernameField;
@@ -32,7 +32,7 @@ public class loginGUI implements ActionListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JPanel side = new JPanel();
-        side.setBorder(BorderFactory.createEmptyBorder(0,300, 0,0));
+        side.setBorder(BorderFactory.createEmptyBorder(0, 300, 0, 0));
         side.setBackground(new Color(0, 140, 237));
 
         frame.add(side, BorderLayout.WEST);
@@ -40,7 +40,7 @@ public class loginGUI implements ActionListener {
         button = new JButton("LOGIN");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
-        button.setMargin(new Insets(5,20, 5, 20));
+        button.setMargin(new Insets(5, 20, 5, 20));
 //        button.setPadding(new Insets(5,20, 5, 20));
         button.setFont(btnFont);
         button.setBackground(new Color(0, 140, 237));
@@ -48,7 +48,7 @@ public class loginGUI implements ActionListener {
         // Logo
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
-        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
+        Image mainScale = mainImg.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
         ImageIcon newMainIcon = new ImageIcon(mainScale);
         logo.setIcon(newMainIcon);
         logo.setBorder(BorderFactory.createEmptyBorder(150, 0, 50, 0));
@@ -65,9 +65,9 @@ public class loginGUI implements ActionListener {
 
 
         JPanel invisible = new JPanel();
-        invisible.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
+        invisible.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         JPanel invisible2 = new JPanel();
-        invisible2.setBorder(BorderFactory.createEmptyBorder(20,0,5,0));
+        invisible2.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
 
 //        passwordField.setActionCommand(Login);
 
@@ -94,11 +94,11 @@ public class loginGUI implements ActionListener {
         System.out.println("The username inputted " + usernameInput);
         char[] passwordInput = passwordField.getPassword();
         try {
-            if (passwordCorrect(usernameInput, passwordInput)){
+            if (passwordCorrect(usernameInput, passwordInput)) {
                 frame.dispose();
                 setCurrentUser(usernameInput);
 
-                switch(getAccountType()){
+                switch (getAccountType()) {
                     case Employee:
                         new employeeScreen();
                         break;
@@ -130,25 +130,46 @@ public class loginGUI implements ActionListener {
 
         String userReturn = null;
         String passwordReturn = null;
-        while(loginResults.next()){
+        while (loginResults.next()) {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
 
-        if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))){
+        if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public String getString(char[] passwordInput){
+    public String getString(char[] passwordInput) {
         StringBuilder passwordString = new StringBuilder();
-        for (Character ch: passwordInput) {
+        for (Character ch : passwordInput) {
             passwordString.append(ch);
         }
         return passwordString.toString();
     }
-
 }
+
+//
+//    //GUI
+//    public boolean passwordCorrect(){
+//
+//    }
+
+
+//    /**
+//     * In the circumstance where the user actually focuses on the input field. Delete the default text.
+//     * @param e
+//     */
+//    @Override
+//    public void focusGained(FocusEvent e){
+//        passwordField.setText("");
+//    }
+//
+//    @Override
+//    public void focusLost(FocusEvent e){
+//        passwordField.setText("Password");
+//    }
+
+
