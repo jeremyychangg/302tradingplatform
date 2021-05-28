@@ -26,8 +26,6 @@ public class portfolioGUI extends JPanel {
         welcome.setFont(font1);
         panel.add(welcome, BorderLayout.NORTH);
 
-//        JLabel name = new JLabel("Peter");
-//        JLabel name = new JLabel(getFirstName(getCurrentUser()));
         JLabel name = new JLabel(User.getFirstName());
         name.setFont(font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));

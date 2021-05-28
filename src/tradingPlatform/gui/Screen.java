@@ -102,28 +102,40 @@ public class Screen implements ActionListener {
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
         logoutButton.addActionListener(this);
-        System.out.println(frame.getWidth());
-        System.out.println(panel.getWidth());
+//        System.out.println(frame.getWidth());
+//        System.out.println(panel.getWidth());
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == dashboardButton){
             System.out.println("Dashboard GUI");
+            frame.remove(panel);
+            panel.removeAll();
+            try {
+                panel = new dashboardGUI();
+                frame.add(panel, BorderLayout.CENTER);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            frame.setTitle("Dashboard");
+            frame.pack();
+            panel.setVisible(true);
 
             // Changing the image for the button
-            changeButton(dashboardIconS, dashboardButton);
-            changeButton(ordersIcon, ordersButton);
-            changeButton(portfolioIcon, portfolioButton);
-            changeButton(watchlistIcon, watchlistButton);
-            changeButton(logoutIcon, logoutButton);
+//            changeButton(dashboardIconS, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == portfolioButton){
             System.out.println("Portfolio GUI");
             frame.remove(panel);
             panel.removeAll();
             try {
-                frame.add(new portfolioGUI(), BorderLayout.CENTER);
+                panel = new portfolioGUI();
+                frame.add(panel, BorderLayout.CENTER);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -133,41 +145,46 @@ public class Screen implements ActionListener {
 
             System.out.println(frame.getWidth());
             // Changing the image for the button
-            changeButton(portfolioIconS, portfolioButton);
-            changeButton(dashboardIcon, dashboardButton);
-            changeButton(ordersIcon, ordersButton);
-            changeButton(watchlistIcon, watchlistButton);
-            changeButton(logoutIcon, logoutButton);
+//            changeButton(portfolioIconS, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == watchlistButton){
             System.out.println("Watchlist GUI");
+            frame.setTitle("Watchlist");
 
             // Changing the image for the button
-            changeButton(watchlistIconS, watchlistButton);
-            changeButton(portfolioIcon, portfolioButton);
-            changeButton(dashboardIcon, dashboardButton);
-            changeButton(ordersIcon, ordersButton);
-            changeButton(logoutIcon, logoutButton);
+//            changeButton(watchlistIconS, watchlistButton);
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == ordersButton){
             System.out.println("Orders GUI");
+            frame.setTitle("Orders");
 
             // Changing the image for the button
-            changeButton(ordersIconS, ordersButton);
-            changeButton(portfolioIcon, portfolioButton);
-            changeButton(dashboardIcon, dashboardButton);
-            changeButton(watchlistIcon, watchlistButton);
-            changeButton(logoutIcon, logoutButton);
+//            changeButton(ordersIconS, ordersButton);
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIcon, logoutButton);
         }
         else if (e.getSource() == logoutButton){
             System.out.println("Logout GUI");
+            // insert reset functions
+            new loginGUI();
+            frame.dispose();
 
             // Changing the image for the button
-            changeButton(logoutIconS, logoutButton);
-            changeButton(portfolioIcon, portfolioButton);
-            changeButton(dashboardIcon, dashboardButton);
-            changeButton(ordersIcon, ordersButton);
-            changeButton(watchlistIcon, watchlistButton);
+//            changeButton(logoutIconS, logoutButton);
+//            changeButton(portfolioIcon, portfolioButton);
+//            changeButton(dashboardIcon, dashboardButton);
+//            changeButton(ordersIcon, ordersButton);
+//            changeButton(watchlistIcon, watchlistButton);
         }
     }
 

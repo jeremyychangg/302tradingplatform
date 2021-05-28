@@ -101,6 +101,7 @@ public class loginGUI implements ActionListener {
         try {
             if (passwordCorrect(usernameInput, passwordInput)){
                 System.out.println("Works");
+                frame.dispose();
                 new Screen();
             }
         } catch (SQLException throwables) {
