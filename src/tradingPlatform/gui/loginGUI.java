@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static tradingPlatform.Main.connection;
 
 public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
@@ -87,21 +92,58 @@ public class loginGUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        count++;
-//        label.setText("Number of clicks: " + count);
         String usernameInput = usernameField.getText();
         System.out.println("The username inputted " + usernameInput);
         char[] passwordInput = passwordField.getPassword();
-        for (char x : passwordInput) {
-            System.out.print(x);
+//        for (char x : passwordInput) {
+//            System.out.print(x);
+//        }
+        try {
+            if (passwordCorrect(usernameInput, passwordInput)){
+                System.out.println("Works");
+                new Screen();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
-    //
-//    //GUI
-//    public boolean passwordCorrect(){
-//
-//    }
+    //GUI
+    public boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
+        Statement loginCheck = connection.createStatement();
+        System.out.println(passwordInput);
+
+        String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "' AND password = '" + String.valueOf(passwordInput) + "';";
+        System.out.println(loginInput);
+        ResultSet loginResults = loginCheck.executeQuery(loginInput);
+
+        String userReturn = null;
+        String passwordReturn = null;
+        while(loginResults.next()){
+            userReturn = loginResults.getString("userID");
+            passwordReturn = loginResults.getString("password");
+        }
+        System.out.println(usernameInput + "- and -" + getString(passwordInput));
+        System.out.println(userReturn + "- and -" + passwordReturn);
+
+//        System.out.println(usernameInput.getClass().getName() + " and " + passwordInput.getClass().getName());
+
+        if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))){
+            return true;
+        }
+        else {
+            System.out.println("false");
+            return false;
+        }
+    }
+
+    public String getString(char[] passwordInput){
+        StringBuilder passwordString = new StringBuilder();
+        for (Character ch: passwordInput) {
+            passwordString.append(ch);
+        }
+        return passwordString.toString();
+    }
 
 }
     //    /**

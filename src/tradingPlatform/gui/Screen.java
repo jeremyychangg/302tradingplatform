@@ -106,14 +106,6 @@ public class Screen implements ActionListener {
         System.out.println(panel.getWidth());
     }
 
-//
-//
-//    public static void main(String[] args) throws SQLException, UserException {
-////        User user = new User("123", 10, "password", UserType.Employee);
-////        new Screen(user);
-//
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == dashboardButton){
@@ -178,6 +170,28 @@ public class Screen implements ActionListener {
             changeButton(watchlistIcon, watchlistButton);
         }
     }
+
+//    public void screenAcc() throws SQLException {
+//        UserType accountType = User.getAccountType();
+//        switch(accountType){
+//            case Employee:
+//                employeeGUI();
+//                break;
+//            case Admin:
+//                adminGUI();
+//                break;
+//            case Lead:
+//                leadGUI();
+//                break;
+//            default:
+//                throw new UserException("Not valid UserType");
+//        }
+//    }
+//
+//
+//    public void employeeGUI(){
+//
+//    }
 
     private static void changeButton(ImageIcon change, JButton button){
         Image changed = change.getImage();

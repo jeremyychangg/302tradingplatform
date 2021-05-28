@@ -68,11 +68,13 @@ public class User {
             throw new UserException("Username cannot be null or empty.");
         }
 
+        // Based on the input for the account, set the userID initial accordingly
         String accType = userTypeToS(accountType);
         String intialID = "";
         switch(accountType){
             case Employee:
                 intialID = "S";
+                break;
             case Admin:
                 intialID = "A";
                 break;
@@ -83,7 +85,6 @@ public class User {
                 throw new UserException("Not valid UserType");
         }
 
-
         Statement statement = connection.createStatement();
 
 //        // Get the highest value of the ID
@@ -93,20 +94,18 @@ public class User {
                 + intialID + "';";
         ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
 
-        // Extract string result and parse as integer
         while (getMaxID.next()) {
             maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
         }
 
+        System.out.println("answer:");
         System.out.println(maxUserID);
 
-        System.out.println("yo");
-
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
+        System.out.println(newUserID);
         this.userID = newUserID;
 
         PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-//        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES ('A0001', 'Pete', 'La', 'ADM00001', 'Admin', 'fdsfsd');");
         newUser.clearParameters();
         newUser.setString(1, newUserID);
         newUser.setString(2, firstName);
@@ -119,24 +118,34 @@ public class User {
     }
 
 
-
-//    public String outputAccountString(UserType input){
-//
-//    }
-
     /**
      * This function is used to get the account type of the user
      * @return
+     * @author Natalie Smith
      */
-    public UserType getAccountType(String inputType){
+    public static UserType getAccountType() throws SQLException {
+        // Search the database for the type of account
+        String accountString = "";
+
+        // Retrieve the account type string through connection and result set
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT accountType FROM users WHERE userID = '"
+                + getCurrentUser() + "';");
+        while(rs.next()){
+            accountString = rs.getString("accountType");
+        }
+
+        // Return the relative UserType enum value if found, or else return null
         UserType outputType;
         for (UserType u : UserType.values()){
-            if(u.name().equals(inputType)){
+            if(u.name().equals(accountString)){
                 return u;
             }
         }
         return null;
     }
+
+
 
     public String userTypeToS(UserType accInput){
         String accTypeS;
@@ -196,15 +205,15 @@ public class User {
         return lastName;
     }
 
-    public static void hi() throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "';");
-        String name = "";
-        while(rs.next()){
-            name = rs.getString("firstName");
-        }
-        System.out.println(name);
-    }
+//    public static void hi() throws SQLException {
+//        Statement statement = connection.createStatement();
+//        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "';");
+//        String name = "";
+//        while(rs.next()){
+//            name = rs.getString("firstName");
+//        }
+//        System.out.println(name);
+//    }
 
     /**
      * The method is used to determine if the user inputted actually exists within the database
