@@ -5,7 +5,7 @@ import tradingPlatform.exceptions.UserException;
 import java.sql.SQLException;
 
 public class Employee extends User {
-    public Employee(String username, String firstName, String lastName, int unitID, String password, UserType accountType) throws SQLException, UserException {
-        super(username, firstName, lastName, unitID, password, UserType.Employee);
+    public Employee(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
+        super(firstName, lastName, unitID, password, UserType.Employee);
     }
 }

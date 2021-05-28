@@ -35,7 +35,7 @@ public class User {
     private String userID;
     private String firstName;
     private String lastName;
-    private int unitID;
+    private String unitID;
     private String password;
     private UserType accountType = UserType.Employee;
 
@@ -44,8 +44,7 @@ public class User {
     }
 
 
-    public User(String userID, String firstName, String lastName, int unitID, String password, UserType accountType) throws UserException, SQLException {
-        this.userID = userID;
+    public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws UserException, SQLException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.unitID = unitID;
@@ -53,10 +52,13 @@ public class User {
         this.accountType = accountType;
 
         // Throw exceptions if requirements not met
-        if(userID == null || userID == "") {
+        if(firstName == null || firstName == "") {
             throw new UserException("UserID cannot be null or empty.");
         }
-        if(unitID == 0) {
+        if(firstName == null || firstName == "") {
+            throw new UserException("UserID cannot be null or empty.");
+        }
+        if(unitID == null || unitID == "") {
             throw new UserException("Username cannot be null or empty.");
         }
         if(password == null || password == "") {
@@ -66,34 +68,61 @@ public class User {
             throw new UserException("Username cannot be null or empty.");
         }
 
+        String accType = userTypeToS(accountType);
+        String intialID = "";
+        switch(accountType){
+            case Employee:
+                intialID = "S";
+            case Admin:
+                intialID = "A";
+                break;
+            case Lead:
+                intialID = "L";
+                break;
+            default:
+                throw new UserException("Not valid UserType");
+        }
+
+
         Statement statement = connection.createStatement();
 
-//        // Get highest ID value existing in database
-//        int maxID;
-//        Statement statement = connection.createStatement();
-//        String sqlMaxID
-//                = "SELECT max(substring(assetID, 3, 8)) as maxID FROM assets WHERE substring(assetID, 3, 8) = '"
-//                + IDsubstring + "';";
-//        ResultSet getMaxID = statement.executeQuery(sqlMaxID);
-//
-//        // Extract string result and parse as integer
-//        maxID = Integer.parseInt(getMaxID.getString("maxID"));
-//
-//        // Add 1 to current max ID to get new ID number for this asset and append to asset type code
-//        String newID = IDsubstring + String.format("%08d", maxID + 1);
-//        this.assetID = newID;
-//
-//        PreparedStatement newAsset =
-//                connection.prepareStatement("INSERT INTO assets VALUES (?,?,?,?);");
-//        newAsset.clearParameters();
-//        newAsset.setString(1, newID);
-//        newAsset.setString(2, assetName);
-//        newAsset.setDouble(3, currentPrice);
-//        newAsset.setString(4, assetType);
-//
-//        newAsset.execute();
+//        // Get the highest value of the ID
+        int maxUserID = 0;
+        String sqlMaxUserID
+                = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
+                + intialID + "';";
+        ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
+
+        // Extract string result and parse as integer
+        while (getMaxID.next()) {
+            maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
+        }
+
+        System.out.println(maxUserID);
+
+        System.out.println("yo");
+
+        String newUserID = intialID + String.format("%04d", maxUserID + 1);
+        this.userID = newUserID;
+
+        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+//        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES ('A0001', 'Pete', 'La', 'ADM00001', 'Admin', 'fdsfsd');");
+        newUser.clearParameters();
+        newUser.setString(1, newUserID);
+        newUser.setString(2, firstName);
+        newUser.setString(3, lastName);
+        newUser.setString(4, unitID);
+        newUser.setString(5, accType);
+        newUser.setString(6, password);
+
+        newUser.execute();
     }
 
+
+
+//    public String outputAccountString(UserType input){
+//
+//    }
 
     /**
      * This function is used to get the account type of the user
@@ -104,6 +133,16 @@ public class User {
         for (UserType u : UserType.values()){
             if(u.name().equals(inputType)){
                 return u;
+            }
+        }
+        return null;
+    }
+
+    public String userTypeToS(UserType accInput){
+        String accTypeS;
+        for (UserType u : UserType.values()){
+            if(u.equals(accInput)){
+                return u.name();
             }
         }
         return null;
@@ -145,15 +184,16 @@ public class User {
     }
 
 
-    public final String getLastName(String userID) throws SQLException {
-        String lastNameResult;
+    public static String getLastName() throws SQLException {
+        String lastName = "";
         Statement statement = connection.createStatement();
         String queryLast = "SELECT lastName " +
-                "FROM users WHERE userID = '" + userID + "'";
+                "FROM users WHERE userID = '" + getCurrentUser() + "'";
         ResultSet lastNameQuery = statement.executeQuery(queryLast);
-        lastNameResult = lastNameQuery.getString("lastName");
-        this.lastName = lastName;
-        return this.lastName;
+        while(lastNameQuery.next()) {
+            lastName = lastNameQuery.getString("lastName");
+        }
+        return lastName;
     }
 
     public static void hi() throws SQLException {
@@ -217,6 +257,7 @@ public class User {
             this.accountType = inputType;
         }
     }
+
 
 
 //    public void getUserByID(String userID) throws SQLException {

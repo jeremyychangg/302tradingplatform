@@ -5,11 +5,11 @@ import tradingPlatform.exceptions.UserException;
 import java.sql.SQLException;
 
 public class Admin extends User{
-    private int unitID;
+    private String unitID;
     private UserType accountType;
 
-    public Admin(String username, String firstName, String lastName, int unitID, String password, UserType accountType) throws SQLException, UserException {
-        super(username, firstName, lastName, unitID, password, accountType);
+    public Admin(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
+        super(firstName, lastName, unitID, password, accountType);
         this.unitID = unitID;
         this.accountType = accountType;
     }

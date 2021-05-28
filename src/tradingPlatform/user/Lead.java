@@ -9,12 +9,12 @@ import java.sql.SQLException;
 import static tradingPlatform.Main.connection;
 
 public class Lead extends User {
-    private int unitID;
+    private String unitID;
     private String password;
     private UserType accountType;
 
-    public Lead(String username, String firstName, String lastName, int unitID, String password, UserType accountType) throws SQLException, UserException {
-        super(username, firstName, lastName, unitID, password, UserType.Lead);
+    public Lead(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
+        super(firstName, lastName, unitID, password, UserType.Lead);
         this.unitID = unitID;
     }
 
