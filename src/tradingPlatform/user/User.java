@@ -58,7 +58,7 @@ public class User {
         if(firstName == null || firstName == "") {
             throw new UserException("UserID cannot be null or empty.");
         }
-        if(unitID == null || unitID == "") {
+        if(unitID == null || unitID == "" || !unitExists(unitID)) {
             throw new UserException("Username cannot be null or empty.");
         }
         if(password == null || password == "") {
@@ -69,17 +69,20 @@ public class User {
         }
 
         // Based on the input for the account, set the userID initial accordingly
-        String accType = userTypeToS(accountType);
+        String accType = "";
         String intialID = "";
         switch(accountType){
             case Employee:
                 intialID = "S";
+                accType = userTypeToS(accountType);
                 break;
             case Admin:
                 intialID = "A";
+                accType = userTypeToS(accountType);
                 break;
             case Lead:
                 intialID = "L";
+                accType = userTypeToS(accountType);
                 break;
             default:
                 throw new UserException("Not valid UserType");
@@ -87,19 +90,15 @@ public class User {
 
         Statement statement = connection.createStatement();
 
-//        // Get the highest value of the ID
         int maxUserID = 0;
         String sqlMaxUserID
                 = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
                 + intialID + "';";
         ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
 
-        while (getMaxID.next()) {
+        if (getMaxID.next() && getMaxID.getString("maxUserID") != null) {
             maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
         }
-
-        System.out.println("answer:");
-        System.out.println(maxUserID);
 
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         System.out.println(newUserID);
@@ -131,7 +130,7 @@ public class User {
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT accountType FROM users WHERE userID = '"
                 + getCurrentUser() + "';");
-        while(rs.next()){
+        if (rs.next() && rs.getString("accountType") != null) {
             accountString = rs.getString("accountType");
         }
 
@@ -146,9 +145,12 @@ public class User {
     }
 
 
-
+    /**
+     * Used to convert and return string version of a accountInput type
+     * @param accInput
+     * @return
+     */
     public String userTypeToS(UserType accInput){
-        String accTypeS;
         for (UserType u : UserType.values()){
             if(u.equals(accInput)){
                 return u.name();
@@ -170,7 +172,7 @@ public class User {
                 "ON units.unitID = users.unitID " +
                 "WHERE users.userID = '" + getCurrentUser() + "';";
         ResultSet creditsBalance = statement.executeQuery(queryCredits);
-        while (creditsBalance.next()){
+        if (creditsBalance.next() && creditsBalance.getString("creditBalance") != null) {
             credits = Float.parseFloat(creditsBalance.getString("creditBalance"));
         }
         // Extract the integer value of credits
@@ -185,7 +187,7 @@ public class User {
         String firstName = "";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "'");
-        while(rs.next()){
+        if (rs.next() && rs.getString("firstName") != null) {
             firstName = rs.getString("firstName");
         }
         System.out.println(firstName);
@@ -193,27 +195,23 @@ public class User {
     }
 
 
+    /**
+     * Get the last name of the user
+     * @return
+     * @throws SQLException
+     */
     public static String getLastName() throws SQLException {
         String lastName = "";
         Statement statement = connection.createStatement();
         String queryLast = "SELECT lastName " +
                 "FROM users WHERE userID = '" + getCurrentUser() + "'";
         ResultSet lastNameQuery = statement.executeQuery(queryLast);
-        while(lastNameQuery.next()) {
+        if (lastNameQuery.next() && lastNameQuery.getString("lastName") != null) {
             lastName = lastNameQuery.getString("lastName");
         }
         return lastName;
     }
 
-//    public static void hi() throws SQLException {
-//        Statement statement = connection.createStatement();
-//        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "';");
-//        String name = "";
-//        while(rs.next()){
-//            name = rs.getString("firstName");
-//        }
-//        System.out.println(name);
-//    }
 
     /**
      * The method is used to determine if the user inputted actually exists within the database
@@ -221,12 +219,37 @@ public class User {
      * @return
      */
     public boolean usernameExists(String findUserID) throws SQLException {
-        String exists;
+        String exists = null;
         Statement statement = connection.createStatement();
         String existUserQuery = "SELECT userID FROM users WHERE userID = " + findUserID + ";";
         ResultSet userIDFind = statement.executeQuery(existUserQuery);
-        exists = userIDFind.getString("userID");
-        if (exists == findUserID){
+        if (userIDFind.next() && userIDFind.getString("userID") != null) {
+            exists = userIDFind.getString("userID");
+        }
+        if (exists.equals(findUserID)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    /**
+     * Function used to find if a unit exists
+     * @param findUnitID
+     * @return
+     * @throws SQLException
+     */
+    public boolean unitExists(String findUnitID) throws SQLException {
+        String exists = null;
+        Statement statement = connection.createStatement();
+        String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
+        ResultSet rs = statement.executeQuery(existUserQuery);
+        if (rs.next() && rs.getString("unitID") != null) {
+            exists = rs.getString("unitID");
+        }
+        if (exists.equals(findUnitID)){
             return true;
         }
         else{

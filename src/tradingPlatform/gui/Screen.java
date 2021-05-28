@@ -1,5 +1,6 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.Main;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -9,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class Screen implements ActionListener {
-    User currentUser;
     private JLabel label;
     private JFrame frame;
     private JPanel panel;
@@ -40,7 +40,7 @@ public class Screen implements ActionListener {
     private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
 
-    public Screen(){
+    public Screen() throws SQLException {
         // Setting up the frame and panels
         frame = new JFrame();
         panel = new JPanel();
@@ -51,11 +51,13 @@ public class Screen implements ActionListener {
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
         panel.setPreferredSize(new Dimension(1380, 1000));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+        panel = new dashboardGUI();
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
-        Image mainScale = mainImg.getScaledInstance(200, 150,  Image.SCALE_SMOOTH);
+        Image mainScale = mainImg.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
         ImageIcon newMainIcon = new ImageIcon(mainScale);
         logo.setIcon(newMainIcon);
         logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
@@ -105,14 +107,14 @@ public class Screen implements ActionListener {
         logoutButton.addActionListener(this);
         System.out.println("Sidebar " + sidebarPanel.getHeight());
         System.out.println(frame.getWidth());
-        System.out.println(panel.getWidth());
+        System.out.println(sidebarPanel.getWidth());
         System.out.println(frame.getHeight());
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
-        if (e.getSource() == dashboardButton){
-            System.out.println("Dashboard GUI");
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == dashboardButton) {
+//            System.out.println("Dashboard GUI");
             frame.remove(panel);
             panel.removeAll();
             try {
@@ -131,9 +133,8 @@ public class Screen implements ActionListener {
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(watchlistIcon, watchlistButton);
 //            changeButton(logoutIcon, logoutButton);
-        }
-        else if (e.getSource() == portfolioButton){
-            System.out.println("Portfolio GUI");
+        } else if (e.getSource() == portfolioButton) {
+//            System.out.println("Portfolio GUI");
             frame.remove(panel);
             panel.removeAll();
             try {
@@ -146,52 +147,55 @@ public class Screen implements ActionListener {
             frame.pack();
             panel.setVisible(true);
 
-            System.out.println(frame.getWidth());
             // Changing the image for the button
 //            changeButton(portfolioIconS, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(ordersIcon, ordersButton);
 //            changeButton(watchlistIcon, watchlistButton);
 //            changeButton(logoutIcon, logoutButton);
-        }
-        else if (e.getSource() == watchlistButton){
-            System.out.println("Watchlist GUI");
+        } else if (e.getSource() == watchlistButton) {
+//            System.out.println("Watchlist GUI");
             frame.setTitle("Watchlist");
 
+            frame.remove(panel);
+            panel.removeAll();
+            panel = new watchlistGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setTitle("Watchlist");
+            frame.pack();
+            panel.setVisible(true);
             // Changing the image for the button
 //            changeButton(watchlistIconS, watchlistButton);
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(ordersIcon, ordersButton);
 //            changeButton(logoutIcon, logoutButton);
-        }
-        else if (e.getSource() == ordersButton){
-            System.out.println("Orders GUI");
+        } else if (e.getSource() == ordersButton) {
+//            System.out.println("Orders GUI");
             frame.setTitle("Orders");
-
+            frame.remove(panel);
+            panel.removeAll();
+            panel = new orderGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.pack();
+            panel.setVisible(true);
             // Changing the image for the button
 //            changeButton(ordersIconS, ordersButton);
 //            changeButton(portfolioIcon, portfolioButton);
 //            changeButton(dashboardIcon, dashboardButton);
 //            changeButton(watchlistIcon, watchlistButton);
 //            changeButton(logoutIcon, logoutButton);
-        }
-        else if (e.getSource() == logoutButton){
+        } else if (e.getSource() == logoutButton) {
             System.out.println("Logout GUI");
             // insert reset functions
+            Main.resetCurrentUser();
             new loginGUI();
             frame.dispose();
-
-            // Changing the image for the button
-//            changeButton(logoutIconS, logoutButton);
-//            changeButton(portfolioIcon, portfolioButton);
-//            changeButton(dashboardIcon, dashboardButton);
-//            changeButton(ordersIcon, ordersButton);
-//            changeButton(watchlistIcon, watchlistButton);
+            System.out.println(Main.getCurrentUser());
         }
     }
 
-//    public void screenAcc() throws SQLException {
+    //    public void screenAcc() throws SQLException {
 //        UserType accountType = User.getAccountType();
 //        switch(accountType){
 //            case Employee:
@@ -213,13 +217,66 @@ public class Screen implements ActionListener {
 //
 //    }
 
-    private static void changeButton(ImageIcon change, JButton button){
+    private static void changeButton(ImageIcon change, JButton button) {
         Image changed = change.getImage();
-        Image changedScale = changed.getScaledInstance(300, 50,  Image.SCALE_SMOOTH);
+        Image changedScale = changed.getScaledInstance(300, 50, Image.SCALE_SMOOTH);
         ImageIcon newButtonIcon = new ImageIcon(changedScale);
         button.setIcon(newButtonIcon);
         button.setBorder(BorderFactory.createEmptyBorder());
         button.setContentAreaFilled(false);
     }
+
+    public static void welcomeMessage(JPanel panel) throws SQLException {
+        Font font1 = new Font("Avenir", Font.BOLD, 40);
+
+        JLabel welcome = new JLabel("Hi,");
+        welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        welcome.setFont(font1);
+        panel.add(welcome, BorderLayout.NORTH);
+
+        JLabel name = new JLabel(User.getFirstName());
+        name.setFont(font1);
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        panel.add(name, BorderLayout.WEST);
+    }
+
+    public static void creditBalancePanel(JPanel panel) throws SQLException {
+        Font heading = new Font("Avenir", Font.PLAIN, 50);
+
+        JPanel creditsPanel = new JPanel();
+        JPanel ordersPanel = new JPanel();
+
+        JLabel creditsUserLabel = new JLabel("Credit Balance");
+        JLabel creditsUser = new JLabel(Float.toString(User.getCredits()));
+        JLabel outstandingLabel = new JLabel("Outstanding Units");
+        JLabel outstandingUser = new JLabel("5");
+
+        outstandingUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        outstandingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        creditsUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        creditsUserLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        creditsUser.setFont(heading);
+        outstandingUser.setFont(heading);
+
+        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
+        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
+        ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
+        creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
+
+        creditsPanel.add(creditsUser);
+        creditsPanel.add(creditsUserLabel);
+        ordersPanel.add(outstandingUser);
+        ordersPanel.add(outstandingLabel);
+//        panel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
+
+        panel.add(creditsPanel);
+        panel.add(ordersPanel);
+
+        creditsPanel.setBackground(Color.white);
+        ordersPanel.setBackground(Color.white);
+        panel.setBackground(Color.white);
+    }
+
 }
 

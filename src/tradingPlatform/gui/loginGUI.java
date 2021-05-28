@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.Main.setCurrentUser;
 
 public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
@@ -102,6 +103,7 @@ public class loginGUI implements ActionListener {
             if (passwordCorrect(usernameInput, passwordInput)){
                 System.out.println("Works");
                 frame.dispose();
+                setCurrentUser(usernameInput);
                 new Screen();
             }
         } catch (SQLException throwables) {
@@ -124,16 +126,13 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-        System.out.println(usernameInput + "- and -" + getString(passwordInput));
-        System.out.println(userReturn + "- and -" + passwordReturn);
-
-//        System.out.println(usernameInput.getClass().getName() + " and " + passwordInput.getClass().getName());
+//        System.out.println(usernameInput + "- and -" + getString(passwordInput));
+//        System.out.println(userReturn + "- and -" + passwordReturn);
 
         if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))){
             return true;
         }
         else {
-            System.out.println("false");
             return false;
         }
     }

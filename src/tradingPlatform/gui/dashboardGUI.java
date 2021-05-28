@@ -1,10 +1,9 @@
 package tradingPlatform.gui;
 
-import tradingPlatform.user.User;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class dashboardGUI extends JPanel implements ActionListener {
@@ -27,34 +26,31 @@ public class dashboardGUI extends JPanel implements ActionListener {
         panel.add(Box.createHorizontalGlue());
 
         left = new JPanel();
-        left.setBorder(BorderFactory.createEmptyBorder(80,0,0,600));
+        left.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 600));
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
         summary = new JPanel();
+        summary.setBorder(BorderFactory.createEmptyBorder(200, 0, 0, 0));
         summary.setBackground(Color.white);
+        summary.setLayout(new BoxLayout(summary, BoxLayout.Y_AXIS));
         summary.setPreferredSize(new Dimension(500, 1200));
+        Screen.creditBalancePanel(summary);
+        summary.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-        JLabel welcome = new JLabel("Hi,");
-        welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        welcome.setFont(font1);
+        Screen.welcomeMessage(left);
 
-        JLabel name = new JLabel(User.getFirstName());
-        name.setFont(font1);
-        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
-        left.add(welcome, BorderLayout.NORTH);
-        left.add(name, BorderLayout.WEST);
         panel.add(left, BorderLayout.LINE_START);
         panel.add(summary, BorderLayout.LINE_END);
 
         add(panel);
     }
+
     public static void main(String[] args) throws SQLException {
 
         new dashboardGUI();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
     }
 }

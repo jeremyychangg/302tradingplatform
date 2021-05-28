@@ -8,13 +8,27 @@ public class Admin extends User{
     private String unitID;
     private UserType accountType;
 
-    public Admin(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
-        super(firstName, lastName, unitID, password, accountType);
+    public Admin(String firstName, String lastName, String unitID, String password) throws SQLException, UserException {
+        super(firstName, lastName, unitID, password, UserType.Admin);
         this.unitID = unitID;
         this.accountType = accountType;
     }
 
-    public void addUser(User user){
+    private void addUser(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
+        // get the type of user - admin, lead, employee
+        switch(accountType){
+            case Employee:
+                Employee newEmployee = new Employee(firstName,lastName,unitID,password);
+                break;
+            case Admin:
+                Admin newAdmin = new Admin(firstName,lastName,unitID,password);
+                break;
+            case Lead:
+                Lead newLead = new Lead(firstName,lastName,unitID,password);
+                break;
+            default:
+                throw new UserException("Not a valid UserType");
+        }
         boolean found_username = false;
         //Determine if you can find the ID in the database
         // if ... found
