@@ -3,9 +3,6 @@ package tradingPlatform;
 import tradingPlatform.database.JBDCConnection;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 
 public class Main {
@@ -19,6 +16,10 @@ public class Main {
 
     public static void setCurrentUser(String currentUser) {
         Main.currentUser = currentUser;
+    }
+
+    public static void resetCurrentUser(){
+        setCurrentUser(null);
     }
 
     public static void main(String[] args) {
