@@ -15,7 +15,7 @@ public class employeeScreen extends Screen {
     private JPanel logoutPane;
 
     // Buttons
-    private JLabel logo = new JLabel();
+    private final JLabel logo = new JLabel();
     private JButton portfolioButton = new JButton();
     private JButton dashboardButton = new JButton();
     private JButton watchlistButton = new JButton();
@@ -23,38 +23,53 @@ public class employeeScreen extends Screen {
     private JButton logoutButton = new JButton();
 
     //images when unselected
-    private ImageIcon portfolioIcon = new ImageIcon("src/img/portfolio-01.jpg");
-    private ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
-    private ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
-    private ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
-    private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
-    private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
+    private final ImageIcon portfolioIcon = new ImageIcon("src/img/portfolio-01.jpg");
+    private final ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
+    private final ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
+    private final ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
+    private final ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
+    private final ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
 
     //images when selected
-    private ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
-    private ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
-    private ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
-    private ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
-    private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
+    private final ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
+    private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
+    private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
+    private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
+    private final ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
     public employeeScreen() throws SQLException {
-//         Setting up the frame and panels
-        frame = new JFrame();
-        panel = new JPanel();
+        initUI();
+        addButtonListeners();
+
+//        System.out.println("Sidebar " + sidebarPanel.getHeight());
+//        System.out.println(frame.getWidth());
+//        System.out.println(sidebarPanel.getWidth());
+//        System.out.println(frame.getHeight());
+
+        frame.addWindowListener(new ClosingListener());
+    }
+
+
+    private void initUI() throws SQLException {
+        // Setting up the frame and panels
+        // panel = new JPanel();
+        panel = new dashboardGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-
-//        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        panel.setPreferredSize(new Dimension(1380, 1000));
-
-        panel = new dashboardGUI();
-
-        employeeSidebar();
+        // panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
+        panel.setPreferredSize(new Dimension(1380, 1050));
 
         // Background Colour
         Color baseBlue = new Color(0, 140, 237);
         sidebarPanel.setBackground(baseBlue);
         logoutPane.setBackground(baseBlue);
+
+        employeeSidebar();
+        setupEmployeeFrame();
+    }
+
+    private JFrame setupEmployeeFrame(){
+        frame = new JFrame();
 
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
@@ -62,16 +77,15 @@ public class employeeScreen extends Screen {
         frame.setTitle("Venda");
         frame.pack();
         frame.setVisible(true);
+        return frame;
+    }
 
+    private void addButtonListeners(){
         dashboardButton.addActionListener(this);
         portfolioButton.addActionListener(this);
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
         logoutButton.addActionListener(this);
-        System.out.println("Sidebar " + sidebarPanel.getHeight());
-        System.out.println(frame.getWidth());
-        System.out.println(sidebarPanel.getWidth());
-        System.out.println(frame.getHeight());
     }
 
 

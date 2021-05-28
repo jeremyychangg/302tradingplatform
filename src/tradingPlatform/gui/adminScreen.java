@@ -5,8 +5,6 @@ import tradingPlatform.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 /**
@@ -37,7 +35,6 @@ public class adminScreen extends Screen {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
-
     }
 
 
@@ -52,7 +49,7 @@ public class adminScreen extends Screen {
         panel = new JPanel();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-        panel.setPreferredSize(new Dimension(1380, 1000));
+        panel.setPreferredSize(new Dimension(1380, 1050));
 
         adminSidebar();
         setupAdminFrame();
@@ -137,13 +134,6 @@ public class adminScreen extends Screen {
             Main.resetCurrentUser();
             new loginGUI();
             frame.dispose();
-        }
-    }
-
-
-    private class ClosingListener extends WindowAdapter {
-        public void windowClosing(WindowEvent e) {
-            System.exit(0);
         }
     }
 }
