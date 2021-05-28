@@ -1,3 +1,24 @@
+// 	******************************************************************************************
+// 	**																						**
+// 	**	Filename: Watchlist.java															**
+// 	**																						**
+// 	**	Description: Class for individual watchlists per organisational unit				**
+// 	**																						**
+// 	**																						**
+// 	**	Contributors: Jeremy Chang															**
+// 	**																						**
+// 	**																						**
+// 	**	Date Created: 18/05/2021															**
+// 	**																						**
+// 	**																						**
+// 	**	Change Documentation																**
+// 	**		> Initial Version																**
+// 	**																						**
+// 	**																						**
+// 	**																						**
+// 	******************************************************************************************
+
+
 package tradingPlatform;
 
 import tradingPlatform.exceptions.AssetTypeException;

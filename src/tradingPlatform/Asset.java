@@ -1,6 +1,26 @@
+// 	******************************************************************************************
+// 	**																						**
+// 	**	Filename: Asset.java									    						**
+// 	**																						**
+// 	**	Description: Assets that are traded on the marketplace  							**
+// 	**																						**
+// 	**																						**
+// 	**	Contributors: Jeremy Chang															**
+// 	**																						**
+// 	**																						**
+// 	**	Date Created: 21/05/2021															**
+// 	**																						**
+// 	**																						**
+// 	**	Change Documentation																**
+// 	**		> Initial Version																**
+// 	**																						**
+// 	**																						**
+// 	**																						**
+// 	******************************************************************************************
+
+
 package tradingPlatform;
 
-import tradingPlatform.database.JBDCConnection;
 import tradingPlatform.exceptions.AssetRemovalException;
 import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.exceptions.MultipleRowDeletionException;
@@ -59,6 +79,7 @@ public class Asset {
         }
 
 
+
 //        ADD IF NO RESULT IN QUERY FOR BOTH CONSTRUCTORS
 
 
@@ -112,10 +133,12 @@ public class Asset {
                 + IDsubstring + "';";
         ResultSet getMaxID = statement.executeQuery(sqlMaxID);
 
-        // Extract string result and parse as integer
-        while (getMaxID.next()) {
+        // If result set contains something, then assign maxID
+        if (getMaxID.next() && getMaxID.getString("maxID") != null) {
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
+        // Extract string result and parse as integer
+
 
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);
@@ -129,7 +152,11 @@ public class Asset {
         newAsset.setDouble(3, currentPrice);
         newAsset.setString(4, assetType);
 
-        newAsset.execute();
+        try {
+            newAsset.execute();
+        } catch (SQLException e) {
+            System.out.println("New Asset Error: " + e.getMessage());
+        }
     }
 
     public String GetAssetID() {

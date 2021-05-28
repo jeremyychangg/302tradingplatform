@@ -22,14 +22,15 @@ CREATE TABLE assets (
     assetID         CHAR(10)            PRIMARY KEY     NOT NULL    ,
     assetName       VARCHAR(64)                         NOT NULL    ,
     currentPrice    FLOAT                                           ,
-    assetType       VARCHAR(64)
+    assetType       VARCHAR(64)                                     ,
+    UNIQUE  (assetName, assetType)
 );
 
 CREATE TABLE inventory (
-	unitID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
+    unitID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
     assetID         CHAR(10)                            NOT NULL    ,
     quantity        INT(8)                                          ,
-	orderID         CHAR(10)
+    orderID         CHAR(10)
 );
 
 CREATE TABLE orders (

@@ -3,6 +3,8 @@ package tradingPlatform;
 import java.util.ArrayList;
 
 public class Inventory {
+    String unitID;
+    ArrayList<Asset> unitInventory;
 
     public Inventory(String unitID, String assetID, int quantity) {
     }

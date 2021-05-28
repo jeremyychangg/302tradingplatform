@@ -23,36 +23,71 @@ package tradingPlatform;
 
 import tradingPlatform.enumerators.OrderStatus;
 import tradingPlatform.enumerators.OrderType;
+import tradingPlatform.exceptions.InvalidAssetException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 
 import static tradingPlatform.Main.connection;
 
 public class SellOrder extends Order{
+    public SellOrder(String orderID, String userID, String unitID, String assetID, String orderTime, OrderStatus orderStatus,
+                     OrderType orderType, double orderPrice, int orderQuant, int quantFilled, int quantRemain) {
+        super(orderID, userID, unitID, assetID, orderTime, orderStatus,
+                orderType, orderPrice, orderQuant, quantFilled, quantRemain);
+    }
 
-
-    public SellOrder(String userID, String assetID, OrderStatus orderStatus, OrderType orderType,
-                     double orderPrice, int orderQuant) throws SQLException {
+    public SellOrder(String userID, String assetID, double orderPrice, int orderQuant)
+            throws SQLException, InvalidAssetException {
 
         super(userID, assetID, OrderType.SELL, orderPrice, orderQuant);
 
-//        // Create order ID
-//        // Get highest ID value existing in database
-//        int maxID;
-//        Statement statement = connection.createStatement();
-//        String sqlMaxID
-//                = "SELECT max(substring(orderID, 3, 8)) as maxID FROM orders WHERE orderType = 'SELL';";
-//        ResultSet getMaxID = statement.executeQuery(sqlMaxID);
-//
-//        // Extract string result and parse as integer
-//        maxID = Integer.parseInt(getMaxID.getString("maxID"));
-//
-//        // Add 1 to current max ID to get new ID number for this asset and append to asset type code
-//        String newID = "SL" + String.format("%08d", maxID + 1);
-//
-//        // Assign SELL orderID to order
-//        this.orderID = newID;
+        AddOrderDatabase();
+
+        ExecuteSellOrder();
+    }
+
+    public void ExecuteSellOrder() throws SQLException {
+        // Check if just ordered asset has corresponding order
+
+        // Find sell orders of same asset
+        Statement smt = connection.createStatement();
+        String sqlFindOrder
+                = "SELECT * FROM orders WHERE assetID = '" + assetID + "' and orderType = 'BUY';";
+        ResultSet buyOrders = smt.executeQuery(sqlFindOrder);
+
+        ArrayList<Order> matchingOrders = new ArrayList<>();
+
+        while (buyOrders.next()) {
+            matchingOrders.add(
+                    new BuyOrder(
+                            buyOrders.getString("orderID"),
+                            buyOrders.getString("userID"),
+                            buyOrders.getString("unitID"),
+                            buyOrders.getString("assetID"),
+                            buyOrders.getString("orderTime").substring(0,19),
+                            OrderStatus.valueOf(buyOrders.getString("orderStatus")),
+                            OrderType.valueOf(buyOrders.getString("orderType")),
+                            buyOrders.getDouble("orderPrice"),
+                            buyOrders.getInt("orderQuantity"),
+                            buyOrders.getInt("quantFilled"),
+                            buyOrders.getInt("quantRemain")
+                            )
+            );
+        }
+
+        matchingOrders.forEach((x) -> System.out.println(x.orderID + ", " + x.orderType + ", " + x.userID + ", " + x.assetID));
+        //        If match execute buy and sell order
+        //        match quantity and price
+        //        Find the earliest orderTime
+
+        //        Filter by asset, then by price, then by time, then assess quantity and find different, then edit fields/set complete
+        //        Change inventory - maybe add that class
+
+
     }
 }
