@@ -24,11 +24,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static tradingPlatform.Main.connection;
-import static tradingPlatform.Main.getCurrentUser;
+import static tradingPlatform.Main.*;
 
 /**
  * This class is used to
+ *
  * @author Natalie Smith
  */
 public class User {
@@ -39,8 +39,43 @@ public class User {
     private String password;
     private UserType accountType = UserType.Employee;
 
-    public String getUserID(){
+    public String returnUserID() {
         return this.userID;
+    }
+
+    public String returnfirstName() {
+        return this.firstName;
+    }
+
+    public String returnlastName() {
+        return this.lastName;
+    }
+
+    public String returnunitID() {
+        return this.unitID;
+    }
+
+    public String returnpassword() {
+        return this.password;
+    }
+
+
+    public User(String firstName, String lastName, String unitID, UserType accountType) throws UserException, SQLException {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.unitID = unitID;
+        this.accountType = accountType;
+    }
+
+    public User(String userID) throws SQLException {
+        setCurrentUser(userID);
+        if (usernameExists(userID)) {
+            this.userID = userID;
+            this.firstName = getFirstName();
+            this.lastName = getLastName();
+            this.accountType = getAccountType();
+            this.unitID = getUnitID();
+        }
     }
 
     public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws UserException, SQLException {
@@ -51,26 +86,32 @@ public class User {
         this.accountType = accountType;
 
         // Throw exceptions if requirements not met
-        if(firstName == null || firstName == "") {
-            throw new UserException("UserID cannot be null or empty.");
+        if (firstName == null || firstName == "") {
+            throw new UserException("First Name cannot be null or empty.");
         }
-        if(firstName == null || firstName == "") {
-            throw new UserException("UserID cannot be null or empty.");
+        if (lastName == null || lastName == "") {
+            throw new UserException("Last Name cannot be null or empty.");
         }
-        if(unitID == null || unitID == "" || !unitExists(unitID)) {
-            throw new UserException("Username cannot be null or empty.");
+        if (unitID == null || unitID == "") {
+            throw new UserException("Unit ID cannot be null or empty.");
         }
-        if(password == null || password == "") {
-            throw new UserException("Username cannot be null or empty.");
+        if (!unitExists(unitID)) {
+            throw new UserException("Unit ID doesn't exist. Enter in valid unitID.");
         }
-        if(accountType == null || lastName == "") {
-            throw new UserException("Username cannot be null or empty.");
+        if (password == null || password == "") {
+            throw new UserException("Password cannot be null or empty.");
+        }
+        if (accountType == null) {
+            throw new UserException("Account Type cannot be null or empty.");
+        }
+        if (userTypeToS(accountType) == null) {
+            throw new UserException("Account Type not a valid Account Type.");
         }
 
         // Based on the input for the account, set the userID initial accordingly
         String accType = "";
         String intialID = "";
-        switch(accountType){
+        switch (accountType) {
             case Employee:
                 intialID = "S";
                 accType = userTypeToS(accountType);
@@ -118,6 +159,7 @@ public class User {
 
     /**
      * This function is used to get the account type of the user
+     *
      * @return
      * @author Natalie Smith
      */
@@ -135,8 +177,8 @@ public class User {
 
         // Return the relative UserType enum value if found, or else return null
         UserType outputType;
-        for (UserType u : UserType.values()){
-            if(u.name().equals(accountString)){
+        for (UserType u : UserType.values()) {
+            if (u.name().equals(accountString)) {
                 return u;
             }
         }
@@ -146,12 +188,13 @@ public class User {
 
     /**
      * Used to convert and return string version of a accountInput type
+     *
      * @param accInput
      * @return
      */
-    public String userTypeToS(UserType accInput){
-        for (UserType u : UserType.values()){
-            if(u.equals(accInput)){
+    public String userTypeToS(UserType accInput) {
+        for (UserType u : UserType.values()) {
+            if (u.equals(accInput)) {
                 return u.name();
             }
         }
@@ -161,6 +204,7 @@ public class User {
 
     /**
      * The getCredits function is used to retrieve the credits of the user
+     *
      * @return
      */
     public static float getCredits() throws SQLException {
@@ -182,22 +226,23 @@ public class User {
 
     /**
      * The getName function returns the first name of the user
+     *
      * @return
      */
     public static String getFirstName() throws SQLException {
         String firstName = "";
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "'");
+        ResultSet rs = statement.executeQuery("SELECT firstName FROM users WHERE userID = '" + getCurrentUser() + "';");
         if (rs.next() && rs.getString("firstName") != null) {
             firstName = rs.getString("firstName");
         }
-        System.out.println(firstName);
         return firstName;
     }
 
 
     /**
      * Get the last name of the user
+     *
      * @return
      * @throws SQLException
      */
@@ -216,21 +261,21 @@ public class User {
 
     /**
      * The method is used to determine if the user inputted actually exists within the database
+     *
      * @param findUserID
      * @return
      */
-    public boolean usernameExists(String findUserID) throws SQLException {
+    public static boolean usernameExists(String findUserID) throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT userID FROM users WHERE userID = " + findUserID + ";";
+        String existUserQuery = "SELECT userID FROM users WHERE userID = '" + findUserID + "';";
         ResultSet userIDFind = statement.executeQuery(existUserQuery);
         if (userIDFind.next() && userIDFind.getString("userID") != null) {
             exists = userIDFind.getString("userID");
         }
-        if (exists.equals(findUserID)){
+        if (exists.equals(findUserID)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -238,11 +283,12 @@ public class User {
 
     /**
      * Function used to find if a unit exists
+     *
      * @param findUnitID
      * @return
      * @throws SQLException
      */
-    public boolean unitExists(String findUnitID) throws SQLException {
+    public static boolean unitExists(String findUnitID) throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
         String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
@@ -250,20 +296,29 @@ public class User {
         if (rs.next() && rs.getString("unitID") != null) {
             exists = rs.getString("unitID");
         }
-        if (exists.equals(findUnitID)){
+        if (exists.equals(findUnitID)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-
-
-    public String GetUnitID() throws SQLException {
+    public static String getUnitID() throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT unitID FROM users WHERE userID = " + this.userID + ";";
+        String existUserQuery = "SELECT unitID FROM users WHERE userID = '" + getCurrentUser() + "';";
+        ResultSet userIDFind = statement.executeQuery(existUserQuery);
+        if (userIDFind.next() && userIDFind.getString("unitID") != null) {
+            exists = userIDFind.getString("unitID");
+        }
+        return exists;
+    }
+
+
+    public String getUnitID(String userID) throws SQLException {
+        String exists = null;
+        Statement statement = connection.createStatement();
+        String existUserQuery = "SELECT unitID FROM users WHERE userID = '" + userID + "';";
         ResultSet userIDFind = statement.executeQuery(existUserQuery);
         if (userIDFind.next() && userIDFind.getString("unitID") != null) {
             exists = userIDFind.getString("unitID");
@@ -273,7 +328,6 @@ public class User {
 
 
     /**
-     *
      * @param passMod
      */
     public void changePassword(String passMod) throws SQLException {
@@ -290,20 +344,17 @@ public class User {
 
     /**
      * Method is used to set the type of account for the user
+     *
      * @param inputType
      */
-    public void setUserType(UserType inputType){
-        boolean validType = false;
-        for (UserType u : UserType.values()){
-            if(u.name().equals(inputType)){
-                validType = true;
+    public static boolean accountTypeValid(String inputType) {
+        for (UserType u : UserType.values()) {
+            if (u.name().equals(inputType)) {
+                return true;
             }
         }
-        if (validType){
-            this.accountType = inputType;
-        }
+        return false;
     }
-
 
 
 //    public void getUserByID(String userID) throws SQLException {

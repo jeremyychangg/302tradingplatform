@@ -1,3 +1,6 @@
+/**
+ * @author Natalie Smith
+ */
 package tradingPlatform.gui;
 
 import javax.swing.*;
