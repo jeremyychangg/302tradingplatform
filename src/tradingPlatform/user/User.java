@@ -78,7 +78,7 @@ public class User {
         }
     }
 
-    public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws UserException, SQLException {
+    public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
         this.firstName = firstName;
         this.lastName = lastName;
         this.unitID = unitID;
@@ -266,17 +266,21 @@ public class User {
      * @return
      */
     public static boolean usernameExists(String findUserID) throws SQLException {
-        String exists = null;
-        Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT userID FROM users WHERE userID = '" + findUserID + "';";
-        ResultSet userIDFind = statement.executeQuery(existUserQuery);
-        if (userIDFind.next() && userIDFind.getString("userID") != null) {
-            exists = userIDFind.getString("userID");
-        }
-        if (exists.equals(findUserID)) {
-            return true;
-        } else {
-            return false;
+        try {
+            String exists = null;
+            Statement statement = connection.createStatement();
+            String existUserQuery = "SELECT userID FROM users WHERE userID = '" + findUserID + "';";
+            ResultSet userIDFind = statement.executeQuery(existUserQuery);
+            if (userIDFind.next() && userIDFind.getString("userID") != null) {
+                exists = userIDFind.getString("userID");
+            }
+            if (exists.equals(findUserID)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            throw new SQLException("The inputted username does not currently exist.");
         }
     }
 
@@ -288,20 +292,25 @@ public class User {
      * @return
      * @throws SQLException
      */
-    public static boolean unitExists(String findUnitID) throws SQLException {
-        String exists = null;
-        Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
-        ResultSet rs = statement.executeQuery(existUserQuery);
-        if (rs.next() && rs.getString("unitID") != null) {
-            exists = rs.getString("unitID");
-        }
-        if (exists.equals(findUnitID)) {
-            return true;
-        } else {
-            return false;
+    public static boolean unitExists(String findUnitID) throws Exception {
+        try {
+            String exists = null;
+            Statement statement = connection.createStatement();
+            String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
+            ResultSet rs = statement.executeQuery(existUserQuery);
+            if (rs.next() && rs.getString("unitID") != null) {
+                exists = rs.getString("unitID");
+            }
+            if (exists.equals(findUnitID)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            throw new SQLException("UnitID does not currently exist.");
         }
     }
+
 
     public static String getUnitID() throws SQLException {
         String exists = null;
@@ -355,49 +364,4 @@ public class User {
         }
         return false;
     }
-
-
-//    public void getUserByID(String userID) throws SQLException {
-//        String userDetails;
-//        Statement statement = connection.createStatement();
-//        String queryUser = "SELECT * FROM users WHERE userID = '" + userID + "';";
-//        ResultSet userQuery = statement.executeQuery(queryUser);
-//        String firstName = null;
-//        String lastName = null;
-//        int unitID = 0;
-//        String password = null;
-//        UserType accountType = null;
-//
-//        while(userQuery.next()){
-//            firstName = userQuery.getString("firstName");
-//            lastName = userQuery.getString("lastName");
-//            unitID = Integer.parseInt(userQuery.getString("unitID"));
-//            password = userQuery.getString("password");
-//            String accountString = userQuery.getString("accountType");
-//            accountType = getAccountType(accountString);
-//        }
-////
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.unitID = unitID;
-//        this.password = password;
-//        this.accountType = accountType;
-//    }
-
-
-    /**
-     * Returns the assets associated with the userID
-     */
-//    public void returnAssets(){
-//        //this.unitID
-//        //take the unitID and query the orders table to determine their orders
-//    }
-
-//    public void getNotifications(){
-//    }
-
-//    public void getWatchList(){
-//        //
-////        return this.firstName + " " + this.lastName;
-//    }
 }

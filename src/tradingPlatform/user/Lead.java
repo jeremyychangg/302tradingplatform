@@ -7,7 +7,6 @@ package tradingPlatform.user;
 import tradingPlatform.Request;
 import tradingPlatform.enumerators.requestType;
 import tradingPlatform.exceptions.PasswordException;
-import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ import static tradingPlatform.Main.getCurrentUser;
 public class Lead extends User {
     public String userID;
 
-    public Lead(String firstName, String lastName, String unitID, String password) throws SQLException, UserException {
+    public Lead(String firstName, String lastName, String unitID, String password) throws Exception {
         super(firstName, lastName, unitID, password, UserType.Lead);
     }
 

@@ -18,7 +18,7 @@ public class Admin extends User{
     private UserType accountType = UserType.Employee;
 
 
-    public Admin(String firstName, String lastName, String unitID, String password) throws SQLException, UserException {
+    public Admin(String firstName, String lastName, String unitID, String password) throws Exception {
         super(firstName, lastName, unitID, password, UserType.Admin);
         this.unitID = unitID;
         this.accountType = accountType;
@@ -31,7 +31,7 @@ public class Admin extends User{
     }
 
 
-    public void newUser(String firstName, String lastName, String unitID, UserType accountType) throws UserException, SQLException {
+    public void newUser(String firstName, String lastName, String unitID, UserType accountType) throws Exception {
         // generate a new password
         String password = "password";
 
@@ -81,19 +81,43 @@ public class Admin extends User{
         changeAccountT.executeUpdate();
     }
 
-    public static void editAccountType(String userID, String accountType) throws SQLException {
-        if (usernameExists(userID) && accountTypeValid(accountType)) {
-            String sqlAccount = "UPDATE users SET accountType = ? WHERE userID = ?;";
-            PreparedStatement changeAccountT = connection.prepareStatement(sqlAccount);
-            changeAccountT.clearParameters();
-            changeAccountT.setString(1, accountType);
-            changeAccountT.setString(2, userID);
-            changeAccountT.executeUpdate();
+    /**
+     * The method used is called by the admin to edit the type of account a user has. It requires
+     * the userID and accountType input values, parsed when called, to determine if the process will
+     * continue.
+     * @param userID
+     * @param accountType
+     * @throws Exception
+     */
+    public static void editAccountType(String userID, String accountType) throws Exception {
+        try {
+            if (usernameExists(userID) && accountTypeValid(accountType)) {
+                String sqlAccount = "UPDATE users SET accountType = ? WHERE userID = ?;";
+                PreparedStatement changeAccountT = connection.prepareStatement(sqlAccount);
+                changeAccountT.clearParameters();
+                changeAccountT.setString(1, accountType);
+                changeAccountT.setString(2, userID);
+                changeAccountT.executeUpdate();
+            }
+        } catch (Exception e){
+            if (userID == null || userID == ""){
+                throw new Exception("User ID is invalid.");
+            }
+            if (accountType == null || accountType == ""){
+                throw new Exception("Account type inputted is invalid.");
+            }
+            if (!accountTypeValid(accountType)){
+                throw new Exception("Account type not found.");
+            }
+            if (!usernameExists(userID)){
+                throw new Exception("The UserID inputted does not exist.");
+            }
         }
     }
 
     public void editInventory(String unitID, String assetID, int quantity){
         // retrieve their current inventory storage
+
         // retrieve the value of their quantity
         // do some maths
         // if it is valid, then edit

@@ -4,7 +4,7 @@ import tradingPlatform.database.JBDCConnection;
 
 import java.sql.Connection;
 
-import static tradingPlatform.user.Admin.editCredits;
+import static tradingPlatform.user.User.unitExists;
 
 public class Main {
     private static String currentUser;
@@ -28,7 +28,9 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
-        editCredits("ADM0000001", 1400.0);
+//        editCredits("ADM01", 1200);
+//        editAccountType("A003", "Admin");
+        unitExists("IT00001");
 
 //        setCurrentUser("S0001");
 //        new loginGUI();
