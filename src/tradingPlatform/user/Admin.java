@@ -2,11 +2,21 @@ package tradingPlatform.user;
 
 import tradingPlatform.exceptions.UserException;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import static tradingPlatform.Main.connection;
 
 public class Admin extends User{
+    private String userID;
+    private String firstName;
+    private String lastName;
     private String unitID;
-    private UserType accountType;
+    private String password;
+    private UserType accountType = UserType.Employee;
+
 
     public Admin(String firstName, String lastName, String unitID, String password) throws SQLException, UserException {
         super(firstName, lastName, unitID, password, UserType.Admin);
@@ -14,29 +24,61 @@ public class Admin extends User{
         this.accountType = accountType;
     }
 
-    private void addUser(String firstName, String lastName, String unitID, String password, UserType accountType) throws SQLException, UserException {
-        // get the type of user - admin, lead, employee
+    public Admin(String firstName, String lastName, String unitID) throws SQLException, UserException {
+        super(firstName, lastName, unitID, UserType.Admin);
+        this.unitID = unitID;
+        this.accountType = accountType;
+    }
+
+
+    public void newUser(User user) throws UserException, SQLException {
+        System.out.println(user.getUnitID());
+        // Based on the input for the account, set the userID initial accordingly
+        String accType = "";
+        String intialID = "";
         switch(accountType){
             case Employee:
-                Employee newEmployee = new Employee(firstName,lastName,unitID,password);
+                intialID = "S";
+                accType = userTypeToS(accountType);
                 break;
             case Admin:
-                Admin newAdmin = new Admin(firstName,lastName,unitID,password);
+                intialID = "A";
+                accType = userTypeToS(accountType);
                 break;
             case Lead:
-                Lead newLead = new Lead(firstName,lastName,unitID,password);
+                intialID = "L";
+                accType = userTypeToS(accountType);
                 break;
             default:
-                throw new UserException("Not a valid UserType");
+                throw new UserException("Not valid UserType");
         }
-        boolean found_username = false;
-        //Determine if you can find the ID in the database
-        // if ... found
-        // found_username = true
-        if (found_username = false){
-//            Statement statement = conn.createStatement();
-//            statement.executeUpdate("INSERT INTO Users " + "VALUES (" + user.username, user.firstName, user.lastName, user.unitID, user.password, user.accountType")");
+
+        Statement statement = connection.createStatement();
+
+        int maxUserID = 0;
+        String sqlMaxUserID
+                = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
+                + intialID + "';";
+        ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
+
+        if (getMaxID.next() && getMaxID.getString("maxUserID") != null) {
+            maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
         }
+
+        String newUserID = intialID + String.format("%04d", maxUserID + 1);
+        System.out.println(newUserID);
+        userID = newUserID;
+
+        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+        newUser.clearParameters();
+        newUser.setString(1, newUserID);
+        newUser.setString(2, firstName);
+        newUser.setString(3, lastName);
+        newUser.setString(4, unitID);
+        newUser.setString(5, accType);
+        newUser.setString(6, password);
+
+        newUser.execute();
     }
 
     public void addUnit(){

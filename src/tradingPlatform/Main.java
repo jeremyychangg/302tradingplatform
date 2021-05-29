@@ -2,7 +2,7 @@ package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
 import tradingPlatform.exceptions.UserException;
-import tradingPlatform.gui.employeeScreen;
+import tradingPlatform.gui.loginGUI;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,9 +28,23 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e){
         }
+//        setCurrentUser("S0001");
+        new loginGUI();
+//        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());
+//
+//        User current = new User("S0001");
+//        System.out.println(current.returnfirstName());
 
-//        new loginGUI();
-        new employeeScreen();
+//        Admin current = new Admin(getFirstName(), getLastName(), getUnitID());
+//        User lisa = new User("Anna", "Mia", "IT00001", "password", UserType.Lead);
+//        System.out.println(lisa.returnUserID());
+//        System.out.println(getUnitID());
+
+//        currentUser.newUser(new Employee("Lisa", "Vanderpump", "IT00001", "password"));
+//        Admin newAdmin = new Admin("Angela", "Da Cost", "IT00001", "password");
+
+
+//        new employeeScreen();
 //        new Screen();
     }
 }
