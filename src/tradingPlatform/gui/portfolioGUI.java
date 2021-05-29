@@ -89,7 +89,6 @@ public class portfolioGUI extends JPanel {
         employeeScreen.creditBalancePanel(summaryInfo);
         summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-//        summaryInfo.setBackground(Color.red);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 3;
@@ -110,13 +109,13 @@ public class portfolioGUI extends JPanel {
         panel.add(orderHistoryHeading, this.gbc);
         JPanel orderHistoryList = new JPanel();
 
-        // making the list
+        // Retrieving the orders pending/incomplete of the user - and their status
         String[] columns = new String[] {
                 "Order ID", "Asset", "Quantity", "Price", "Date"
         };
 
         Object[][] data = new Object[][] {
-                {1, "Printing Paper skdjflsdjfksdflsjdklfjsdklflksdfjsklf", 50, "$" + 100, 10/02/2020 },
+                {1, "Printing Paper", 50, "$" + 100, 10/02/2020 },
                 {2, "CPU Hours", 4, "$" + 100, 10/02/2020 },
                 {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
         };

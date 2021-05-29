@@ -266,16 +266,29 @@ public class User {
 
 
 
-    public String GetUnitID() throws SQLException {
+    public String getUnitID() throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT unitID FROM users WHERE userID = " + this.userID + ";";
+        String existUserQuery = "SELECT unitID FROM users WHERE userID = " + getCurrentUser() + ";";
         ResultSet userIDFind = statement.executeQuery(existUserQuery);
         if (userIDFind.next() && userIDFind.getString("unitID") != null) {
             exists = userIDFind.getString("unitID");
         }
         return exists;
     }
+
+
+    public String getUnitID(String userID) throws SQLException {
+        String exists = null;
+        Statement statement = connection.createStatement();
+        String existUserQuery = "SELECT unitID FROM users WHERE userID = " + userID + ";";
+        ResultSet userIDFind = statement.executeQuery(existUserQuery);
+        if (userIDFind.next() && userIDFind.getString("unitID") != null) {
+            exists = userIDFind.getString("unitID");
+        }
+        return exists;
+    }
+
 
 
     /**

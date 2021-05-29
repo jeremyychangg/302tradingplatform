@@ -26,7 +26,7 @@ public class employeeScreen extends Screen {
     private JButton ordersButton = new JButton();
     private JButton logoutButton = new JButton();
 
-    //images when unselected
+    // Button images when unselected
     private final ImageIcon portfolioIcon = new ImageIcon("src/img/portfolio-01.jpg");
     private final ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
     private final ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
@@ -34,7 +34,7 @@ public class employeeScreen extends Screen {
     private final ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
     private final ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
 
-    //images when selected
+    // Button images when selected
     private final ImageIcon portfolioIconS = new ImageIcon("src/img/portfolioPress-01.jpg");
     private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
