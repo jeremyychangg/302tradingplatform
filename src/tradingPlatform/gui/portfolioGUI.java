@@ -121,7 +121,7 @@ public class portfolioGUI extends JPanel {
                 {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
         };
 
-        Integer[] width = new Integer[] { 150, 600, 150, 150, 150};
+        Integer[] width = new Integer[] { 155, 600, 150, 150, 155};
 
         orderHistoryList.add(new Table(columns, data, width));
 

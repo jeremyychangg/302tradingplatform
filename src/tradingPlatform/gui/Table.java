@@ -51,10 +51,11 @@ public class Table extends JPanel {
             columnModel.getColumn(index).setPreferredWidth(width[index]);
 
             // Render the table contents to be in the centre of the table
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-            headerModel.getColumn(index).setCellRenderer(centerRenderer);
-            columnModel.getColumn(index).setCellRenderer( centerRenderer );
+            DefaultTableCellRenderer tableRenderer = new DefaultTableCellRenderer();
+
+            tableRenderer.setHorizontalAlignment( JLabel.CENTER );
+            columnModel.getColumn(index).setCellRenderer( tableRenderer );
+            headerModel.getColumn(index).setCellRenderer( tableRenderer );
             index++;
         }
 

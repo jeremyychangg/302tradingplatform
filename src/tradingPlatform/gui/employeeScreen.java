@@ -46,9 +46,9 @@ public class employeeScreen extends Screen {
         addButtonListeners();
 
 //        System.out.println("Sidebar " + sidebarPanel.getHeight());
-        System.out.println(frame.getWidth());
+//        System.out.println(frame.getWidth());
 //        System.out.println(sidebarPanel.getWidth());
-        System.out.println(frame.getHeight());
+//        System.out.println(frame.getHeight());
 
         frame.addWindowListener(new ClosingListener());
     }
