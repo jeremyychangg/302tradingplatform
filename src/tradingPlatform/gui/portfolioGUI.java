@@ -1,5 +1,7 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.user.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
@@ -11,44 +13,56 @@ public class portfolioGUI extends JPanel {
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
 
+
+    public GridBagConstraints gbc = new GridBagConstraints();
+
     public portfolioGUI() throws SQLException {
         setUpPanel();
-        Screen.welcomeMessage(panel);
+        welcomeMessagePortfolio(panel);
         chartSection();
         summaryDisplay();
+        orderHistoryDisplay();
 
-        add(panel);
+        add(panel, this.gbc);
     }
 
-    private void orderHistoryDisplay(){
-        // Order History section
-        JLabel orderHistoryHeading = new JLabel("Order History");
-        orderHistoryHeading.setFont(h1);
-        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(100, 0, 0, 10));
-        panel.add(orderHistoryHeading);
-        JPanel orderHistoryList = new JPanel();
-        orderHistoryList.add(new Table());
-        orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        orderHistoryList.setBackground(Color.WHITE);
-
-        panel.add(orderHistoryList);
-    }
-
-    private void summaryDisplay() throws SQLException {
-        // Setting up the container for the summary
-        JPanel summaryInfo = new JPanel();
-        employeeScreen.creditBalancePanel(summaryInfo);
-        summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
-        summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        panel.add(summaryInfo);
-    }
 
     private void setUpPanel(){
         // setting up black JPanel
-        panel = new JPanel();
-        panel.setPreferredSize(new Dimension(1380, 1050));
-        panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        this.panel = new JPanel();
+        this.panel.setPreferredSize(new Dimension(1380, 1050));
+        this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
+//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        this.panel.setLayout(new GridBagLayout());
+    }
+
+
+    protected void welcomeMessagePortfolio(JPanel panel) throws SQLException {
+        Font font1 = new Font("Avenir", Font.BOLD, 40);
+
+        JLabel welcome = new JLabel("Hi,");
+        welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        welcome.setFont(font1);
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 0;
+        this.gbc.anchor = GridBagConstraints.LINE_START;
+        this.gbc.fill=GridBagConstraints.HORIZONTAL;
+        this.gbc.anchor=GridBagConstraints.CENTER;
+        this.gbc.fill = GridBagConstraints.BOTH;
+        this.gbc.weightx = 0.7;
+        this.gbc.weighty = 1.0;
+
+        panel.add(welcome, this.gbc);
+
+        JLabel name = new JLabel(User.getFirstName());
+        name.setFont(font1);
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 1;
+
+        panel.add(name, this.gbc);
     }
 
     private void chartSection() {
@@ -60,8 +74,46 @@ public class portfolioGUI extends JPanel {
         chart.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
         chartSection.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(chart);
-        panel.add(chartSection);
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 2;
+
+        panel.add(chartSection, this.gbc);
+    }
+
+    private void summaryDisplay() throws SQLException {
+        // Setting up the container for the summary
+        JPanel summaryInfo = new JPanel();
+        employeeScreen.creditBalancePanel(summaryInfo);
+        summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
+        summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+//        summaryInfo.setBackground(Color.red);
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 3;
+
+        panel.add(summaryInfo, this.gbc);
     }
 
 
+    private void orderHistoryDisplay(){
+        // Order History section
+        JLabel orderHistoryHeading = new JLabel("Order History");
+        orderHistoryHeading.setFont(h1);
+        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(100, 0, 0, 10));
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 4;
+
+        panel.add(orderHistoryHeading, this.gbc);
+        JPanel orderHistoryList = new JPanel();
+        orderHistoryList.add(new Table());
+        orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
+        orderHistoryList.setBackground(Color.WHITE);
+
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 5;
+
+        panel.add(orderHistoryList, this.gbc);
+    }
 }

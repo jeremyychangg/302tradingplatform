@@ -13,6 +13,7 @@ public class employeeScreen extends Screen {
     private JPanel panel;
     private JPanel sidebarPanel;
     private JPanel logoutPane;
+    private JScrollPane pane;
 
     // Buttons
     private final JLabel logo = new JLabel();
@@ -42,9 +43,9 @@ public class employeeScreen extends Screen {
         addButtonListeners();
 
 //        System.out.println("Sidebar " + sidebarPanel.getHeight());
-//        System.out.println(frame.getWidth());
+        System.out.println(frame.getWidth());
 //        System.out.println(sidebarPanel.getWidth());
-//        System.out.println(frame.getHeight());
+        System.out.println(frame.getHeight());
 
         frame.addWindowListener(new ClosingListener());
     }
@@ -56,8 +57,7 @@ public class employeeScreen extends Screen {
         panel = new dashboardGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-        // panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        panel.setPreferredSize(new Dimension(1380, 1050));
+//        panel.setPreferredSize(new Dimension(1380, 1050));
 
         // Background Colour
         Color baseBlue = new Color(0, 140, 237);
@@ -134,6 +134,7 @@ public class employeeScreen extends Screen {
         if (e.getSource() == dashboardButton) {
 //            System.out.println("Dashboard GUI");
             frame.remove(panel);
+            frame.remove(pane);
             panel.removeAll();
             try {
                 panel = new dashboardGUI();
@@ -157,7 +158,11 @@ public class employeeScreen extends Screen {
             panel.removeAll();
             try {
                 panel = new portfolioGUI();
-                frame.add(panel, BorderLayout.CENTER);
+                pane = new JScrollPane(panel,
+                        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                pane.setPreferredSize(new Dimension(1380, 1050));
+                frame.add(pane, BorderLayout.CENTER);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
