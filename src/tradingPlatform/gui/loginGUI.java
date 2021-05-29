@@ -14,7 +14,6 @@ import static tradingPlatform.user.User.getAccountType;
 public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
-    int count = 0;
     private JLabel logo = new JLabel();
     //    private JLabel label;
     private JFrame frame;

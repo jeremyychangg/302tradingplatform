@@ -90,7 +90,7 @@ public class adminScreen extends Screen {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1050));
 //        panel = new requestGUI();
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 

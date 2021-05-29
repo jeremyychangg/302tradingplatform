@@ -92,7 +92,7 @@ public class employeeScreen extends Screen {
     private void employeeSidebar(){
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1050));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
