@@ -1,20 +1,20 @@
+/**
+ * @author Natalie Smith
+ */
 package tradingPlatform.user;
 
+import tradingPlatform.Asset;
+import tradingPlatform.Unit;
+import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
 
 public class Admin extends User{
-    private String userID;
-    private String firstName;
-    private String lastName;
     private String unitID;
-    private String password;
     private UserType accountType = UserType.Employee;
 
 
@@ -31,66 +31,73 @@ public class Admin extends User{
     }
 
 
-    public void newUser(User user) throws UserException, SQLException {
-        System.out.println(user.getUnitID());
-        // Based on the input for the account, set the userID initial accordingly
-        String accType = "";
-        String intialID = "";
-        switch(accountType){
+    public void newUser(String firstName, String lastName, String unitID, UserType accountType) throws UserException, SQLException {
+        // generate a new password
+        String password = "password";
+
+        switch (accountType) {
             case Employee:
-                intialID = "S";
-                accType = userTypeToS(accountType);
+                Employee newEmployee = new Employee(firstName, lastName, unitID, password);
                 break;
             case Admin:
-                intialID = "A";
-                accType = userTypeToS(accountType);
+                Admin newAdmin = new Admin(firstName, lastName, unitID, password);
                 break;
             case Lead:
-                intialID = "L";
-                accType = userTypeToS(accountType);
+                Lead newLead = new Lead(firstName, lastName, unitID, password);
                 break;
             default:
                 throw new UserException("Not valid UserType");
         }
+    }
 
-        Statement statement = connection.createStatement();
 
-        int maxUserID = 0;
-        String sqlMaxUserID
-                = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
-                + intialID + "';";
-        ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
+    public void newUnit(String unitName, double creditBalance, double creditLimit){
+        Unit unitNew = new Unit(unitName,creditBalance, creditLimit);
+    }
 
-        if (getMaxID.next() && getMaxID.getString("maxUserID") != null) {
-            maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
+    public void newAsset(String assetName, String assetType) throws SQLException, AssetTypeException {
+        Asset assetNew = new Asset(assetName, assetType);
+    }
+
+    public void newAsset(String assetName, String assetType, double price) throws SQLException, AssetTypeException {
+        Asset assetNew = new Asset(assetName, assetType, price);
+    }
+
+    public static void editCredits(String unitID, double creditBalance) throws Exception {
+        if (unitID == null || unitID == ""){
+            throw new Exception("Unit ID is invalid.");
         }
-
-        String newUserID = intialID + String.format("%04d", maxUserID + 1);
-        System.out.println(newUserID);
-        userID = newUserID;
-
-        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-        newUser.clearParameters();
-        newUser.setString(1, newUserID);
-        newUser.setString(2, firstName);
-        newUser.setString(3, lastName);
-        newUser.setString(4, unitID);
-        newUser.setString(5, accType);
-        newUser.setString(6, password);
-
-        newUser.execute();
+        if (!unitExists(unitID)){
+            throw new Exception("Unit ID doesn't exist.");
+        }
+        if (creditBalance < 0){
+            throw new Exception("Input credit balance cannot be under 0");
+        }
+        String sqlAccount = "UPDATE units SET creditBalance = ? WHERE unitID = ?;";
+        PreparedStatement changeAccountT = connection.prepareStatement(sqlAccount);
+        changeAccountT.clearParameters();
+        changeAccountT.setDouble(1, creditBalance);
+        changeAccountT.setString(2, unitID);
+        changeAccountT.executeUpdate();
     }
 
-    public void addUnit(){
-        //new unit
+    public static void editAccountType(String userID, String accountType) throws SQLException {
+        if (usernameExists(userID) && accountTypeValid(accountType)) {
+            String sqlAccount = "UPDATE users SET accountType = ? WHERE userID = ?;";
+            PreparedStatement changeAccountT = connection.prepareStatement(sqlAccount);
+            changeAccountT.clearParameters();
+            changeAccountT.setString(1, accountType);
+            changeAccountT.setString(2, userID);
+            changeAccountT.executeUpdate();
+        }
     }
 
-    public void editCredits(){
-
-    }
-
-    public void editAssets(){
-
+    public void editInventory(String unitID, String assetID, int quantity){
+        // retrieve their current inventory storage
+        // retrieve the value of their quantity
+        // do some maths
+        // if it is valid, then edit
+        // else, throw exception and return
     }
 
     public void viewRequests(){

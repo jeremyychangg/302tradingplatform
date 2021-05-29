@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 
 import static tradingPlatform.Main.connection;
 import static tradingPlatform.Main.setCurrentUser;
@@ -14,15 +15,15 @@ import static tradingPlatform.user.User.getAccountType;
 public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
-    private JLabel logo = new JLabel();
+    private final JLabel logo = new JLabel();
     //    private JLabel label;
-    private JFrame frame;
-    private JPanel panel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton button;
+    private final JFrame frame;
+    private final JPanel panel;
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JButton button;
 
-    private ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
+    private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
     public loginGUI() {
         frame = new JFrame();
@@ -39,7 +40,6 @@ public class loginGUI implements ActionListener {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
         button.setMargin(new Insets(5, 20, 5, 20));
-//        button.setPadding(new Insets(5,20, 5, 20));
         button.setFont(btnFont);
         button.setBackground(new Color(0, 140, 237));
         button.setFocusable(false);
@@ -53,14 +53,9 @@ public class loginGUI implements ActionListener {
         logo.setBorder(BorderFactory.createEmptyBorder(150, 0, 50, 0));
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-//        JPanel usernamePanel = new JPanel();
-//        usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.PAGE_AXIS));
-//        usernameField = new JTextField( "Username", 15);
-        usernameField = new HintTextField( "Username");
+        usernameField = new HintTextField("Username");
         passwordField = new JPasswordField(25);
 
-
-        JLabel userTxt = new JLabel("Username");
         JLabel passwordTxt = new JLabel("Password");
 
         //Aligning the text within the field
@@ -77,14 +72,9 @@ public class loginGUI implements ActionListener {
 
 //        passwordField.setActionCommand(Login);
 
-//        usernamePanel.add(userTxt, BorderLayout.CENTER);
-//        usernamePanel.add(usernameField, BorderLayout.CENTER);
-
-
         panel.setBorder(BorderFactory.createEmptyBorder(0, 200, 200, 200));
 
         panel.add(logo, BorderLayout.CENTER);
-//        panel.add(usernamePanel, BorderLayout.CENTER);
         panel.add(usernameField, BorderLayout.CENTER);
         panel.add(invisible, BorderLayout.CENTER);
         panel.add(passwordField, BorderLayout.CENTER);
@@ -103,14 +93,13 @@ public class loginGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String usernameInput = usernameField.getText();
-        System.out.println("The username inputted " + usernameInput);
         char[] passwordInput = passwordField.getPassword();
         try {
             if (passwordCorrect(usernameInput, passwordInput)) {
                 frame.dispose();
                 setCurrentUser(usernameInput);
 
-                switch (getAccountType()) {
+                switch (Objects.requireNonNull(getAccountType())) {
                     case Employee:
                         new employeeScreen();
                         break;
@@ -125,8 +114,6 @@ public class loginGUI implements ActionListener {
                 }
                 usernameField.setText("");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -135,7 +122,7 @@ public class loginGUI implements ActionListener {
     /**
      * This code was adapted from https://stackoverflow.com/questions/1738966/java-jtextfield-with-input-hint
      */
-    public class HintTextField extends JTextField {
+    public static class HintTextField extends JTextField {
         public HintTextField(final String hint) {
             setText(hint);
             setForeground(Color.GRAY);
@@ -168,7 +155,6 @@ public class loginGUI implements ActionListener {
     //GUI
     public boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
         Statement loginCheck = connection.createStatement();
-        System.out.println(passwordInput);
 
         String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "' AND password = '" + String.valueOf(passwordInput) + "';";
         System.out.println(loginInput);
@@ -181,11 +167,7 @@ public class loginGUI implements ActionListener {
             passwordReturn = loginResults.getString("password");
         }
 
-        if (userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput))) {
-            return true;
-        } else {
-            return false;
-        }
+        return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
     }
 
     public String getString(char[] passwordInput) {
@@ -196,32 +178,9 @@ public class loginGUI implements ActionListener {
         return passwordString.toString();
     }
 
-    protected class ClosingListener extends WindowAdapter {
+    protected static class ClosingListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             System.exit(0);
         }
     }
 }
-
-//
-//    //GUI
-//    public boolean passwordCorrect(){
-//
-//    }
-
-
-//    /**
-//     * In the circumstance where the user actually focuses on the input field. Delete the default text.
-//     * @param e
-//     */
-//    @Override
-//    public void focusGained(FocusEvent e){
-//        passwordField.setText("");
-//    }
-//
-//    @Override
-//    public void focusLost(FocusEvent e){
-//        passwordField.setText("Password");
-//    }
-
-

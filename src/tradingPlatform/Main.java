@@ -1,19 +1,19 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.exceptions.UserException;
-import tradingPlatform.gui.loginGUI;
 
 import java.sql.Connection;
-import java.sql.SQLException;
+
+import static tradingPlatform.user.Admin.editCredits;
 
 public class Main {
     private static String currentUser;
-    public static String getCurrentUser(){
+
+    public static String getCurrentUser() {
         return Main.currentUser;
     }
 
-    public static void resetCurrentUser(){
+    public static void resetCurrentUser() {
         setCurrentUser(null);
     }
 
@@ -23,13 +23,16 @@ public class Main {
         Main.currentUser = currentUser;
     }
 
-    public static void main(String[] args) throws SQLException, UserException {
+    public static void main(String[] args) throws Exception {
         try {
             new JBDCConnection();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
+        editCredits("ADM0000001", 1400.0);
+
 //        setCurrentUser("S0001");
-        new loginGUI();
+//        new loginGUI();
+//        System.out.println(usernameExists("ADSFS"));
 //        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());
 //
 //        User current = new User("S0001");
@@ -47,5 +50,6 @@ public class Main {
 //        new employeeScreen();
 //        new Screen();
     }
+
 }
 

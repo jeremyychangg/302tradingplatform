@@ -24,7 +24,6 @@ public class adminScreen extends Screen {
     // Buttons
     private JLabel logo = new JLabel();
     private JButton logoutButton = new JButton();
-//    private JButton requestButton = new JButton();
 
     // Images when unselected
     private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
@@ -47,7 +46,7 @@ public class adminScreen extends Screen {
      * within the frame. Sets the main panel to a preferred dimension and also initialises
      * the sidebar buttons.
      */
-    private void initUI(){
+    private void initUI() {
         // Setting up the frame and panels
         panel = new JPanel();
         logoutPane = new JPanel();
@@ -61,7 +60,7 @@ public class adminScreen extends Screen {
     /**
      * Adds the button listeners relevant to the admin user.
      */
-    private void addButtonListeners(){
+    private void addButtonListeners() {
         logoutButton.addActionListener(this);
     }
 
@@ -73,9 +72,10 @@ public class adminScreen extends Screen {
      * whilst the main panel (a.k.a. panel) would be set up to sit on the east of the frame.
      * The title of the window is set to Admin, and all of the data would be packed to return
      * a frame to the main constructor.
+     *
      * @return a frame containing each the main panel and sidebar panel
      */
-    private JFrame setupAdminFrame(){
+    private JFrame setupAdminFrame() {
         // Initialize the frame for the admin UI
         frame = new JFrame();
 
@@ -89,7 +89,7 @@ public class adminScreen extends Screen {
     }
 
 
-    private void adminSidebar(){
+    private void adminSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
@@ -128,9 +128,19 @@ public class adminScreen extends Screen {
         logoutPane.setBackground(baseBlue);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
+        sidebarListeners(e);
+    }
+
+    public void sidebarListeners(ActionEvent e) {
+        if (e.getSource() == logoutButton) {
+            System.out.println("Logout GUI");
+            // insert reset functions
+            Main.resetCurrentUser();
+            new loginGUI();
+            frame.dispose();
+        }
         if (e.getSource() == logoutButton) {
             System.out.println("Logout GUI");
             // insert reset functions
@@ -139,4 +149,5 @@ public class adminScreen extends Screen {
             frame.dispose();
         }
     }
+
 }

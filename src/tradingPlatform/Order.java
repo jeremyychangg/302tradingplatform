@@ -3,13 +3,9 @@ package tradingPlatform;
 import tradingPlatform.enumerators.OrderStatus;
 import tradingPlatform.enumerators.OrderType;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static tradingPlatform.Main.connection;
 
 public class Order {
     String orderID;
@@ -44,11 +40,10 @@ public class Order {
 
     }
 
-    public void AddOrderDatabase(){
+    public void AddOrderDatabase() {
 //        insert fields into database
     }
 }
-
 
 
 //Edit buy price edit sell price
