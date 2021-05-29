@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 public abstract class Screen implements ActionListener {
@@ -37,6 +39,12 @@ public abstract class Screen implements ActionListener {
         name.setFont(font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         panel.add(name, BorderLayout.WEST);
+    }
+
+    protected class ClosingListener extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
+            System.exit(0);
+        }
     }
 }
 

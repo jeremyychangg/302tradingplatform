@@ -28,18 +28,36 @@ public class leadScreen extends Screen {
     private ImageIcon requestIconS = new ImageIcon("src/img/request-Press-01.png");
 
     public leadScreen() throws SQLException {
-        // Setting up the frame and panels
-        frame = new JFrame();
+        initUI();
+        addButtonListeners();
+        frame.addWindowListener(new ClosingListener());
+    }
+
+    private void addButtonListeners() {
+        requestButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+    }
+
+    private void initUI() {
         panel = new JPanel();
+        panel.setPreferredSize(new Dimension(1380, 1050));
+//        panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
 
+        // Background Colour
+        Color baseBlue = new Color(0, 140, 237);
+        sidebarPanel.setBackground(baseBlue);
+        logoutPane.setBackground(baseBlue);
+
+        leadSidebar();
+        setupLeadFrame();
+    }
+
+    private void leadSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-//        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        panel.setPreferredSize(new Dimension(1380, 1000));
         sidebarPanel.setPreferredSize(new Dimension(310, 1000));
-        panel = new requestGUI();
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
@@ -65,11 +83,11 @@ public class leadScreen extends Screen {
         // Adding logout pane to sidebar
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
+    }
 
-        // Background Colour
-        Color baseBlue = new Color(0, 140, 237);
-        sidebarPanel.setBackground(baseBlue);
-        logoutPane.setBackground(baseBlue);
+    private JFrame setupLeadFrame() {
+        // Setting up the frame and panels
+        frame = new JFrame();
 
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
@@ -77,9 +95,7 @@ public class leadScreen extends Screen {
         frame.setTitle("Venda - Admin");
         frame.pack();
         frame.setVisible(true);
-
-        requestButton.addActionListener(this);
-        logoutButton.addActionListener(this);
+        return frame;
     }
 
     @Override
