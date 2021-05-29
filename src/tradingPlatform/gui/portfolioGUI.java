@@ -1,3 +1,6 @@
+/**
+ * @author Natalie Smith
+ */
 package tradingPlatform.gui;
 
 import tradingPlatform.user.User;
@@ -12,7 +15,6 @@ public class portfolioGUI extends JPanel {
     Font font1 = new Font("Avenir", Font.BOLD, 40);
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
-
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
@@ -100,16 +102,31 @@ public class portfolioGUI extends JPanel {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Order History");
         orderHistoryHeading.setFont(h1);
-        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(100, 0, 0, 10));
+        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 10));
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 4;
 
         panel.add(orderHistoryHeading, this.gbc);
         JPanel orderHistoryList = new JPanel();
-        orderHistoryList.add(new Table());
+
+        // making the list
+        String[] columns = new String[] {
+                "Order ID", "Asset", "Quantity", "Price", "Date"
+        };
+
+        Object[][] data = new Object[][] {
+                {1, "Printing Paper skdjflsdjfksdflsjdklfjsdklflksdfjsklf", 50, "$" + 100, 10/02/2020 },
+                {2, "CPU Hours", 4, "$" + 100, 10/02/2020 },
+                {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
+        };
+
+        Integer[] width = new Integer[] { 150, 600, 150, 150, 150};
+
+        orderHistoryList.add(new Table(columns, data, width));
+
         orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-        orderHistoryList.setBackground(Color.WHITE);
+//        orderHistoryList.setBackground(Color.WHITE);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 5;

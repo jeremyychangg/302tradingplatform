@@ -1,3 +1,6 @@
+/**
+ * @author Natalie Smith
+ */
 package tradingPlatform.gui;
 
 import tradingPlatform.Main;
@@ -162,6 +165,7 @@ public class employeeScreen extends Screen {
                 pane = new JScrollPane(panel,
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                pane.getVerticalScrollBar().setUnitIncrement(7);
                 pane.setPreferredSize(new Dimension(1390, 1060));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (SQLException throwable) {

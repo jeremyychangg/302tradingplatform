@@ -8,40 +8,61 @@ import java.awt.*;
 
 
 public class Table extends JPanel {
-    Font tableSize = new Font("Avenir", Font.PLAIN, 18);
+    Font tableSize = new Font("Avenir", Font.PLAIN, 16);
+    Font headerSize = new Font("Avenir", Font.BOLD, 18);
 
-    public Table() {
+    public Table(String[] columns, Object[][] data, Integer[] width) {
         //headers for the table
         JPanel panel = new JPanel();
-        String[] columns = new String[] {
-                "Order ID", "Asset", "Quantity", "Price", "Date"
-        };
 
         //actual data for the table in a 2d array
-        Object[][] data = new Object[][] {
-                {1, "Printing Paper", 50, "$" + 100, 10/02/2020 },
-                {2, "CPU Hours", 4, "$" + 100, 10/02/2020 },
-                {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
-        };
+
         //create table with data
         JTable table = new JTable(data, columns);
+        JTableHeader header = table.getTableHeader();
+
         table.setAlignmentX(Component.LEFT_ALIGNMENT);
         table.setRowHeight(35);
         table.setOpaque(false);
         table.setFont(tableSize);
+
+        header.setPreferredSize(new Dimension(1200, 50));
+        header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        header.setOpaque(false);
+        header.setFont(headerSize);
+
+        //instance table model
+        DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+        table.setModel(tableModel);
+
         // changing the width of the columns
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(100);
-        columnModel.getColumn(1).setPreferredWidth(400);
-        columnModel.getColumn(2).setPreferredWidth(70);
-        columnModel.getColumn(3).setPreferredWidth(70);
-        columnModel.getColumn(4).setPreferredWidth(100);
+        TableColumnModel headerModel = header.getColumnModel();
+
+        int index = 0;
+        for (String column : columns){
+            columnModel.getColumn(index).setPreferredWidth(width[index]);
+
+            // Render the table contents to be in the centre of the table
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+            headerModel.getColumn(index).setCellRenderer(centerRenderer);
+            columnModel.getColumn(index).setCellRenderer( centerRenderer );
+            index++;
+        }
 
 
-
-        //add the table to the frame
-//        new JScrollPane(table)
-        panel.add(table);
+        panel.setLayout(new BorderLayout());
+        panel.add(header, BorderLayout.NORTH);
+        panel.add(table, BorderLayout.CENTER);
+//        panel.add(table);
         add(panel);
     }
 }

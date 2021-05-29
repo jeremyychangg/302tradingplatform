@@ -52,19 +52,25 @@ public class User {
 
         // Throw exceptions if requirements not met
         if(firstName == null || firstName == "") {
-            throw new UserException("UserID cannot be null or empty.");
+            throw new UserException("First Name cannot be null or empty.");
         }
-        if(firstName == null || firstName == "") {
-            throw new UserException("UserID cannot be null or empty.");
+        if(lastName == null || lastName == "") {
+            throw new UserException("Last Name cannot be null or empty.");
         }
-        if(unitID == null || unitID == "" || !unitExists(unitID)) {
-            throw new UserException("Username cannot be null or empty.");
+        if(unitID == null || unitID == "") {
+            throw new UserException("Unit ID cannot be null or empty.");
+        }
+        if(!unitExists(unitID)){
+            throw new UserException("Unit ID doesn't exist. Enter in valid unitID.");
         }
         if(password == null || password == "") {
-            throw new UserException("Username cannot be null or empty.");
+            throw new UserException("Password cannot be null or empty.");
         }
-        if(accountType == null || lastName == "") {
-            throw new UserException("Username cannot be null or empty.");
+        if(accountType == null) {
+            throw new UserException("Account Type cannot be null or empty.");
+        }
+        if(userTypeToS(accountType) == null) {
+            throw new UserException("Account Type not a valid Account Type.");
         }
 
         // Based on the input for the account, set the userID initial accordingly
