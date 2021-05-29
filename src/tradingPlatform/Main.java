@@ -1,9 +1,11 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
+import tradingPlatform.exceptions.UserException;
+import tradingPlatform.gui.employeeScreen;
 
 import java.sql.Connection;
-
+import java.sql.SQLException;
 
 public class Main {
     private static String currentUser;
@@ -11,6 +13,9 @@ public class Main {
         return Main.currentUser;
     }
 
+    public static void resetCurrentUser(){
+        setCurrentUser(null);
+    }
 
     public static Connection connection;
 
@@ -18,24 +23,15 @@ public class Main {
         Main.currentUser = currentUser;
     }
 
-    public static void resetCurrentUser(){
-        setCurrentUser(null);
-    }
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, UserException {
         try {
-            // write your code here
             new JBDCConnection();
-
-            System.out.println("Test working");
-//            Asset asset3 = new Asset( "Big Desk", "Furniture", 8.22);
-            connection.close();
-
         } catch (Exception e){
-            // Add Error handling
-            // Apply overlay to text box GUI
         }
 
-
+//        new loginGUI();
+        new employeeScreen();
+//        new Screen();
     }
 }
+
