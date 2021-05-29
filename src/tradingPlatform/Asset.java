@@ -1,12 +1,14 @@
 package tradingPlatform;
 
-import tradingPlatform.database.JBDCConnection;
 import tradingPlatform.exceptions.AssetRemovalException;
 import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.exceptions.MultipleRowDeletionException;
 import tradingPlatform.exceptions.NegativePriceException;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
 
@@ -46,17 +48,15 @@ public class Asset {
 
 
         // Get highest ID value existing in database
-        int maxID = 0;
+        int maxID;
         Statement statement = connection.createStatement();
         String sqlMaxID
-                = "SELECT max(substring(assetID, 3, 8)) as maxID FROM assets WHERE substring(assetID, 1, 2) = '"
+                = "SELECT max(substring(assetID, 3, 8)) as maxID FROM assets WHERE substring(assetID, 3, 8) = '"
                 + IDsubstring + "';";
         ResultSet getMaxID = statement.executeQuery(sqlMaxID);
 
         // Extract string result and parse as integer
-        while (getMaxID.next()) {
-            maxID = Integer.parseInt(getMaxID.getString("maxID"));
-        }
+        maxID = Integer.parseInt(getMaxID.getString("maxID"));
 
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);
@@ -64,13 +64,12 @@ public class Asset {
 
         PreparedStatement newAsset =
                 connection.prepareStatement("INSERT INTO assets (assetID, assetName, assetType) VALUES (?,?,?);");
-
+        newAsset.clearParameters();
         newAsset.setString(1, newID);
         newAsset.setString(2, assetName);
         newAsset.setString(3, assetType);
 
         newAsset.execute();
-        connection.close();
     }
 
 
@@ -99,17 +98,15 @@ public class Asset {
 
 
         // Get highest ID value existing in database
-        int maxID = 0;
+        int maxID;
         Statement statement = connection.createStatement();
         String sqlMaxID
-                = "SELECT max(substring(assetID, 3, 8)) as maxID FROM assets WHERE substring(assetID, 1, 2) = '"
+                = "SELECT max(substring(assetID, 3, 8)) as maxID FROM assets WHERE substring(assetID, 3, 8) = '"
                 + IDsubstring + "';";
         ResultSet getMaxID = statement.executeQuery(sqlMaxID);
 
         // Extract string result and parse as integer
-        while (getMaxID.next()) {
-            maxID = Integer.parseInt(getMaxID.getString("maxID"));
-        }
+        maxID = Integer.parseInt(getMaxID.getString("maxID"));
 
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);

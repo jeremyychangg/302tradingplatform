@@ -3,9 +3,6 @@ package tradingPlatform;
 import tradingPlatform.database.JBDCConnection;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 
 public class Main {
@@ -25,10 +22,7 @@ public class Main {
         try {
             // write your code here
             new JBDCConnection();
-
             System.out.println("Test working");
-//            Asset asset3 = new Asset( "Big Desk", "Furniture", 8.22);
-            connection.close();
 
         } catch (Exception e){
             // Add Error handling

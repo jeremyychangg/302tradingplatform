@@ -17,7 +17,21 @@ public class portfolioGUI extends JPanel {
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+<<<<<<< HEAD
         Screen.welcomeMessage(panel);
+=======
+        JLabel welcome = new JLabel("Hi,");
+        welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+//        welcome.setSize(200,200);
+        welcome.setFont(font1);
+        panel.add(welcome, BorderLayout.NORTH);
+
+        JLabel name = new JLabel("Peter");
+//        JLabel name = new JLabel(currentUser.getName());
+        name.setFont(font1);
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        panel.add(name, BorderLayout.WEST);
+>>>>>>> 84fced426bb5a18087cec195d92f0ab84e626242
 
         // Here make the graphical chart
         JPanel chartSection = new JPanel();

@@ -6,9 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+<<<<<<< HEAD:src/tradingPlatform/gui/dashboardGUI.java
 public class dashboardGUI extends JPanel implements ActionListener {
+=======
+public class DashboardGUI implements ActionListener {
+    int count = 0;
+>>>>>>> 84fced426bb5a18087cec195d92f0ab84e626242:src/tradingPlatform/gui/DashboardGUI.java
     private JLabel label;
     private JPanel panel;
+<<<<<<< HEAD:src/tradingPlatform/gui/dashboardGUI.java
     private JPanel summary;
     private JPanel left;
 
@@ -44,6 +50,33 @@ public class dashboardGUI extends JPanel implements ActionListener {
 
         add(panel);
     }
+=======
+
+    public DashboardGUI(){
+        frame = new JFrame();
+        panel = new JPanel();
+
+        JButton button = new JButton("Home");
+        button.addActionListener(this);
+
+        label = new JLabel("Hello, welcome Steve");
+
+        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 400));
+        panel.setLayout(new GridLayout(0,1));
+        panel.add(button);
+        panel.add(label);
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setTitle("Dashboard");
+        frame.pack();
+
+        frame.setVisible(true);
+
+    }
+//    public static void main(String[] args){
+//        new dashboardGUI();
+//    }
+>>>>>>> 84fced426bb5a18087cec195d92f0ab84e626242:src/tradingPlatform/gui/DashboardGUI.java
 
     @Override
     public void actionPerformed(ActionEvent e) {
