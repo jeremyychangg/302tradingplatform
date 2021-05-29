@@ -13,7 +13,7 @@ public class employeeScreen extends Screen {
     private JPanel panel;
     private JPanel sidebarPanel;
     private JPanel logoutPane;
-    private JScrollPane pane;
+    private JScrollPane pane = new JScrollPane();
 
     // Buttons
     private final JLabel logo = new JLabel();
@@ -139,8 +139,8 @@ public class employeeScreen extends Screen {
             try {
                 panel = new dashboardGUI();
                 frame.add(panel, BorderLayout.CENTER);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
             frame.setTitle("Dashboard");
             frame.pack();
@@ -155,16 +155,17 @@ public class employeeScreen extends Screen {
         } else if (e.getSource() == portfolioButton) {
 //            System.out.println("Portfolio GUI");
             frame.remove(panel);
+            frame.remove(pane);
             panel.removeAll();
             try {
                 panel = new portfolioGUI();
                 pane = new JScrollPane(panel,
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                pane.setPreferredSize(new Dimension(1380, 1050));
+                pane.setPreferredSize(new Dimension(1390, 1060));
                 frame.add(pane, BorderLayout.CENTER);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
             frame.setTitle("Portfolio");
             frame.pack();

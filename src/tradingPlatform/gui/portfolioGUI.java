@@ -30,7 +30,7 @@ public class portfolioGUI extends JPanel {
     private void setUpPanel(){
         // setting up black JPanel
         this.panel = new JPanel();
-//        this.panel.setPreferredSize(new Dimension(1380, 1050));
+        this.panel.setPreferredSize(new Dimension(1380, 1200));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
 //        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.panel.setLayout(new GridBagLayout());
@@ -47,10 +47,10 @@ public class portfolioGUI extends JPanel {
         this.gbc.gridx = 1;
         this.gbc.gridy = 0;
         this.gbc.anchor = GridBagConstraints.LINE_START;
-        this.gbc.fill=GridBagConstraints.HORIZONTAL;
-        this.gbc.anchor=GridBagConstraints.CENTER;
+        this.gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.gbc.anchor = GridBagConstraints.CENTER;
         this.gbc.fill = GridBagConstraints.BOTH;
-        this.gbc.weightx = 0.7;
+        this.gbc.weightx = 1.0;
         this.gbc.weighty = 1.0;
 
         panel.add(welcome, this.gbc);
