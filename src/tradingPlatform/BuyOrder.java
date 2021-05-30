@@ -55,14 +55,17 @@ public class BuyOrder extends Order {
         // Find sell orders of same asset
         Statement smt = connection.createStatement();
         String sqlFindOrder
-                = "SELECT * FROM orders WHERE assetID = '" + assetID + "' and orderType = 'SELL';";
+                = "SELECT * FROM orders WHERE assetID = '" + assetID + "' and orderType = 'SELL'" +
+                "ORDER BY orderTime;";
         ResultSet sellOrders = smt.executeQuery(sqlFindOrder);
 
         //        If match execute buy and sell order
 //        match quantity and price
 
+        // List to store corresponding sell orders of the same asset
         ArrayList<Order> matchingOrders = new ArrayList<>();
 
+        // Add queried rows as new Sell Orders in list
         while (sellOrders.next()) {
             matchingOrders.add(
                     new SellOrder(
@@ -70,7 +73,7 @@ public class BuyOrder extends Order {
                             sellOrders.getString("userID"),
                             sellOrders.getString("unitID"),
                             sellOrders.getString("assetID"),
-                            sellOrders.getString("orderTime").substring(0,19),
+                            sellOrders.getString("orderTime"),
                             OrderStatus.valueOf(sellOrders.getString("orderStatus")),
                             OrderType.valueOf(sellOrders.getString("orderType")),
                             sellOrders.getDouble("orderPrice"),
@@ -80,6 +83,10 @@ public class BuyOrder extends Order {
                     )
             );
         }
+
+        // Remove orders if the sell ask is greater than the buy bid
+        matchingOrders.removeIf(sells -> (sells.orderPrice > this.orderPrice));
+
 
         matchingOrders.forEach((x) -> System.out.println(x.orderID + ", " + x.orderType + ", " + x.userID + ", " + x.assetID));
 

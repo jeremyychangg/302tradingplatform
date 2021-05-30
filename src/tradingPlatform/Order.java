@@ -156,6 +156,11 @@ public class Order {
         try {
             newOrder.execute();
         } catch (SQLException e) {
+
+            // Handle if no database
+
+
+
             System.out.println("New Order Error: " + e.getMessage());
         }
 
@@ -185,7 +190,13 @@ public class Order {
         }
     }
 
+    public void ChangeOrderQuantity() {
 
+    }
+
+    public void ChangeAveragePrice() {
+        // Weighted Average Price of all units
+    }
 
 }
 
