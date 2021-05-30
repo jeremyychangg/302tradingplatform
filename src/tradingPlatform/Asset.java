@@ -37,6 +37,18 @@ public class Asset {
     private double currentPrice;
 
     /**
+     * For creating asset instance when it already exists in database
+     * @param assetID
+     * @param assetName
+     * @param assetType
+     */
+    public Asset(String assetID, String assetName, String assetType) {
+        this.assetID = assetID;
+        this.assetName = assetName;
+        this.assetType = assetType;
+    }
+
+    /**
      * For adding a new asset into the system without a price yet
      * @param assetName
      * @param assetType
@@ -97,7 +109,6 @@ public class Asset {
         newAsset.setString(3, assetType);
 
         newAsset.execute();
-        connection.close();
     }
 
 

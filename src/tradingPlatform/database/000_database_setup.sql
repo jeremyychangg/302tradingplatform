@@ -27,10 +27,11 @@ CREATE TABLE assets (
 );
 
 CREATE TABLE inventory (
-    unitID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
+    unitID          CHAR(10)                            NOT NULL    ,
     assetID         CHAR(10)                            NOT NULL    ,
-    quantity        INT(8)                                          ,
-    orderID         CHAR(10)
+    orderID         CHAR(10)                                        ,
+    quantity        INT(8)                              NOT NULL    ,
+    price           FLOAT
 );
 
 CREATE TABLE orders (

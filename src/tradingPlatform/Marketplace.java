@@ -22,5 +22,11 @@ public class Marketplace {
 
     }
 
+    // Method to check that no incomplete orders with quantRemain of 0
 
+//    Method to check no negative quantity in orders/inventory
+
+    // Run reconciliation
+
+//    Execute orders
 }

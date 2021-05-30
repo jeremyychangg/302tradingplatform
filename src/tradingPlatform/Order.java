@@ -22,7 +22,9 @@ package tradingPlatform;
 
 import tradingPlatform.enumerators.OrderStatus;
 import tradingPlatform.enumerators.OrderType;
+import tradingPlatform.exceptions.ChangeException;
 import tradingPlatform.exceptions.InvalidAssetException;
+import tradingPlatform.exceptions.InvalidOrderException;
 import tradingPlatform.exceptions.MultipleRowDeletionException;
 
 import java.sql.PreparedStatement;
@@ -190,11 +192,55 @@ public class Order {
         }
     }
 
-    public void ChangeOrderQuantity() {
+    public void ChangeOrderQuantity(int quantity) throws ChangeException, SQLException {
+        int oldQuantRemain = this.quantRemain;
+        int oldOrderQuant = this.orderQuant;
 
+        if (quantity > this.quantFilled) {
+            throw new ChangeException("Order quantity cannot be changed to less than filled amount");
+        } else {
+            this.orderQuant = quantity;
+            this.quantRemain = quantity - this.quantFilled;
+        }
+
+        String sqlUpdateQuant = "UPDATE orders SET orderQuantity = ?, quantRemain = ? WHERE orderID = '" + this.orderID + "';";
+        PreparedStatement smt = connection.prepareStatement(sqlUpdateQuant);
+        smt.setInt(1, this.orderQuant);
+        smt.setInt(2, this.quantRemain);
+        smt.executeUpdate();
     }
 
-    public void ChangeAveragePrice() {
+    /**
+     * Used to changed quantity remaining and filled in order, mainly when orders are executed
+     */
+    public void ChangeQuantRemainFilled(int remaining, int filled) throws InvalidOrderException, SQLException {
+        // If quantity filled and quantity remaining does not sum to order quantity, throw exception
+        if (remaining + filled != this.orderQuant) {
+            throw new InvalidOrderException("Order executed resulted in a quantity discrepancy");
+        }
+
+        this.quantRemain = remaining;
+        this.quantFilled = filled;
+
+        String sqlUpdateQuant = "UPDATE orders SET quantRemain = ?, quantFilled = ? WHERE orderID = '" + this.orderID + "';";
+        PreparedStatement smt = connection.prepareStatement(sqlUpdateQuant);
+        smt.setInt(1, this.quantRemain);
+        smt.setInt(2, this.quantFilled);
+        smt.executeUpdate();
+    }
+
+    public void ChangeStatus(OrderStatus orderStatus) throws SQLException {
+        if (this.orderStatus != orderStatus) {
+            this.orderStatus = orderStatus;
+
+            String sqlUpdateStatus = "UPDATE orders SET orderStatus = '?' WHERE orderID = '" + this.orderID + "';";
+            PreparedStatement smt = connection.prepareStatement(sqlUpdateStatus);
+            smt.setString(1, this.orderStatus.name());
+            smt.executeUpdate();
+        }
+    }
+
+    public void ChangeAveragePrice(double price) {
         // Weighted Average Price of all units
     }
 
