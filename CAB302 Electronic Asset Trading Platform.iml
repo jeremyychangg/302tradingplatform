@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/tests" />
       <excludeFolder url="file://$MODULE_DIR$/src/tradingPlatform/user" />
+      <excludeFolder url="file://$MODULE_DIR$/src/tradingPlatform/gui" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
