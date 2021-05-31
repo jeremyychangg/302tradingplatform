@@ -66,19 +66,23 @@ public class Unit {
         this.unitName = unitName;
     }
 
+    // Get Credit Balance
     public double getCreditBalance() {
         return creditBalance;
     }
 
+    // Set New Credit Balance
     public void setCreditBalance() {
         // update database
         this.creditBalance = creditBalance;
     }
 
+    // Get Limit
     public double getLimit() {
         return limit;
     }
 
+    // Set New Limit
     public void setLimit() {
         // update database
         this.limit = limit;
