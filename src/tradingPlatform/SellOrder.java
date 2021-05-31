@@ -43,7 +43,7 @@ public class SellOrder extends Order{
     }
 
     public SellOrder(String userID, String assetID, double orderPrice, int orderQuant)
-            throws SQLException, InvalidAssetException {
+            throws SQLException, InvalidAssetException, InvalidOrderException {
 
         super(userID, assetID, OrderType.SELL, orderPrice, orderQuant);
 
@@ -86,12 +86,10 @@ public class SellOrder extends Order{
         // Remove orders if the buy bid is less than the sell ask
         matchingOrders.removeIf(buys -> (buys.orderPrice < this.orderPrice));
 
-//        Check quantity
-
         // List to store required orders that can fully/partially or completely not fill order
         ArrayList<Order> requiredOrders = new ArrayList<>();
 
-        // Required orders to facilitate quantity of this order
+        // Required asset amount to facilitate quantity of this order
         int requiredQuant = this.quantRemain;
 
         // Loop through orders matching conditions and append as many orders possible to
