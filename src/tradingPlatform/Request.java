@@ -73,19 +73,4 @@ public class Request{
     }
 
     // FULFIL REQUESTS //
-
-
-    public void RequestDataSource() {
-        Connection connection = null;
-        Statement st;
-        {
-            try {
-                st = connection.createStatement();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-    }
-
-
 }
