@@ -35,7 +35,7 @@ public class portfolioGUI extends JPanel {
     private void setUpPanel(){
         // setting up black JPanel
         this.panel = new JPanel();
-        this.panel.setPreferredSize(new Dimension(1380, 1200));
+        this.panel.setPreferredSize(new Dimension(1380, 1500));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
 //        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.panel.setLayout(new GridBagLayout());
@@ -73,15 +73,24 @@ public class portfolioGUI extends JPanel {
     private void chartSection() {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
-        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
+        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
+//        chartSection.setPreferredSize(new Dimension(800, 800));
 
-        JLabel chart = new JLabel("Chart");
-        chart.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
-        chartSection.setAlignmentX(Component.LEFT_ALIGNMENT);
-        chartSection.add(chart);
+//        JLabel chart = new JLabel("Chart");
+//        chart.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
+        chartSection.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        chartSection.add(chart);
+
+
+        Piechart pie = new Piechart(600, 400);
+        pie.setBorder(BorderFactory.createEmptyBorder(150, 600, 240, 600));
+//        chartSection.setBackground(Color.blue);
+
+        chartSection.add(pie);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 2;
+
 
         panel.add(chartSection, this.gbc);
     }

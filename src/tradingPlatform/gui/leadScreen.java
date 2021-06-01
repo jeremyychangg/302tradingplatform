@@ -176,7 +176,11 @@ public class leadScreen extends Screen {
         } else if (e.getSource() == watchlistButton) {
             removePrevious();
 
-            panel = new watchlistGUI();
+            try {
+                panel = new watchlistGUI();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Watchlist");
             frame.pack();

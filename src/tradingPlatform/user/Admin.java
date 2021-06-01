@@ -56,6 +56,8 @@ public class Admin extends User{
             throw new UserException("Account Type not a valid Account Type.");
         }
 
+//        Optional<String> hasedPass = hashPassword(user.returnpassword(), );
+
         // Based on the input for the account, set the userID initial accordingly
 //        String accType = "";
 //        String intialID = "";

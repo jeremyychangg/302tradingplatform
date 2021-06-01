@@ -1,16 +1,12 @@
 package tradingPlatform.gui;
 
-import tradingPlatform.Asset;
-import tradingPlatform.Watchlist;
 import tradingPlatform.exceptions.AssetTypeException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static tradingPlatform.gui.Screen.welcomeMessage;
-import static tradingPlatform.user.User.retrieveOrders;
 
 public class watchlistGUI  extends JPanel {
     private JPanel panel = new JPanel();
@@ -24,7 +20,7 @@ public class watchlistGUI  extends JPanel {
     public watchlistGUI() throws SQLException {
         setUpPanel();
         welcomeMessage(panel);
-        watchlistDisplay();
+//        watchlistDisplay();
         add(panel);
     }
 
@@ -51,8 +47,8 @@ public class watchlistGUI  extends JPanel {
                 "     ID", "Name", "Type", "Date", "Price", "Quantity"
         };
 
-        ArrayList<Asset> data1 = Watchlist.GetWatchlist();
-        String[][] data = new String[data1.size()][];
+//        ArrayList<Asset> data1 = Watchlist.GetWatchlist();
+//        String[][] data = new String[data1.size()][];
         int i = 0;
 //        for (Asset c : data1)
 //        {
@@ -65,7 +61,7 @@ public class watchlistGUI  extends JPanel {
 
         Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
 
-        orderHistoryList.add(new Table(columns, data, width));
+//        orderHistoryList.add(new Table(columns, data, width));
 
         orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
 
