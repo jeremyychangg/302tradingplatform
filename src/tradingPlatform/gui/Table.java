@@ -14,28 +14,9 @@ public class Table extends JPanel {
     Font tableSize = new Font("Avenir", Font.PLAIN, 16);
     Font headerSize = new Font("Avenir", Font.BOLD, 18);
 
-    public Table(String[] columns, Object[][] data, Integer[] width) {
+    public Table(String[] columns, String[][] data, Integer[] width) {
         //headers for the table
         JPanel panel = new JPanel();
-
-//
-//        for (int i = 0; i < values.size(); i++){
-//            String orderID = values.get(i).getPosition();
-//            String assetName = values.get(i).getName();
-//            String orderType = values.get(i).getName();
-//            String orderTime = values.get(i).getName();
-//            String orderPrice = values.get(i).getName();
-//            String orderQuantity = values.get(i).getName();
-//
-//            Object[] data = {orderID, assetName, orderType, orderTime, orderPrice, orderQuantity,
-//                    totalMatches, goalF, goalA, ttgoalD};
-//
-//            tableModel.add(data);
-//
-//        }
-
-
-        //actual data for the table in a 2d array
 
         //create table with data
         JTable table = new JTable(data, columns);

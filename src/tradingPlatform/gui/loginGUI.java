@@ -64,13 +64,10 @@ public class loginGUI implements ActionListener {
         usernameField.setHorizontalAlignment(JTextField.LEFT);
         passwordField.setHorizontalAlignment(JTextField.LEFT);
 
-
         JPanel invisible = new JPanel();
         invisible.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         JPanel invisible2 = new JPanel();
         invisible2.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
-
-//        passwordField.setActionCommand(Login);
 
         panel.setBorder(BorderFactory.createEmptyBorder(0, 200, 200, 200));
 
@@ -82,7 +79,7 @@ public class loginGUI implements ActionListener {
         panel.add(button, BorderLayout.CENTER);
 
         frame.add(panel, BorderLayout.CENTER);
-        frame.setTitle("Login");
+        frame.setTitle("Venda - Login");
         frame.pack();
         frame.setVisible(true);
 
@@ -166,6 +163,19 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
+
+        /////////////////////////////////////////////////
+        //
+        //
+        //
+        //
+        //                   INSERT VERIFICATION PASSWORD HERE - PROPER
+        //
+        //
+        //
+        //
+        //
+        //////////////////////////////////////////////////
 
         return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
     }

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.Main.getCurrentUser;
 
 /**
  *
@@ -31,7 +32,7 @@ public class Watchlist {
      *
      * @return
      */
-    public ArrayList<Asset> GetWatchlist() throws SQLException, AssetTypeException {
+    public static ArrayList<Asset> GetWatchlist() throws SQLException, AssetTypeException {
         ArrayList<Asset> unitWatchlist = new ArrayList<>();
         String getWatchlist =
                         "SELECT DISTINCT " +

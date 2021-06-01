@@ -60,10 +60,11 @@ public class passwordEncryption {
     }
 
     public static void main(String[] args) throws Exception {
-        String salt = generateSalt(512).get();
+        String salt = generateSalt(511).get();
         String password = "Hello!";
         String key = hashPassword(password, salt).get();
-        System.out.println(verifyPassword("No hope",key, salt));
+        System.out.println(key);
+        System.out.println(verifyPassword("Hello!",key, salt));
     }
 }
 
