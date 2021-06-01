@@ -21,10 +21,7 @@
 
 package tradingPlatform;
 
-import tradingPlatform.exceptions.InvalidAssetException;
-
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -35,13 +32,13 @@ public class Inventory {
     ArrayList<InventoryItem> unitInventory;
     double inventorySize;
 
-    public Inventory(String unitID) throws SQLException, InvalidAssetException {
+    public Inventory(String unitID) throws Exception {
         this.unitID = unitID;
         this.unitInventory = findInventory(unitID);
 
     }
 
-    public ArrayList<InventoryItem> findInventory(String unitID) throws SQLException, InvalidAssetException {
+    public ArrayList<InventoryItem> findInventory(String unitID) throws Exception {
         ArrayList<InventoryItem> inventory = new ArrayList<>();
 
         // Query all inventory items

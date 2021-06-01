@@ -97,7 +97,7 @@ public class portfolioGUI extends JPanel {
     }
 
 
-    private void orderHistoryDisplay(){
+    private void orderHistoryDisplay() throws SQLException {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Order History");
         orderHistoryHeading.setFont(h1);
@@ -120,12 +120,13 @@ public class portfolioGUI extends JPanel {
                 {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
         };
 
+//        ArrayList<ArrayList<String>> data = retrieveOrders();
+
         Integer[] width = new Integer[] { 155, 600, 150, 150, 155};
 
         orderHistoryList.add(new Table(columns, data, width));
 
         orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        orderHistoryList.setBackground(Color.WHITE);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 5;

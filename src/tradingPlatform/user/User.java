@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import static tradingPlatform.Main.*;
 
@@ -353,6 +354,7 @@ public class User {
 
     /**
      * Method is used to set the type of account for the user
+     *
      * @param inputType
      */
     public static boolean accountTypeValid(String inputType) {
@@ -363,4 +365,48 @@ public class User {
         }
         return false;
     }
+
+
+    public static ArrayList<ArrayList<String>> retrieveOrders() throws SQLException {
+//        Object[][] retrievedOrders = new Object[][];
+//        List<Order> foundOrders = new ArrayList<>();
+        ArrayList<ArrayList<String>> orderIDs = new ArrayList<>();
+        String orderID = null;
+
+        Statement statement = connection.createStatement();
+
+        String orders = "SELECT o.orderID, a.assetName, o.orderType, o.orderTime, o.orderPrice, o.orderQuantity " +
+                "FROM orders AS o LEFT JOIN assets " +
+                "AS a ON o.assetID = a.assetID " +
+                "WHERE userID = '" + getCurrentUser() + "';";
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            ArrayList<String> singleList = new ArrayList<String>();
+            singleList.add(orderFind.getString("o.orderID"));
+            singleList.add(orderFind.getString("a.assetName"));
+            singleList.add(orderFind.getString("o.orderType"));
+            singleList.add(orderFind.getString("o.orderTime"));
+            singleList.add(orderFind.getString("o.orderPrice"));
+            singleList.add(orderFind.getString("o.orderQuantity"));
+            orderIDs.add(singleList);
+        }
+        return orderIDs;
+    }
+
+
+//    public static List<String> retrieveOrderIDs() {
+//        List<String> orderID = new ArrayList<>();
+//        String order = null;
+//        String orders = "SELECT orderID, a.assetName, o.orderType, o.orderTime, o.orderPrice, o.orderQuantity " +
+//                "FROM orders AS o LEFT JOIN assets " +
+//                "AS a ON o.assetID = a.assetID " +
+//                "WHERE userID = '" + getCurrentUser() + "';";
+//        ResultSet orderFind = statement.executeQuery(orders);
+//        if (orderFind.next() && orderFind.getString("orderID") != null) {
+//            while(orderFind.next() == true){
+//                orderID = orderFind.getString("unitID");
+//            }
+//        }
+//        return exists;
+//    }
 }

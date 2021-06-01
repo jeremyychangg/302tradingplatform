@@ -39,7 +39,6 @@ public class employeeScreen extends Screen {
     private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
-    private final ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
     public employeeScreen() throws SQLException {
         initUI();

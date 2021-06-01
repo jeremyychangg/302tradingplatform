@@ -1,10 +1,9 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
+import tradingPlatform.gui.leadScreen;
 
 import java.sql.Connection;
-
-import static tradingPlatform.user.User.unitExists;
 
 public class Main {
     private static String currentUser;
@@ -28,12 +27,14 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
+
 //        editCredits("ADM01", 1200);
 //        editAccountType("A003", "Admin");
-        unitExists("IT00001");
+//        unitExists("IT00001");
 
 //        setCurrentUser("S0001");
 //        new loginGUI();
+        new leadScreen();
 //        System.out.println(usernameExists("ADSFS"));
 //        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());
 //

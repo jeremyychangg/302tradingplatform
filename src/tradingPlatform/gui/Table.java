@@ -3,7 +3,10 @@
 package tradingPlatform.gui;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 
@@ -14,6 +17,23 @@ public class Table extends JPanel {
     public Table(String[] columns, Object[][] data, Integer[] width) {
         //headers for the table
         JPanel panel = new JPanel();
+
+//
+//        for (int i = 0; i < values.size(); i++){
+//            String orderID = values.get(i).getPosition();
+//            String assetName = values.get(i).getName();
+//            String orderType = values.get(i).getName();
+//            String orderTime = values.get(i).getName();
+//            String orderPrice = values.get(i).getName();
+//            String orderQuantity = values.get(i).getName();
+//
+//            Object[] data = {orderID, assetName, orderType, orderTime, orderPrice, orderQuantity,
+//                    totalMatches, goalF, goalA, ttgoalD};
+//
+//            tableModel.add(data);
+//
+//        }
+
 
         //actual data for the table in a 2d array
 

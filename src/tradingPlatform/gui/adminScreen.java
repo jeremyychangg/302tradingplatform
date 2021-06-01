@@ -23,15 +23,24 @@ public class adminScreen extends Screen {
 
     // Buttons
     private JLabel logo = new JLabel();
+    private JButton userButton = new JButton();
+    private JButton unitButton = new JButton();
+    private JButton assetButton = new JButton();
     private JButton logoutButton = new JButton();
+    private JButton requestButton = new JButton();
+
 
     // Images when unselected
     private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
     private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
+    private ImageIcon usersIcon = new ImageIcon("src/img/users-01.png");
+    private ImageIcon unitsIcon = new ImageIcon("src/img/units-01.png");
+    private ImageIcon assetsIcon = new ImageIcon("src/img/assets-01.png");
     private ImageIcon requestIcon = new ImageIcon("src/img/request-01.png");
 
     // Images when selected
     private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
+    private ImageIcon usersIconS = new ImageIcon("src/img/createPress-01.jpg");
 
     public adminScreen() throws SQLException {
         initUI();
@@ -106,17 +115,26 @@ public class adminScreen extends Screen {
 
         // Setting up the sidebar buttons
 //        changeButton(requestIcon, requestButton);
+        changeButton(usersIcon, userButton);
+        changeButton(unitsIcon, unitButton);
+        changeButton(assetsIcon, assetButton);
         changeButton(logoutIcon, logoutButton);
+        changeButton(requestIcon, requestButton);
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        unitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        assetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);
-//        sidebarPanel.add(requestButton);
+        sidebarPanel.add(userButton);
+        sidebarPanel.add(unitButton);
+        sidebarPanel.add(assetButton);
+        sidebarPanel.add(requestButton);
 
         // Adding logout pane to sidebar
         logoutPane.add(logoutButton, BorderLayout.SOUTH);
