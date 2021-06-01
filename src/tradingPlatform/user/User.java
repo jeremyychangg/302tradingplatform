@@ -353,7 +353,6 @@ public class User {
 
     /**
      * Method is used to set the type of account for the user
-     *
      * @param inputType
      */
     public static boolean accountTypeValid(String inputType) {
