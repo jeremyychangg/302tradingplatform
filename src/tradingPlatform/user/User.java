@@ -17,6 +17,7 @@
 // 	******************************************************************************************
 package tradingPlatform.user;
 
+import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
@@ -29,7 +30,6 @@ import static tradingPlatform.Main.*;
 
 /**
  * This class is used to
- *
  * @author Natalie Smith
  */
 public class User {
@@ -54,6 +54,10 @@ public class User {
 
     public String returnunitID() {
         return this.unitID;
+    }
+
+    public UserType returnAccountType() {
+        return this.accountType;
     }
 
     public String returnpassword() {
@@ -144,19 +148,21 @@ public class User {
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         System.out.println(newUserID);
         this.userID = newUserID;
-
-        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-        newUser.clearParameters();
-        newUser.setString(1, newUserID);
-        newUser.setString(2, firstName);
-        newUser.setString(3, lastName);
-        newUser.setString(4, unitID);
-        newUser.setString(5, accType);
-        newUser.setString(6, password);
-
-        newUser.execute();
+//
+//        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+//        newUser.clearParameters();
+//        newUser.setString(1, newUserID);
+//        newUser.setString(2, firstName);
+//        newUser.setString(3, lastName);
+//        newUser.setString(4, unitID);
+//        newUser.setString(5, accType);
+//        newUser.setString(6, password);
+//
+//        newUser.execute();
     }
 
+    public void addUserToDatabase(User user) throws Exception, UnitException {
+    }
 
     /**
      * This function is used to get the account type of the user
@@ -379,6 +385,7 @@ public class User {
                 "FROM orders AS o LEFT JOIN assets " +
                 "AS a ON o.assetID = a.assetID " +
                 "WHERE userID = '" + getCurrentUser() + "';";
+//        getCurrentUser()
         ResultSet orderFind = statement.executeQuery(orders);
         while (orderFind.next() == true) {
             ArrayList<String> singleList = new ArrayList<String>();

@@ -6,6 +6,7 @@ package tradingPlatform.user;
 import tradingPlatform.Asset;
 import tradingPlatform.Unit;
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
@@ -29,6 +30,80 @@ public class Admin extends User{
         this.unitID = unitID;
         this.accountType = accountType;
     }
+
+    @Override
+    public void addUserToDatabase(User user) throws Exception, UnitException {
+        // Throw exceptions if requirements not met
+        if (user.returnfirstName() == null || user.returnfirstName() == "") {
+            throw new UserException("First Name cannot be null or empty.");
+        }
+        if (user.returnlastName() == null || user.returnlastName() == "") {
+            throw new UserException("Last Name cannot be null or empty.");
+        }
+        if (user.returnunitID() == null || user.returnunitID() == "") {
+            throw new UserException("Unit ID cannot be null or empty.");
+        }
+        if (!unitExists(user.returnunitID())) {
+            throw new UnitException("Unit ID doesn't exist. Enter in valid unitID.");
+        }
+        if (user.returnpassword() == null || user.returnpassword() == "") {
+            throw new UserException("Password cannot be null or empty.");
+        }
+        if (user.returnAccountType() == null) {
+            throw new UserException("Account Type cannot be null or empty.");
+        }
+        if (userTypeToS(user.returnAccountType()) == null) {
+            throw new UserException("Account Type not a valid Account Type.");
+        }
+
+        // Based on the input for the account, set the userID initial accordingly
+//        String accType = "";
+//        String intialID = "";
+//        switch (user.accountType) {
+//            case Employee:
+//                intialID = "S";
+//                accType = userTypeToS(user.accountType);
+//                break;
+//            case Admin:
+//                intialID = "A";
+//                accType = userTypeToS(user.accountType);
+//                break;
+//            case Lead:
+//                intialID = "L";
+//                accType = userTypeToS(user.accountType);
+//                break;
+//            default:
+//                throw new UserException("Not valid UserType");
+//        }
+
+//        Statement statement = connection.createStatement();
+//
+//        int maxUserID = 0;
+//        String sqlMaxUserID
+//                = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
+//                + intialID + "';";
+//        ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
+//
+//        if (getMaxID.next() && getMaxID.getString("maxUserID") != null) {
+//            maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
+//        }
+//
+//        String newUserID = intialID + String.format("%04d", maxUserID + 1);
+//        System.out.println(newUserID);
+//        this.userID = newUserID;
+
+        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+        newUser.clearParameters();
+        newUser.setString(1, user.returnUserID());
+        newUser.setString(2, user.returnfirstName());
+        newUser.setString(3, user.returnlastName());
+        newUser.setString(4, user.returnunitID());
+        newUser.setString(5, user.userTypeToS(accountType));
+        newUser.setString(6, user.returnpassword());
+
+        newUser.execute();
+    }
+
 
 
     public void newUser(String firstName, String lastName, String unitID, UserType accountType) throws Exception {
@@ -114,6 +189,8 @@ public class Admin extends User{
             }
         }
     }
+
+
 
     public void editInventory(String unitID, String assetID, int quantity){
         // retrieve their current inventory storage

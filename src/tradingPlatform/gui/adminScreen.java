@@ -66,6 +66,7 @@ public class adminScreen extends Screen {
         setupAdminFrame();
     }
 
+
     /**
      * Adds the button listeners relevant to the admin user.
      */

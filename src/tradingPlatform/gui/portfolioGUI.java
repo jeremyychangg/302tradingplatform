@@ -8,6 +8,9 @@ import tradingPlatform.user.User;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static tradingPlatform.user.User.retrieveOrders;
 
 public class portfolioGUI extends JPanel {
     private JPanel panel;
@@ -111,18 +114,25 @@ public class portfolioGUI extends JPanel {
 
         // Retrieving the orders pending/incomplete of the user - and their status
         String[] columns = new String[] {
-                "Order ID", "Asset", "Quantity", "Price", "Date"
+                "     ID", "Name", "Type", "Date", "Price", "Quantity"
         };
 
-        Object[][] data = new Object[][] {
-                {1, "Printing Paper", 50, "$" + 100, 10/02/2020 },
-                {2, "CPU Hours", 4, "$" + 100, 10/02/2020 },
-                {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
-        };
+        ArrayList<ArrayList<String>> data1 = retrieveOrders();
+        String[][] data = new String[data1.size()][];
+        int i = 0;
+        for (ArrayList<String> c : data1)
+        {
+            data[i] = new String[6];
+            data[i][0] = c.get(0);
+            data[i][1] = c.get(1);
+            data[i][2] = c.get(2);
+            data[i][3] = c.get(3);
+            data[i][4] = c.get(4);
+            data[i][5] = c.get(5);
+            i++;
+        }
 
-//        ArrayList<ArrayList<String>> data = retrieveOrders();
-
-        Integer[] width = new Integer[] { 155, 600, 150, 150, 155};
+        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
 
         orderHistoryList.add(new Table(columns, data, width));
 

@@ -55,9 +55,9 @@ public class leadScreen extends Screen {
         logoutButton.addActionListener(this);
     }
 
-    private void initUI() {
-        panel = new JPanel();
-        panel.setPreferredSize(new Dimension(1380, 1050));
+    private void initUI() throws SQLException {
+        panel = new dashboardGUI();
+//        panel.setPreferredSize(new Dimension(1380, 1050));
 //        panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
@@ -147,6 +147,7 @@ public class leadScreen extends Screen {
             changeButton(ordersIcon, ordersButton);
             changeButton(portfolioIcon, portfolioButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(requestIcon, requestButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == portfolioButton) {
             removePrevious();
@@ -170,6 +171,7 @@ public class leadScreen extends Screen {
             changeButton(dashboardIcon, dashboardButton);
             changeButton(ordersIcon, ordersButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(requestIcon, requestButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == watchlistButton) {
             removePrevious();
@@ -184,6 +186,7 @@ public class leadScreen extends Screen {
             changeButton(portfolioIcon, portfolioButton);
             changeButton(dashboardIcon, dashboardButton);
             changeButton(ordersIcon, ordersButton);
+            changeButton(requestIcon, requestButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == ordersButton) {
             removePrevious();
@@ -198,6 +201,7 @@ public class leadScreen extends Screen {
             changeButton(portfolioIcon, portfolioButton);
             changeButton(dashboardIcon, dashboardButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(requestIcon, requestButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == requestButton) {
             frame.setTitle("Requests");
@@ -207,6 +211,13 @@ public class leadScreen extends Screen {
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(ordersIcon, ordersButton);
+            changeButton(portfolioIcon, portfolioButton);
+            changeButton(dashboardIcon, dashboardButton);
+            changeButton(watchlistIcon, watchlistButton);
+            changeButton(requestIconS, requestButton);
+            changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == logoutButton) {
             // insert reset functions
             Main.resetCurrentUser();

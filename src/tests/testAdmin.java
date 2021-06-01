@@ -13,6 +13,15 @@ public class testAdmin {
     /* Test 19: Only IT Admin given special permissions to view requests */
     /* Test: IT admin can view requests */
 
+    //double check testing this
+    /* Test 10: User able to change password */
+//    @Test
+//    public void userChangePassword() {
+//        user1.changePassword("maxwell");
+//        assertEquals("maxwell", user1.password);
+//    }
+
+
     //add this to the admin tests
     /* Test 3: Determine user permissions to add user */
     @Test

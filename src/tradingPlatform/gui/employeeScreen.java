@@ -76,7 +76,7 @@ public class employeeScreen extends Screen {
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
         frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda");
+        frame.setTitle("Venda - Employee");
         frame.pack();
         frame.setVisible(true);
         return frame;
@@ -94,7 +94,7 @@ public class employeeScreen extends Screen {
     private void employeeSidebar(){
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1050));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
