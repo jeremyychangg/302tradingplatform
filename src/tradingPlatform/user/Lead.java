@@ -5,6 +5,7 @@ package tradingPlatform.user;
 
 
 import tradingPlatform.Request;
+import tradingPlatform.enumerators.UserType;
 import tradingPlatform.enumerators.requestType;
 import tradingPlatform.exceptions.PasswordException;
 

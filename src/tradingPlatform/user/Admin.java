@@ -5,6 +5,7 @@ package tradingPlatform.user;
 
 import tradingPlatform.Asset;
 import tradingPlatform.Unit;
+import tradingPlatform.enumerators.UserType;
 import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;

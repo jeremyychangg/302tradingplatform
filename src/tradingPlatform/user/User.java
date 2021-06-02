@@ -17,6 +17,7 @@
 // 	******************************************************************************************
 package tradingPlatform.user;
 
+import tradingPlatform.enumerators.UserType;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 

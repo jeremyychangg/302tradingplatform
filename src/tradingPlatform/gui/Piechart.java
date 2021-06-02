@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 //https://www.programmersought.com/article/64624246267/
 
-class Piechart extends JPanel {
+public class Piechart extends JPanel {
     Font font = new Font("Times", Font.PLAIN, 16);
     public int x;
     public int y;
@@ -42,10 +42,6 @@ class Piechart extends JPanel {
         {
             // get the percentage
             double percentage = (c.quantity * c.purchasePrice)/inventorySize;
-            System.out.println(c.asset.assetName);
-            System.out.println(c.purchasePrice);
-            System.out.println(c.quantity);
-            System.out.println("Percentage " + percentage);
             this.g = (255 / values.size()) * i;
             this.baseBlue = new Color(r, g, b);
             graphic.setColor(baseBlue);
@@ -62,6 +58,33 @@ class Piechart extends JPanel {
             graphic.fillArc(this.x / 2 - radius, this.y / 2 - radius, radius * 2, radius * 2, (int) 0,
                     (int) 360);
         }
+
+
+        radius = 170;
+        graphic.setColor(new Color(238, 238, 238));
+        graphic.fillOval(this.x/2 - radius/2, this.y  / 2 - radius/2, radius, radius);
+    }
+
+}
+
+//        g.setFont(font);
+//        g.setColor(Color.BLACK);
+//        str = "Project -- 20%";
+//        g.drawString(str, this.x  / 2 + radius, this.y / 2 - 20);
+//
+//        g.setColor(Color.BLACK);
+//        str = "Quizzes -- 10%";
+//        g.drawString(str, this.x  / 2, this.y / 2 - radius);
+//
+//        g.setColor(Color.BLACK);
+//        str = "Midtems -- 30%";
+//        g.drawString(str, this.x  / 2 - radius - 20 * 2, this.y / 2);
+//
+//        g.setColor(Color.BLACK);
+//        str = "Final -- 40%";
+//        g.drawString(str, this.x  / 2 + 20, this.y / 2 + radius);
+
+
 //        String str;
 //        graphic.setColor(baseBlue);
 //        graphic.fillArc( this.x / 2 - radius, this.y / 2 - radius, radius * 2, radius * 2, 0, (int) (360 * 0.2));
@@ -83,27 +106,3 @@ class Piechart extends JPanel {
 //        graphic.setColor(baseBlue);
 //        graphic.fillArc(this.x  / 2 - radius, this.y / 2 - radius, radius * 2, radius * 2, (int) (360 * 0.6),
 //                (int) (360 * 0.4));
-
-        radius = 170;
-        graphic.setColor(new Color(238, 238, 238));
-        graphic.fillOval(this.x/2 - radius/2, this.y  / 2 - radius/2, radius, radius);
-
-//        g.setFont(font);
-//        g.setColor(Color.BLACK);
-//        str = "Project -- 20%";
-//        g.drawString(str, this.x  / 2 + radius, this.y / 2 - 20);
-//
-//        g.setColor(Color.BLACK);
-//        str = "Quizzes -- 10%";
-//        g.drawString(str, this.x  / 2, this.y / 2 - radius);
-//
-//        g.setColor(Color.BLACK);
-//        str = "Midtems -- 30%";
-//        g.drawString(str, this.x  / 2 - radius - 20 * 2, this.y / 2);
-//
-//        g.setColor(Color.BLACK);
-//        str = "Final -- 40%";
-//        g.drawString(str, this.x  / 2 + 20, this.y / 2 + radius);
-    }
-
-}

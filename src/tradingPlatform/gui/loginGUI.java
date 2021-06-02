@@ -16,7 +16,6 @@ public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
     private final JLabel logo = new JLabel();
-    //    private JLabel label;
     private final JFrame frame;
     private final JPanel panel;
     private final JTextField usernameField;
@@ -26,6 +25,7 @@ public class loginGUI implements ActionListener {
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
     public loginGUI() {
+        // Initialise the frame and panel used
         frame = new JFrame();
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -60,9 +60,7 @@ public class loginGUI implements ActionListener {
         usernameField = new HintTextField("Username");
         passwordField = new JPasswordField(25);
 
-        JLabel passwordTxt = new JLabel("Password");
-
-        //Aligning the text within the field
+        // Aligning the text within the field
         usernameField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
         passwordField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
         usernameField.setHorizontalAlignment(JTextField.LEFT);
@@ -75,6 +73,7 @@ public class loginGUI implements ActionListener {
 
         panel.setBorder(BorderFactory.createEmptyBorder(0, 200, 200, 200));
 
+        // Add elements to the panel
         panel.add(logo, BorderLayout.CENTER);
         panel.add(usernameField, BorderLayout.CENTER);
         panel.add(invisible, BorderLayout.CENTER);
@@ -82,11 +81,13 @@ public class loginGUI implements ActionListener {
         panel.add(invisible2, BorderLayout.CENTER);
         panel.add(button, BorderLayout.CENTER);
 
+        // Add panel to frame and display the frame
         frame.add(panel, BorderLayout.CENTER);
         frame.setTitle("Venda - Login");
         frame.pack();
         frame.setVisible(true);
 
+        // Add Window listener
         frame.addWindowListener(new ClosingListener());
         frame.requestFocusInWindow();
     }
