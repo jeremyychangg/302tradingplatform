@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
+/**
+ *
+ */
 public class leadScreen extends Screen {
     private JFrame frame;
     private JPanel panel;
@@ -41,12 +44,18 @@ public class leadScreen extends Screen {
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
 
+
+
     public leadScreen() throws SQLException {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
     }
 
+
+    /**
+     * Method adds relevant button listeners for the lead screen. When pressed, would trigger the actionListener function.
+     */
     private void addButtonListeners() {
         requestButton.addActionListener(this);
         dashboardButton.addActionListener(this);
@@ -56,10 +65,14 @@ public class leadScreen extends Screen {
         logoutButton.addActionListener(this);
     }
 
+
+    /**
+     * Method used to initialise the Lead Screen. When run, on load, it sets the panel to the
+     * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
+     */
     private void initUI() throws SQLException {
         panel = new dashboardGUI();
-//        panel.setPreferredSize(new Dimension(1380, 1050));
-//        panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
 
@@ -68,11 +81,14 @@ public class leadScreen extends Screen {
         sidebarPanel.setBackground(baseBlue);
         logoutPane.setBackground(baseBlue);
 
-
         leadSidebar();
         setupLeadFrame();
     }
 
+
+    /**
+     *
+     */
     private void leadSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
@@ -89,7 +105,7 @@ public class leadScreen extends Screen {
         // Setting up the sidebar buttons
         changeButton(requestIcon, requestButton);
         changeButton(portfolioIcon, portfolioButton);
-        changeButton(dashboardIcon, dashboardButton);
+        changeButton(dashboardIconS, dashboardButton);
         changeButton(watchlistIcon, watchlistButton);
         changeButton(ordersIcon, ordersButton);
         changeButton(logoutIcon, logoutButton);
@@ -116,6 +132,11 @@ public class leadScreen extends Screen {
         sidebarPanel.add(logoutPane);
     }
 
+
+    /**
+     *
+     * @return
+     */
     private JFrame setupLeadFrame() {
         // Setting up the frame and panels
         frame = new JFrame();
@@ -129,6 +150,11 @@ public class leadScreen extends Screen {
         return frame;
     }
 
+
+    /**
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dashboardButton) {
@@ -233,6 +259,10 @@ public class leadScreen extends Screen {
         }
     }
 
+
+    /**
+     *
+     */
     public void removePrevious(){
         frame.remove(panel);
         frame.remove(pane);

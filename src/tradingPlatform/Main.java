@@ -1,7 +1,7 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.gui.employeeScreen;
+import tradingPlatform.gui.loginGUI;
 
 import java.sql.Connection;
 
@@ -27,8 +27,12 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
+//        User test = new User("Angela", "Shibu", "IT00001", "password.CAB302", UserType.Employee);
+//        String salt = generateSalt(100).get();
+
+//        System.out.println(verifyPassword("password.CAB302", "q/i13M0jPpAtG3hrGyh3ZTUx2GoLf6FqLtzxSh21vAFlkjaseju1KOrUC+Jie41fl/4leimzXZkRnPApH8E5ZA==", salt));
 //        System.out.println(retrieveOrders());
-        new employeeScreen();
+//        new employeeScreen();
 
 //        Inventory values = new Inventory("IT00001");
 //        ArrayList<InventoryItem> inventory = values.unitInventory;
@@ -43,7 +47,7 @@ public class Main {
 //        unitExists("IT00001");
 
 //        setCurrentUser("S0001");
-//        new loginGUI();
+        new loginGUI();
 //        new leadScreen();
 //        System.out.println(usernameExists("ADSFS"));
 //        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());

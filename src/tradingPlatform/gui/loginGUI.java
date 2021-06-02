@@ -24,28 +24,32 @@ public class loginGUI implements ActionListener {
 
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
+
+    /**
+     *
+     */
     public loginGUI() {
         // Initialise the frame and panel used
         frame = new JFrame();
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
+        // Create the blue side in the login page
         JPanel side = new JPanel();
         side.setBorder(BorderFactory.createEmptyBorder(0, 300, 0, 0));
         side.setBackground(new Color(0, 140, 237));
-
         frame.add(side, BorderLayout.WEST);
 
+        // Initialise and style the login button
         button = new JButton("LOGIN");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setFont(btnFont);
         button.setBackground(new Color(0, 140, 237));
-//        button.setPreferredSize(new Dimension(40, 30));
-//        button.setOpaque(true);
-//        button.setBorderPainted(false);
-        button.setForeground(new Color(0, 140, 237));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setForeground(Color.WHITE);
         button.setFocusable(false);
 
         // Logo
@@ -92,6 +96,11 @@ public class loginGUI implements ActionListener {
         frame.requestFocusInWindow();
     }
 
+
+    /**
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String usernameInput = usernameField.getText();
@@ -120,6 +129,8 @@ public class loginGUI implements ActionListener {
             exception.printStackTrace();
         }
     }
+
+
 
     /**
      * This code was adapted from https://stackoverflow.com/questions/1738966/java-jtextfield-with-input-hint
@@ -154,7 +165,14 @@ public class loginGUI implements ActionListener {
         }
     }
 
-    //GUI
+
+    /**
+     *
+     * @param usernameInput
+     * @param passwordInput
+     * @return
+     * @throws SQLException
+     */
     public boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
         Statement loginCheck = connection.createStatement();
 
@@ -172,12 +190,7 @@ public class loginGUI implements ActionListener {
         /////////////////////////////////////////////////
         //
         //
-        //
-        //
         //                   INSERT VERIFICATION PASSWORD HERE - PROPER
-        //
-        //
-        //
         //
         //
         //////////////////////////////////////////////////
@@ -185,6 +198,12 @@ public class loginGUI implements ActionListener {
         return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
     }
 
+
+    /**
+     *
+     * @param passwordInput
+     * @return
+     */
     public String getString(char[] passwordInput) {
         StringBuilder passwordString = new StringBuilder();
         for (Character ch : passwordInput) {
@@ -193,6 +212,10 @@ public class loginGUI implements ActionListener {
         return passwordString.toString();
     }
 
+
+    /**
+     * Window closing listener. When the window is closed, the program exits.
+     */
     protected static class ClosingListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             System.exit(0);

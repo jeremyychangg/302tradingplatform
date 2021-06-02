@@ -22,9 +22,13 @@ public class portfolioGUI extends JPanel {
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
 
     public int heightPage = 1100;
-
     public GridBagConstraints gbc = new GridBagConstraints();
 
+
+    /**
+     *
+     * @throws Exception
+     */
     public portfolioGUI() throws Exception {
         setUpPanel();
         welcomeMessagePortfolio(panel);
@@ -36,17 +40,26 @@ public class portfolioGUI extends JPanel {
     }
 
 
+    /**
+     *
+     * @throws SQLException
+     */
     private void setUpPanel() throws SQLException {
         // setting up black JPanel
         this.heightPage = 1100 + retrieveOrderLength() * 50;
         this.panel = new JPanel();
         this.panel.setPreferredSize(new Dimension(1380, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.panel.setLayout(new GridBagLayout());
     }
 
 
+
+    /**
+     *
+     * @param panel
+     * @throws SQLException
+     */
     protected void welcomeMessagePortfolio(JPanel panel) throws SQLException {
         JPanel message = new JPanel();
         message.setLayout(new BoxLayout(message, BoxLayout.Y_AXIS));
@@ -76,11 +89,16 @@ public class portfolioGUI extends JPanel {
         panel.add(message, this.gbc);
     }
 
+
+
+    /**
+     *
+     * @throws Exception
+     */
     private void chartSection() throws Exception {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
         chartSection.setPreferredSize(new Dimension(1220, 350));
-//        chartSection.setLayout(new BoxLayout(chartSection, BoxLayout.Y_AXIS));
         chartSection.setLayout(new GridBagLayout());
         GridBagConstraints chartGBC = new GridBagConstraints();
         chartGBC.gridx = 1;
@@ -91,8 +109,7 @@ public class portfolioGUI extends JPanel {
         chartGBC.fill = GridBagConstraints.HORIZONTAL;
         chartGBC.fill = GridBagConstraints.BOTH;
 
-//        Inventory values = new Inventory(User.getUnitID());
-        Inventory values = new Inventory("IT00001");
+        Inventory values = new Inventory(User.getUnitID());
         ArrayList<InventoryItem> inventory = values.unitInventory;
 
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
@@ -108,7 +125,6 @@ public class portfolioGUI extends JPanel {
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
         legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
 
-//        JLabel chart = new JLabel("Chart");
         int i = 0;
         for (InventoryItem c : inventory){
             JPanel legendRow = new JPanel();
@@ -118,7 +134,6 @@ public class portfolioGUI extends JPanel {
             int g = (255 / inventory.size()) * i;
             int height = 20;
             ColorSquare square = new ColorSquare(g, 0, height);
-            System.out.println("Here" + 350 / inventory.size());
             legendRow.add(square, BorderLayout.WEST);
 
             JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
@@ -132,8 +147,8 @@ public class portfolioGUI extends JPanel {
             legendRow.add(inventoryPercent, BorderLayout.WEST);
             legendRow.add(inventoryName, BorderLayout.CENTER);
             legendRow.add(inventoryPrice, BorderLayout.EAST);
-            i++;
             legend.add(legendRow, BorderLayout.LINE_START);
+            i++;
         }
 
         if (inventory.size() == 0){
@@ -142,11 +157,6 @@ public class portfolioGUI extends JPanel {
             JLabel inventoryItem = new JLabel("None");
             legend.add(inventoryItem, BorderLayout.CENTER);
         }
-//        chart.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-//        legend.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-//        legend.add(chart);
-//        legend.setBackground(Color.white);
         chartSection.add(legend, chartGBC);
 
         this.gbc.gridx = 1;
@@ -154,6 +164,11 @@ public class portfolioGUI extends JPanel {
         panel.add(chartSection, this.gbc);
     }
 
+
+    /**
+     *
+     * @throws SQLException
+     */
     private void summaryDisplay() throws SQLException {
         // Setting up the container for the summary
         JPanel summaryInfo = new JPanel();
@@ -168,6 +183,10 @@ public class portfolioGUI extends JPanel {
     }
 
 
+    /**
+     * In this function, when called, it displays the order history section based on the inputted userID.
+     * @throws SQLException
+     */
     private void orderHistoryDisplay() throws SQLException {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Order History");
@@ -186,7 +205,6 @@ public class portfolioGUI extends JPanel {
         };
 
         ArrayList<ArrayList<String>> data1 = retrieveOrders();
-        System.out.println(data1.size());
         String[][] data = new String[data1.size()][];
         int i = 0;
         for (ArrayList<String> c : data1)

@@ -12,6 +12,13 @@ public class ColorSquare extends JPanel {
     public int g = 0;
     public int b = 237;
 
+
+    /**
+     *
+     * @param g
+     * @param x
+     * @param y
+     */
     public ColorSquare(int g, int x, int y){
         this.width = 20;
         this.height = 20;
@@ -20,6 +27,11 @@ public class ColorSquare extends JPanel {
         this.g = g;
     }
 
+
+    /**
+     *
+     * @param graphic
+     */
     @Override
     protected void paintComponent(Graphics graphic){
         super.paintComponent(graphic);

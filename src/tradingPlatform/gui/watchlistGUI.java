@@ -17,6 +17,11 @@ public class watchlistGUI  extends JPanel {
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
+    /**
+     *
+     * @throws SQLException
+     * @throws AssetTypeException
+     */
     public watchlistGUI() throws SQLException, AssetTypeException {
         setUpPanel();
         welcomeMessage(panel);
@@ -24,12 +29,22 @@ public class watchlistGUI  extends JPanel {
         add(panel);
     }
 
+
+    /**
+     *
+     */
     public void setUpPanel(){
         panel.setPreferredSize(new Dimension(1380, 1050));
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
 
+
+    /**
+     *
+     * @throws SQLException
+     * @throws AssetTypeException
+     */
     private void watchlistDisplay() throws SQLException, AssetTypeException {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Unit Watchlist");

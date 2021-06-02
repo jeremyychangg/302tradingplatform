@@ -29,7 +29,6 @@ public class adminScreen extends Screen {
     private JButton logoutButton = new JButton();
     private JButton requestButton = new JButton();
 
-
     // Images when unselected
     private ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
     private ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
@@ -40,7 +39,10 @@ public class adminScreen extends Screen {
 
     // Images when selected
     private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
-    private ImageIcon usersIconS = new ImageIcon("src/img/createPress-01.jpg");
+    private ImageIcon usersIconS = new ImageIcon("src/img/userPress-01.png");
+    private ImageIcon unitsIconS = new ImageIcon("src/img/unitPress-01.png");
+    private ImageIcon assetsIconS = new ImageIcon("src/img/assetPress-01.png");
+    private ImageIcon requestIconS = new ImageIcon("src/img/request-Press-01.png");
 
     public adminScreen() throws SQLException {
         initUI();
@@ -57,10 +59,10 @@ public class adminScreen extends Screen {
      */
     private void initUI() {
         // Setting up the frame and panels
-        panel = new JPanel();
+        panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-        panel.setPreferredSize(new Dimension(1380, 1050));
+//        panel.setPreferredSize(new Dimension(1380, 1050));
 
         adminSidebar();
         setupAdminFrame();
@@ -72,6 +74,10 @@ public class adminScreen extends Screen {
      */
     private void addButtonListeners() {
         logoutButton.addActionListener(this);
+        unitButton.addActionListener(this);
+        assetButton.addActionListener(this);
+        userButton.addActionListener(this);
+        requestButton.addActionListener(this);
     }
 
 
@@ -103,7 +109,7 @@ public class adminScreen extends Screen {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1050));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
 //        panel = new requestGUI();
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
@@ -132,10 +138,10 @@ public class adminScreen extends Screen {
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);
+        sidebarPanel.add(requestButton);
         sidebarPanel.add(userButton);
         sidebarPanel.add(unitButton);
         sidebarPanel.add(assetButton);
-        sidebarPanel.add(requestButton);
 
         // Adding logout pane to sidebar
         logoutPane.add(logoutButton, BorderLayout.SOUTH);
@@ -149,19 +155,79 @@ public class adminScreen extends Screen {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        sidebarListeners(e);
+        try {
+            sidebarListeners(e);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
-    public void sidebarListeners(ActionEvent e) {
-        if (e.getSource() == logoutButton) {
-            System.out.println("Logout GUI");
-            // insert reset functions
-            Main.resetCurrentUser();
-            new loginGUI();
-            frame.dispose();
+    /**
+     *
+     */
+    public void removePrevious(){
+        frame.remove(panel);
+        panel.removeAll();
+    }
+
+
+    public void sidebarListeners(ActionEvent e) throws Exception {
+        if (e.getSource() == userButton) {
+            removePrevious();
+            panel = new userGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setTitle("Lead - Users");
+            frame.pack();
+            panel.setVisible(true);
+
+            // Changing the image for the button
+            changeButton(usersIconS, userButton);
+            changeButton(unitsIcon, unitButton);
+            changeButton(assetsIcon, assetButton);
+            changeButton(requestIcon, requestButton);
+            changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == unitButton) {
+            removePrevious();
+            panel = new unitGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setTitle("Lead - Unit");
+            frame.pack();
+            panel.setVisible(true);
+
+            // Changing the image for the button
+            changeButton(usersIcon, userButton);
+            changeButton(unitsIconS, unitButton);
+            changeButton(assetsIcon, assetButton);
+            changeButton(requestIcon, requestButton);
+            changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == assetButton) {
+            removePrevious();
+            panel = new assetGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setTitle("Lead - Asset");
+            frame.pack();
+            panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(usersIcon, userButton);
+            changeButton(unitsIcon, unitButton);
+            changeButton(assetsIconS, assetButton);
+            changeButton(requestIcon, requestButton);
+            changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == requestButton) {
+            removePrevious();
+            panel = new requestGUI();
+            frame.add(panel, BorderLayout.CENTER);
+            frame.setTitle("Lead - Request");
+            frame.pack();
+            panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(usersIcon, userButton);
+            changeButton(unitsIcon, unitButton);
+            changeButton(assetsIcon, assetButton);
+            changeButton(requestIconS, requestButton);
+            changeButton(logoutIcon, logoutButton);
         }
         if (e.getSource() == logoutButton) {
-            System.out.println("Logout GUI");
             // insert reset functions
             Main.resetCurrentUser();
             new loginGUI();

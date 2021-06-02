@@ -15,6 +15,10 @@
 // 	**																						**
 // 	**																						**
 // 	******************************************************************************************
+/**
+ * This class is used to
+ * @author Natalie Smith
+ */
 package tradingPlatform.user;
 
 import tradingPlatform.enumerators.UserType;
@@ -28,11 +32,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import static tradingPlatform.Main.*;
+import static tradingPlatform.passwordEncryption.generateSalt;
+import static tradingPlatform.passwordEncryption.hashPassword;
 
-/**
- * This class is used to
- * @author Natalie Smith
- */
 public class User {
     private String userID;
     private String firstName;
@@ -92,7 +94,7 @@ public class User {
         this.accountType = accountType;
 
         // Throw exceptions if requirements not met
-        if (firstName == null || firstName == "") {
+        if (firstName == null || firstName.equals("")) {
             throw new UserException("First Name cannot be null or empty.");
         }
         if (lastName == null || lastName == "") {
@@ -134,6 +136,9 @@ public class User {
                 throw new UserException("Not valid UserType");
         }
 
+        // Generate a password
+        String key = hashPassword(password, generateSalt(100).get()).get();
+
         Statement statement = connection.createStatement();
 
         int maxUserID = 0;
@@ -149,17 +154,17 @@ public class User {
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         System.out.println(newUserID);
         this.userID = newUserID;
-//
-//        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-//        newUser.clearParameters();
-//        newUser.setString(1, newUserID);
-//        newUser.setString(2, firstName);
-//        newUser.setString(3, lastName);
-//        newUser.setString(4, unitID);
-//        newUser.setString(5, accType);
-//        newUser.setString(6, password);
-//
-//        newUser.execute();
+
+        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+        newUser.clearParameters();
+        newUser.setString(1, newUserID);
+        newUser.setString(2, firstName);
+        newUser.setString(3, lastName);
+        newUser.setString(4, unitID);
+        newUser.setString(5, accType);
+        newUser.setString(6, key);
+
+        newUser.execute();
     }
 
     public void addUserToDatabase(User user) throws Exception, UnitException {
@@ -168,7 +173,7 @@ public class User {
     /**
      * This function is used to get the account type of the user
      *
-     * @return
+     * @return UserType
      * @author Natalie Smith
      */
     public static UserType getAccountType() throws SQLException {
@@ -184,7 +189,6 @@ public class User {
         }
 
         // Return the relative UserType enum value if found, or else return null
-        UserType outputType;
         for (UserType u : UserType.values()) {
             if (u.name().equals(accountString)) {
                 return u;
@@ -213,7 +217,7 @@ public class User {
     /**
      * The getCredits function is used to retrieve the credits of the user
      *
-     * @return
+     * @return float
      */
     public static float getCredits() throws SQLException {
         // search the Units database and return the credit of the given unit
@@ -282,11 +286,7 @@ public class User {
             if (userIDFind.next() && userIDFind.getString("userID") != null) {
                 exists = userIDFind.getString("userID");
             }
-            if (exists.equals(findUserID)) {
-                return true;
-            } else {
-                return false;
-            }
+            return exists.equals(findUserID);
         } catch (NullPointerException e) {
             throw new SQLException("The inputted username does not currently exist.");
         }
@@ -347,7 +347,7 @@ public class User {
     /**
      * @param passMod
      */
-    public void changePassword(String passMod) throws SQLException {
+    protected void changePassword(String passMod) throws SQLException {
         // determine if the value is a valid password
         // input the SQL query for the database
         String passwordInputQuery = "UPDATE users SET password = ? WHERE assetID = '?';";
@@ -389,7 +389,7 @@ public class User {
 //        getCurrentUser()
         ResultSet orderFind = statement.executeQuery(orders);
         while (orderFind.next() == true) {
-            ArrayList<String> singleList = new ArrayList<String>();
+            ArrayList<String> singleList = new ArrayList<>();
             singleList.add(orderFind.getString("o.orderID"));
             singleList.add(orderFind.getString("a.assetName"));
             singleList.add(orderFind.getString("o.orderType"));
@@ -427,20 +427,4 @@ public class User {
         }
         return outstanding;
     }
-
-//    public static List<String> retrieveOrderIDs() {
-//        List<String> orderID = new ArrayList<>();
-//        String order = null;
-//        String orders = "SELECT orderID, a.assetName, o.orderType, o.orderTime, o.orderPrice, o.orderQuantity " +
-//                "FROM orders AS o LEFT JOIN assets " +
-//                "AS a ON o.assetID = a.assetID " +
-//                "WHERE userID = '" + getCurrentUser() + "';";
-//        ResultSet orderFind = statement.executeQuery(orders);
-//        if (orderFind.next() && orderFind.getString("orderID") != null) {
-//            while(orderFind.next() == true){
-//                orderID = orderFind.getString("unitID");
-//            }
-//        }
-//        return exists;
-//    }
 }

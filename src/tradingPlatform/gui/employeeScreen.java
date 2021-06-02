@@ -44,23 +44,19 @@ public class employeeScreen extends Screen {
     public employeeScreen() throws SQLException {
         initUI();
         addButtonListeners();
-
-//        System.out.println("Sidebar " + sidebarPanel.getHeight());
-//        System.out.println(frame.getWidth());
-//        System.out.println(sidebarPanel.getWidth());
-//        System.out.println(frame.getHeight());
-
         frame.addWindowListener(new ClosingListener());
     }
 
-
+    /**
+     *  Method used to initialise the Employee Screen. When run, on load, it sets the panel to the
+     *  dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
+     */
     private void initUI() throws SQLException {
         // Setting up the frame and panels
-        // panel = new JPanel();
         panel = new dashboardGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-//        panel.setPreferredSize(new Dimension(1380, 1050));
 
         // Background Colour
         Color baseBlue = new Color(0, 140, 237);
@@ -71,6 +67,13 @@ public class employeeScreen extends Screen {
         setupEmployeeFrame();
     }
 
+
+    /**
+     * Method used to initialise and pack the employee screen frame. Within, it adds the main panel on the right,
+     * and sets up the sidebar on the left of the frame. Additionally, sets up the frames title to make the user
+     * aware of where they are.
+     * @return JFrame A frame that would display the employee related elements
+     */
     private JFrame setupEmployeeFrame(){
         frame = new JFrame();
 
@@ -83,6 +86,10 @@ public class employeeScreen extends Screen {
         return frame;
     }
 
+
+    /**
+     * Method adds relevant button listeners for the employee screen. When pressed, would trigger the actionListener function.
+     */
     private void addButtonListeners(){
         dashboardButton.addActionListener(this);
         portfolioButton.addActionListener(this);
@@ -92,6 +99,9 @@ public class employeeScreen extends Screen {
     }
 
 
+    /**
+     * Method creates the GUI for the employee sidebar, and initialises the buttons.
+     */
     private void employeeSidebar(){
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
@@ -132,6 +142,13 @@ public class employeeScreen extends Screen {
         sidebarPanel.add(logoutPane);
     }
 
+
+    /**
+     * When an actionListener is triggered - via, in this case, mostly button event listeners - this method is
+     * triggered to change the panel display and also change the styling of the button to show what page the user is
+     * on.
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dashboardButton) {
@@ -219,6 +236,9 @@ public class employeeScreen extends Screen {
     }
 
 
+    /**
+     *
+     */
     public void removePrevious(){
         frame.remove(panel);
         frame.remove(pane);
@@ -226,6 +246,11 @@ public class employeeScreen extends Screen {
     }
 
 
+    /**
+     *
+     * @param panel
+     * @throws SQLException
+     */
     public static void creditBalancePanel(JPanel panel) throws SQLException {
         Font heading = new Font("Avenir", Font.PLAIN, 50);
 

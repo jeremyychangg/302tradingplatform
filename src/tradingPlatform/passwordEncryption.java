@@ -10,8 +10,12 @@ import java.util.Optional;
 
 public class passwordEncryption {
     private Optional<String> passwordEncrypt;
-    public passwordEncryption(){
-//        this.passwordEncrypt = hashPassword(password, salt);
+    private static final int ITERATIONS = 65536;
+    private static final int KEY_LENGTH = 512;
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+
+    public passwordEncryption(String password, String salt){
+        this.passwordEncrypt = hashPassword(password, salt);
     }
     private static final SecureRandom random = new SecureRandom();
     public static Optional<String> generateSalt (final int length) {
@@ -22,16 +26,13 @@ public class passwordEncryption {
 
         byte[] salt = new byte[length];
         random.nextBytes(salt);
-
+        System.out.println(Optional.of(Base64.getEncoder().encodeToString(salt)));
         return Optional.of(Base64.getEncoder().encodeToString(salt));
     }
 
-    private static final int ITERATIONS = 65536;
-    private static final int KEY_LENGTH = 512;
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+
 
     public static Optional<String> hashPassword (String password, String salt) {
-
         char[] chars = password.toCharArray();
         byte[] bytes = salt.getBytes();
 
@@ -60,11 +61,13 @@ public class passwordEncryption {
     }
 
     public static void main(String[] args) throws Exception {
-        String salt = generateSalt(511).get();
+        String salt = generateSalt(100).get();
         String password = "Hello!";
+
         String key = hashPassword(password, salt).get();
+        salt = generateSalt(100).get();
         System.out.println(key);
-        System.out.println(verifyPassword("Hello!",key, salt));
+        System.out.println(verifyPassword("Hello!", key, salt));
     }
 }
 
