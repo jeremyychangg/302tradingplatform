@@ -400,6 +400,19 @@ public class User {
         return orderIDs;
     }
 
+    public static int retrieveOrderLength() throws SQLException {
+        Statement statement = connection.createStatement();
+        int rows = 0;
+        String orders = "SELECT count(orderID) as orderNum " +
+                "FROM orders " +
+                "WHERE userID = '" + getCurrentUser() + "';";
+//        getCurrentUser()
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            rows = Integer.parseInt(orderFind.getString("orderNum"));
+        }
+        return rows;
+    }
 
 //    public static List<String> retrieveOrderIDs() {
 //        List<String> orderID = new ArrayList<>();

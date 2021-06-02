@@ -10,6 +10,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static tradingPlatform.user.User.retrieveOrderLength;
 import static tradingPlatform.user.User.retrieveOrders;
 
 public class portfolioGUI extends JPanel {
@@ -18,6 +19,8 @@ public class portfolioGUI extends JPanel {
     Font font1 = new Font("Avenir", Font.BOLD, 40);
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
+
+    public int heightPage = 1300;
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
@@ -32,10 +35,11 @@ public class portfolioGUI extends JPanel {
     }
 
 
-    private void setUpPanel(){
+    private void setUpPanel() throws SQLException {
         // setting up black JPanel
+        this.heightPage = 1300 + retrieveOrderLength() * 50;
         this.panel = new JPanel();
-        this.panel.setPreferredSize(new Dimension(1380, 1500));
+        this.panel.setPreferredSize(new Dimension(1380, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
 //        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.panel.setLayout(new GridBagLayout());
@@ -43,12 +47,22 @@ public class portfolioGUI extends JPanel {
 
 
     protected void welcomeMessagePortfolio(JPanel panel) throws SQLException {
+        JPanel message = new JPanel();
+        message.setLayout(new BoxLayout(message, BoxLayout.Y_AXIS));
+
         Font font1 = new Font("Avenir", Font.BOLD, 40);
 
         JLabel welcome = new JLabel("Hi,");
         welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         welcome.setFont(font1);
 
+        message.add(welcome);
+
+        JLabel name = new JLabel(User.getFirstName());
+        name.setFont(font1);
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        message.add(name);
         this.gbc.gridx = 1;
         this.gbc.gridy = 0;
         this.gbc.anchor = GridBagConstraints.LINE_START;
@@ -58,40 +72,45 @@ public class portfolioGUI extends JPanel {
         this.gbc.weightx = 1.0;
         this.gbc.weighty = 1.0;
 
-        panel.add(welcome, this.gbc);
-
-        JLabel name = new JLabel(User.getFirstName());
-        name.setFont(font1);
-        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
-        this.gbc.gridx = 1;
-        this.gbc.gridy = 1;
-
-        panel.add(name, this.gbc);
+        panel.add(message, this.gbc);
     }
 
     private void chartSection() {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
-        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
-//        chartSection.setPreferredSize(new Dimension(800, 800));
+        chartSection.setPreferredSize(new Dimension(1220, 350));
+//        chartSection.setLayout(new BoxLayout(chartSection, BoxLayout.Y_AXIS));
+        chartSection.setLayout(new GridBagLayout());
+        GridBagConstraints chartGBC = new GridBagConstraints();
+        chartGBC.gridx = 1;
+        chartGBC.gridy = 0;
+        chartGBC.weightx = 1.0;
+        chartGBC.weighty = 1.0;
+        chartGBC.anchor = GridBagConstraints.LINE_START;
+        chartGBC.fill = GridBagConstraints.HORIZONTAL;
+        chartGBC.fill = GridBagConstraints.BOTH;
 
-//        JLabel chart = new JLabel("Chart");
-//        chart.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
-        chartSection.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        chartSection.add(chart);
+        chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
+        Piechart pie = new Piechart(0, 0, 237);
+        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
+        pie.setAlignmentX(Component.LEFT_ALIGNMENT);
+        chartSection.add(pie, chartGBC);
 
+        chartGBC.gridx = 2;
+        chartGBC.gridy = 0;
 
-        Piechart pie = new Piechart(600, 400);
-        pie.setBorder(BorderFactory.createEmptyBorder(150, 600, 240, 600));
-//        chartSection.setBackground(Color.blue);
+        JPanel legend = new JPanel();
+        legend.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
+        JLabel chart = new JLabel("Chart");
+//        chart.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+//        legend.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        chartSection.add(pie);
+        legend.add(chart);
+        legend.setBackground(Color.white);
+        chartSection.add(legend, chartGBC);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 2;
-
-
         panel.add(chartSection, this.gbc);
     }
 
@@ -127,6 +146,7 @@ public class portfolioGUI extends JPanel {
         };
 
         ArrayList<ArrayList<String>> data1 = retrieveOrders();
+        System.out.println(data1.size());
         String[][] data = new String[data1.size()][];
         int i = 0;
         for (ArrayList<String> c : data1)

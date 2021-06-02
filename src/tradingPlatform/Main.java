@@ -1,7 +1,7 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.gui.loginGUI;
+import tradingPlatform.gui.employeeScreen;
 
 import java.sql.Connection;
 
@@ -28,14 +28,14 @@ public class Main {
         } catch (Exception e) {
         }
 //        System.out.println(retrieveOrders());
-//        new employeeScreen();
+        new employeeScreen();
 
 //        editCredits("ADM01", 1200);
 //        editAccountType("A003", "Admin");
 //        unitExists("IT00001");
 
 //        setCurrentUser("S0001");
-        new loginGUI();
+//        new loginGUI();
 //        new leadScreen();
 //        System.out.println(usernameExists("ADSFS"));
 //        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());
