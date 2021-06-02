@@ -30,7 +30,7 @@ public abstract class Screen implements ActionListener {
         button.setContentAreaFilled(false);
     }
 
-    protected static void welcomeMessage(JPanel panel) throws SQLException {
+    public static void welcomeMessage(JPanel panel) throws SQLException {
         Font font1 = new Font("Avenir", Font.BOLD, 40);
 
         JLabel welcome = new JLabel("Hi,");
@@ -49,5 +49,7 @@ public abstract class Screen implements ActionListener {
             System.exit(0);
         }
     }
+
+
 }
 

@@ -16,7 +16,6 @@ public class loginGUI implements ActionListener {
     Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
     private final JLabel logo = new JLabel();
-    //    private JLabel label;
     private final JFrame frame;
     private final JPanel panel;
     private final JTextField usernameField;
@@ -26,6 +25,7 @@ public class loginGUI implements ActionListener {
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
     public loginGUI() {
+        // Initialise the frame and panel used
         frame = new JFrame();
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -42,6 +42,10 @@ public class loginGUI implements ActionListener {
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setFont(btnFont);
         button.setBackground(new Color(0, 140, 237));
+//        button.setPreferredSize(new Dimension(40, 30));
+//        button.setOpaque(true);
+//        button.setBorderPainted(false);
+        button.setForeground(new Color(0, 140, 237));
         button.setFocusable(false);
 
         // Logo
@@ -56,24 +60,20 @@ public class loginGUI implements ActionListener {
         usernameField = new HintTextField("Username");
         passwordField = new JPasswordField(25);
 
-        JLabel passwordTxt = new JLabel("Password");
-
-        //Aligning the text within the field
+        // Aligning the text within the field
         usernameField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
         passwordField.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 40));
         usernameField.setHorizontalAlignment(JTextField.LEFT);
         passwordField.setHorizontalAlignment(JTextField.LEFT);
-
 
         JPanel invisible = new JPanel();
         invisible.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         JPanel invisible2 = new JPanel();
         invisible2.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
 
-//        passwordField.setActionCommand(Login);
-
         panel.setBorder(BorderFactory.createEmptyBorder(0, 200, 200, 200));
 
+        // Add elements to the panel
         panel.add(logo, BorderLayout.CENTER);
         panel.add(usernameField, BorderLayout.CENTER);
         panel.add(invisible, BorderLayout.CENTER);
@@ -81,11 +81,13 @@ public class loginGUI implements ActionListener {
         panel.add(invisible2, BorderLayout.CENTER);
         panel.add(button, BorderLayout.CENTER);
 
+        // Add panel to frame and display the frame
         frame.add(panel, BorderLayout.CENTER);
-        frame.setTitle("Login");
+        frame.setTitle("Venda - Login");
         frame.pack();
         frame.setVisible(true);
 
+        // Add Window listener
         frame.addWindowListener(new ClosingListener());
         frame.requestFocusInWindow();
     }
@@ -166,6 +168,19 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
+
+        /////////////////////////////////////////////////
+        //
+        //
+        //
+        //
+        //                   INSERT VERIFICATION PASSWORD HERE - PROPER
+        //
+        //
+        //
+        //
+        //
+        //////////////////////////////////////////////////
 
         return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
     }

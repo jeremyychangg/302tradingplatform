@@ -1,20 +1,47 @@
 package tests;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import tradingPlatform.Search;
+
 public class testSearch  {
-    // Check to see that they go to the right pages:
 
-    // If the search query is "Dashboard" or "Dashboard page" or "Dash board", return the dashboard page
-    // Else if the search query is "Portfolio", return the portfolio page
-    // Else if the search query is "Watchlist" or "Watch List", return the watch list page
-    // Else if the search query is "Order" or "Orders", return the order page
-    // Else if the search query is "Request", return the request page
-    // Else if the search query is "Inventory", return their inventory
-    // union between unitID and orderID
-    // Else if the search query is for a certain asset, return that asset's information
-    // get all of the asset info from asset ID
-    // Else if the search query is for an asset type, show all of the assets available under that asset type
-    // get everything with asset type of [query]
+    // Declare objects for testing
+    Search searchForPage;
+    Search searchForAsset;
+    Search searchForAssetType;
 
-    // Check if the user's query is valid- if the function exists on the page
-    // Otherwise throw a message that it doesn't exist
+    // - Test 1: Construct searches for testing
+    @BeforeEach
+    @Test
+    void setupSearches() {
+        searchForPage = new Search("Dashboard");
+        searchForAsset = new Search("Office Chairs");
+        searchForAssetType = new Search("Furniture");
+    }
+
+    // - Test 2: Check that search is not null
+    @Test
+    public void searchNotNull() {
+        assetNotNull(searchForAsset.getUserQuery());
+        assertTrue(searchForAsset.getUserQuery() != null);
+    }
+
+    // - Test 3: Check that a page search returns the right results
+    @Test
+    public void correctPageReturned() {
+        assertEquals(Dashboard(), searchForPage.getUserQuery());
+    }
+
+    // - Test 4: Check that the correct asset is returned
+    @Test
+    public void correctAssetReturned() {
+        assertEquals("Office Chairs", searchForPage.getAssetName());
+    }
+
+    // - Test 5: Check that the correct asset type is returned
+    @Test
+    public void correctAssetTypeReturned() {
+        assertEquals("Furniture", searchForAssetType.getAssetType());
+    }
 }
