@@ -30,6 +30,14 @@ public class Main {
 //        System.out.println(retrieveOrders());
         new employeeScreen();
 
+//        Inventory values = new Inventory("IT00001");
+//        ArrayList<InventoryItem> inventory = values.unitInventory;
+//        for (InventoryItem c: inventory){
+//            System.out.println(c.asset.assetName);
+//            System.out.println(c.purchasePrice);
+//            System.out.println(c.quantity);
+//        }
+
 //        editCredits("ADM01", 1200);
 //        editAccountType("A003", "Admin");
 //        unitExists("IT00001");

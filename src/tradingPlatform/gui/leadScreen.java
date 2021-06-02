@@ -1,6 +1,7 @@
 package tradingPlatform.gui;
 
 import tradingPlatform.Main;
+import tradingPlatform.exceptions.AssetTypeException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -159,7 +160,7 @@ public class leadScreen extends Screen {
                 pane.getVerticalScrollBar().setUnitIncrement(7);
                 pane.setPreferredSize(new Dimension(1390, 1060));
                 frame.add(pane, BorderLayout.CENTER);
-            } catch (SQLException throwable) {
+            } catch (Exception throwable) {
                 throwable.printStackTrace();
             }
             frame.setTitle("Portfolio");
@@ -180,6 +181,8 @@ public class leadScreen extends Screen {
                 panel = new watchlistGUI();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } catch (AssetTypeException assetTypeException) {
+                assetTypeException.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Watchlist");

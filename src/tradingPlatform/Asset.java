@@ -31,7 +31,7 @@ import java.sql.*;
 import static tradingPlatform.Main.connection;
 
 public class Asset {
-    private String assetID;
+    public String assetID;
     public String assetName;
     public String assetType;
     private double currentPrice;

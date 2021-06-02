@@ -42,6 +42,10 @@ public class loginGUI implements ActionListener {
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setFont(btnFont);
         button.setBackground(new Color(0, 140, 237));
+//        button.setPreferredSize(new Dimension(40, 30));
+//        button.setOpaque(true);
+//        button.setBorderPainted(false);
+        button.setForeground(new Color(0, 140, 237));
         button.setFocusable(false);
 
         // Logo

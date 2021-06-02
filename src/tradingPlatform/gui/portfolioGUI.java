@@ -3,6 +3,8 @@
  */
 package tradingPlatform.gui;
 
+import tradingPlatform.Inventory;
+import tradingPlatform.InventoryItem;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -24,7 +26,7 @@ public class portfolioGUI extends JPanel {
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
-    public portfolioGUI() throws SQLException {
+    public portfolioGUI() throws Exception {
         setUpPanel();
         welcomeMessagePortfolio(panel);
         chartSection();
@@ -75,7 +77,7 @@ public class portfolioGUI extends JPanel {
         panel.add(message, this.gbc);
     }
 
-    private void chartSection() {
+    private void chartSection() throws Exception {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
         chartSection.setPreferredSize(new Dimension(1220, 350));
@@ -90,8 +92,12 @@ public class portfolioGUI extends JPanel {
         chartGBC.fill = GridBagConstraints.HORIZONTAL;
         chartGBC.fill = GridBagConstraints.BOTH;
 
+
+        Inventory values = new Inventory("IT00001");
+        ArrayList<InventoryItem> inventory = values.unitInventory;
+
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-        Piechart pie = new Piechart(0, 0, 237);
+        Piechart pie = new Piechart(0, 0, 237, inventory);
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
@@ -142,7 +148,7 @@ public class portfolioGUI extends JPanel {
 
         // Retrieving the orders pending/incomplete of the user - and their status
         String[] columns = new String[] {
-                "     ID", "Name", "Type", "Date", "Price", "Quantity"
+                "     ID", "Name","Type", "Date", "Price", "Quantity", "Status"
         };
 
         ArrayList<ArrayList<String>> data1 = retrieveOrders();
@@ -151,17 +157,18 @@ public class portfolioGUI extends JPanel {
         int i = 0;
         for (ArrayList<String> c : data1)
         {
-            data[i] = new String[6];
+            data[i] = new String[7];
             data[i][0] = c.get(0);
             data[i][1] = c.get(1);
             data[i][2] = c.get(2);
             data[i][3] = c.get(3);
             data[i][4] = c.get(4);
             data[i][5] = c.get(5);
+            data[i][6] = c.get(6);
             i++;
         }
 
-        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
+        Integer[] width = new Integer[] { 150, 400, 100, 150, 100, 150, 150}; // has to equal
 
         orderHistoryList.add(new Table(columns, data, width));
 

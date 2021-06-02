@@ -1,7 +1,10 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.InventoryItem;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 //https://www.programmersought.com/article/64624246267/
 
@@ -13,19 +16,34 @@ class Piechart extends JPanel {
     public int g = 0;
     public int b = 237;
     Color baseBlue = new Color(r, g, b);
+    ArrayList<InventoryItem> values;
 
-    public Piechart( int r, int g, int b) {
+
+    public Piechart(int r, int g, int b, ArrayList<InventoryItem> values) {
         this.x = 600;
         this.y = 400;
         this.r = r;
         this.g = g;
         this.b = b;
+        this.values = values;
     }
 
     @Override
     protected void paintComponent(Graphics graphic) {
         super.paintComponent(graphic);
         int radius = (int) (Math.min(150, 150));
+
+        Object[][] results = new Object[values.size()][];
+        int i = 0;
+        for (InventoryItem c : values)
+        {
+            // get the percentage
+            System.out.println(c.asset.assetName);
+            System.out.println(c.purchasePrice);
+            System.out.println(c.quantity);
+        }
+
+
 
 //        String str;
         graphic.setColor(baseBlue);

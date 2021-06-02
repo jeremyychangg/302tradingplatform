@@ -381,7 +381,7 @@ public class User {
 
         Statement statement = connection.createStatement();
 
-        String orders = "SELECT o.orderID, a.assetName, o.orderType, o.orderTime, o.orderPrice, o.orderQuantity " +
+        String orders = "SELECT o.orderID, a.assetName, o.orderType, o.orderStatus, o.orderTime, o.orderPrice, o.orderQuantity " +
                 "FROM orders AS o LEFT JOIN assets " +
                 "AS a ON o.assetID = a.assetID " +
                 "WHERE userID = '" + getCurrentUser() + "';";
@@ -395,6 +395,7 @@ public class User {
             singleList.add(orderFind.getString("o.orderTime"));
             singleList.add(orderFind.getString("o.orderPrice"));
             singleList.add(orderFind.getString("o.orderQuantity"));
+            singleList.add(orderFind.getString("o.orderStatus"));
             orderIDs.add(singleList);
         }
         return orderIDs;
@@ -406,12 +407,24 @@ public class User {
         String orders = "SELECT count(orderID) as orderNum " +
                 "FROM orders " +
                 "WHERE userID = '" + getCurrentUser() + "';";
-//        getCurrentUser()
         ResultSet orderFind = statement.executeQuery(orders);
         while (orderFind.next() == true) {
             rows = Integer.parseInt(orderFind.getString("orderNum"));
         }
         return rows;
+    }
+
+    public static int getOutstandingOrders() throws SQLException {
+        Statement statement = connection.createStatement();
+        int outstanding = 0;
+        String orders = "SELECT count(orderID) as orderNum " +
+                "FROM orders " +
+                "WHERE orderStatus = 'INCOMPLETE' AND userID = '" + getCurrentUser() + "' ;";
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            outstanding = Integer.parseInt(orderFind.getString("orderNum"));
+        }
+        return outstanding;
     }
 
 //    public static List<String> retrieveOrderIDs() {

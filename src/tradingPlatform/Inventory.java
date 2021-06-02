@@ -29,7 +29,7 @@ import static tradingPlatform.Main.connection;
 
 public class Inventory {
     String unitID;
-    ArrayList<InventoryItem> unitInventory;
+    public ArrayList<InventoryItem> unitInventory;
     double inventorySize;
 
     public Inventory(String unitID) throws Exception {
@@ -65,7 +65,7 @@ public class Inventory {
             inventorySize += (double) getInventory.getFloat("averagePrice") * getInventory.getInt("quantity");
             // Consider adding credit balance into here
         }
-
         return inventory;
+
     }
 }

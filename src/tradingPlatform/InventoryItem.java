@@ -30,9 +30,9 @@ import java.sql.Statement;
 import static tradingPlatform.Main.connection;
 
 public class InventoryItem {
-    Asset asset;
-    double purchasePrice;
-    int quantity;
+    public Asset asset;
+    public double purchasePrice;
+    public int quantity;
     String orderID = "";    // Initialise in case null
 
     /**
@@ -46,11 +46,11 @@ public class InventoryItem {
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
 
-        try {
-            AddToDatabase();
-        } catch (SQLException e) {
-            System.out.println("New Inventory Item Error: " + e.getMessage());
-        }
+//        try {
+//            AddToDatabase();
+//        } catch (SQLException e) {
+//            System.out.println("New Inventory Item Error: " + e.getMessage());
+//        }
 
     }
 
@@ -106,6 +106,7 @@ public class InventoryItem {
         } else {
             throw new InvalidAssetException("Asset not found.");
         }
+        System.out.println(matchingAsset.assetID);
 
         return matchingAsset;
     }
