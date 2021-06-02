@@ -39,7 +39,6 @@ public class employeeScreen extends Screen {
     private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
-    private final ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
 
     public employeeScreen() throws SQLException {
         initUI();
@@ -77,7 +76,7 @@ public class employeeScreen extends Screen {
         // Adding the panes to the final sidebar frame
         frame.add(panel, BorderLayout.EAST);
         frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda");
+        frame.setTitle("Venda - Employee");
         frame.pack();
         frame.setVisible(true);
         return frame;
@@ -95,7 +94,7 @@ public class employeeScreen extends Screen {
     private void employeeSidebar(){
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1050));
+        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
         logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
@@ -178,7 +177,11 @@ public class employeeScreen extends Screen {
         } else if (e.getSource() == watchlistButton) {
             removePrevious();
 
-            panel = new watchlistGUI();
+            try {
+                panel = new watchlistGUI();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Watchlist");
             frame.pack();

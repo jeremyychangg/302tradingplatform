@@ -8,6 +8,10 @@ import tradingPlatform.user.User;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static tradingPlatform.user.User.retrieveOrderLength;
+import static tradingPlatform.user.User.retrieveOrders;
 
 public class portfolioGUI extends JPanel {
     private JPanel panel;
@@ -15,6 +19,8 @@ public class portfolioGUI extends JPanel {
     Font font1 = new Font("Avenir", Font.BOLD, 40);
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
+
+    public int heightPage = 1300;
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
@@ -29,10 +35,11 @@ public class portfolioGUI extends JPanel {
     }
 
 
-    private void setUpPanel(){
+    private void setUpPanel() throws SQLException {
         // setting up black JPanel
+        this.heightPage = 1300 + retrieveOrderLength() * 50;
         this.panel = new JPanel();
-        this.panel.setPreferredSize(new Dimension(1380, 1200));
+        this.panel.setPreferredSize(new Dimension(1380, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
 //        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.panel.setLayout(new GridBagLayout());
@@ -40,12 +47,22 @@ public class portfolioGUI extends JPanel {
 
 
     protected void welcomeMessagePortfolio(JPanel panel) throws SQLException {
+        JPanel message = new JPanel();
+        message.setLayout(new BoxLayout(message, BoxLayout.Y_AXIS));
+
         Font font1 = new Font("Avenir", Font.BOLD, 40);
 
         JLabel welcome = new JLabel("Hi,");
         welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         welcome.setFont(font1);
 
+        message.add(welcome);
+
+        JLabel name = new JLabel(User.getFirstName());
+        name.setFont(font1);
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+        message.add(name);
         this.gbc.gridx = 1;
         this.gbc.gridy = 0;
         this.gbc.anchor = GridBagConstraints.LINE_START;
@@ -55,31 +72,45 @@ public class portfolioGUI extends JPanel {
         this.gbc.weightx = 1.0;
         this.gbc.weighty = 1.0;
 
-        panel.add(welcome, this.gbc);
-
-        JLabel name = new JLabel(User.getFirstName());
-        name.setFont(font1);
-        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
-        this.gbc.gridx = 1;
-        this.gbc.gridy = 1;
-
-        panel.add(name, this.gbc);
+        panel.add(message, this.gbc);
     }
 
     private void chartSection() {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
-        chartSection.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
+        chartSection.setPreferredSize(new Dimension(1220, 350));
+//        chartSection.setLayout(new BoxLayout(chartSection, BoxLayout.Y_AXIS));
+        chartSection.setLayout(new GridBagLayout());
+        GridBagConstraints chartGBC = new GridBagConstraints();
+        chartGBC.gridx = 1;
+        chartGBC.gridy = 0;
+        chartGBC.weightx = 1.0;
+        chartGBC.weighty = 1.0;
+        chartGBC.anchor = GridBagConstraints.LINE_START;
+        chartGBC.fill = GridBagConstraints.HORIZONTAL;
+        chartGBC.fill = GridBagConstraints.BOTH;
 
+        chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
+        Piechart pie = new Piechart(0, 0, 237);
+        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
+        pie.setAlignmentX(Component.LEFT_ALIGNMENT);
+        chartSection.add(pie, chartGBC);
+
+        chartGBC.gridx = 2;
+        chartGBC.gridy = 0;
+
+        JPanel legend = new JPanel();
+        legend.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
         JLabel chart = new JLabel("Chart");
-        chart.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
-        chartSection.setAlignmentX(Component.LEFT_ALIGNMENT);
-        chartSection.add(chart);
+//        chart.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+//        legend.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        legend.add(chart);
+        legend.setBackground(Color.white);
+        chartSection.add(legend, chartGBC);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 2;
-
         panel.add(chartSection, this.gbc);
     }
 
@@ -97,7 +128,7 @@ public class portfolioGUI extends JPanel {
     }
 
 
-    private void orderHistoryDisplay(){
+    private void orderHistoryDisplay() throws SQLException {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Order History");
         orderHistoryHeading.setFont(h1);
@@ -111,21 +142,30 @@ public class portfolioGUI extends JPanel {
 
         // Retrieving the orders pending/incomplete of the user - and their status
         String[] columns = new String[] {
-                "Order ID", "Asset", "Quantity", "Price", "Date"
+                "     ID", "Name", "Type", "Date", "Price", "Quantity"
         };
 
-        Object[][] data = new Object[][] {
-                {1, "Printing Paper", 50, "$" + 100, 10/02/2020 },
-                {2, "CPU Hours", 4, "$" + 100, 10/02/2020 },
-                {3, "Mousepad", 5, "$" + 100, 10/02/2020 },
-        };
+        ArrayList<ArrayList<String>> data1 = retrieveOrders();
+        System.out.println(data1.size());
+        String[][] data = new String[data1.size()][];
+        int i = 0;
+        for (ArrayList<String> c : data1)
+        {
+            data[i] = new String[6];
+            data[i][0] = c.get(0);
+            data[i][1] = c.get(1);
+            data[i][2] = c.get(2);
+            data[i][3] = c.get(3);
+            data[i][4] = c.get(4);
+            data[i][5] = c.get(5);
+            i++;
+        }
 
-        Integer[] width = new Integer[] { 155, 600, 150, 150, 155};
+        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
 
         orderHistoryList.add(new Table(columns, data, width));
 
         orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        orderHistoryList.setBackground(Color.WHITE);
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 5;
