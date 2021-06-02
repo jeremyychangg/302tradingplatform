@@ -30,7 +30,7 @@ import static tradingPlatform.Main.connection;
 public class Inventory {
     String unitID;
     public ArrayList<InventoryItem> unitInventory;
-    double inventorySize;
+    public double inventorySize;
 
     public Inventory(String unitID) throws Exception {
         this.unitID = unitID;

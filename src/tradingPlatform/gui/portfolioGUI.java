@@ -12,8 +12,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static tradingPlatform.user.User.retrieveOrderLength;
-import static tradingPlatform.user.User.retrieveOrders;
+import static tradingPlatform.user.User.*;
 
 public class portfolioGUI extends JPanel {
     private JPanel panel;
@@ -93,11 +92,11 @@ public class portfolioGUI extends JPanel {
         chartGBC.fill = GridBagConstraints.BOTH;
 
 
-        Inventory values = new Inventory("IT00001");
+        Inventory values = new Inventory(getUnitID());
         ArrayList<InventoryItem> inventory = values.unitInventory;
 
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-        Piechart pie = new Piechart(0, 0, 237, inventory);
+        Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
