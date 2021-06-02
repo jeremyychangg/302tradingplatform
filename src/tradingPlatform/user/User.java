@@ -17,18 +17,20 @@
 // 	******************************************************************************************
 package tradingPlatform.user;
 
+import tradingPlatform.enumerators.UserType;
+import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import static tradingPlatform.Main.*;
 
 /**
  * This class is used to
- *
  * @author Natalie Smith
  */
 public class User {
@@ -55,6 +57,10 @@ public class User {
         return this.unitID;
     }
 
+    public UserType returnAccountType() {
+        return this.accountType;
+    }
+
     public String returnpassword() {
         return this.password;
     }
@@ -78,7 +84,7 @@ public class User {
         }
     }
 
-    public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws UserException, SQLException {
+    public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
         this.firstName = firstName;
         this.lastName = lastName;
         this.unitID = unitID;
@@ -143,19 +149,21 @@ public class User {
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         System.out.println(newUserID);
         this.userID = newUserID;
-
-        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-        newUser.clearParameters();
-        newUser.setString(1, newUserID);
-        newUser.setString(2, firstName);
-        newUser.setString(3, lastName);
-        newUser.setString(4, unitID);
-        newUser.setString(5, accType);
-        newUser.setString(6, password);
-
-        newUser.execute();
+//
+//        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+//        newUser.clearParameters();
+//        newUser.setString(1, newUserID);
+//        newUser.setString(2, firstName);
+//        newUser.setString(3, lastName);
+//        newUser.setString(4, unitID);
+//        newUser.setString(5, accType);
+//        newUser.setString(6, password);
+//
+//        newUser.execute();
     }
 
+    public void addUserToDatabase(User user) throws Exception, UnitException {
+    }
 
     /**
      * This function is used to get the account type of the user
@@ -266,17 +274,21 @@ public class User {
      * @return
      */
     public static boolean usernameExists(String findUserID) throws SQLException {
-        String exists = null;
-        Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT userID FROM users WHERE userID = '" + findUserID + "';";
-        ResultSet userIDFind = statement.executeQuery(existUserQuery);
-        if (userIDFind.next() && userIDFind.getString("userID") != null) {
-            exists = userIDFind.getString("userID");
-        }
-        if (exists.equals(findUserID)) {
-            return true;
-        } else {
-            return false;
+        try {
+            String exists = null;
+            Statement statement = connection.createStatement();
+            String existUserQuery = "SELECT userID FROM users WHERE userID = '" + findUserID + "';";
+            ResultSet userIDFind = statement.executeQuery(existUserQuery);
+            if (userIDFind.next() && userIDFind.getString("userID") != null) {
+                exists = userIDFind.getString("userID");
+            }
+            if (exists.equals(findUserID)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            throw new SQLException("The inputted username does not currently exist.");
         }
     }
 
@@ -288,20 +300,25 @@ public class User {
      * @return
      * @throws SQLException
      */
-    public static boolean unitExists(String findUnitID) throws SQLException {
-        String exists = null;
-        Statement statement = connection.createStatement();
-        String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
-        ResultSet rs = statement.executeQuery(existUserQuery);
-        if (rs.next() && rs.getString("unitID") != null) {
-            exists = rs.getString("unitID");
-        }
-        if (exists.equals(findUnitID)) {
-            return true;
-        } else {
-            return false;
+    public static boolean unitExists(String findUnitID) throws Exception {
+        try {
+            String exists = null;
+            Statement statement = connection.createStatement();
+            String existUserQuery = "SELECT unitID FROM units WHERE unitID = '" + findUnitID + "';";
+            ResultSet rs = statement.executeQuery(existUserQuery);
+            if (rs.next() && rs.getString("unitID") != null) {
+                exists = rs.getString("unitID");
+            }
+            if (exists.equals(findUnitID)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException e) {
+            throw new SQLException("UnitID does not currently exist.");
         }
     }
+
 
     public static String getUnitID() throws SQLException {
         String exists = null;
@@ -357,47 +374,73 @@ public class User {
     }
 
 
-//    public void getUserByID(String userID) throws SQLException {
-//        String userDetails;
-//        Statement statement = connection.createStatement();
-//        String queryUser = "SELECT * FROM users WHERE userID = '" + userID + "';";
-//        ResultSet userQuery = statement.executeQuery(queryUser);
-//        String firstName = null;
-//        String lastName = null;
-//        int unitID = 0;
-//        String password = null;
-//        UserType accountType = null;
-//
-//        while(userQuery.next()){
-//            firstName = userQuery.getString("firstName");
-//            lastName = userQuery.getString("lastName");
-//            unitID = Integer.parseInt(userQuery.getString("unitID"));
-//            password = userQuery.getString("password");
-//            String accountString = userQuery.getString("accountType");
-//            accountType = getAccountType(accountString);
+    public static ArrayList<ArrayList<String>> retrieveOrders() throws SQLException {
+//        Object[][] retrievedOrders = new Object[][];
+//        List<Order> foundOrders = new ArrayList<>();
+        ArrayList<ArrayList<String>> orderIDs = new ArrayList<>();
+        String orderID = null;
+
+        Statement statement = connection.createStatement();
+
+        String orders = "SELECT o.orderID, a.assetName, o.orderType, o.orderStatus, o.orderTime, o.orderPrice, o.orderQuantity " +
+                "FROM orders AS o LEFT JOIN assets " +
+                "AS a ON o.assetID = a.assetID " +
+                "WHERE userID = '" + getCurrentUser() + "';";
+//        getCurrentUser()
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            ArrayList<String> singleList = new ArrayList<String>();
+            singleList.add(orderFind.getString("o.orderID"));
+            singleList.add(orderFind.getString("a.assetName"));
+            singleList.add(orderFind.getString("o.orderType"));
+            singleList.add(orderFind.getString("o.orderTime"));
+            singleList.add(orderFind.getString("o.orderPrice"));
+            singleList.add(orderFind.getString("o.orderQuantity"));
+            singleList.add(orderFind.getString("o.orderStatus"));
+            orderIDs.add(singleList);
+        }
+        return orderIDs;
+    }
+
+    public static int retrieveOrderLength() throws SQLException {
+        Statement statement = connection.createStatement();
+        int rows = 0;
+        String orders = "SELECT count(orderID) as orderNum " +
+                "FROM orders " +
+                "WHERE userID = '" + getCurrentUser() + "';";
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            rows = Integer.parseInt(orderFind.getString("orderNum"));
+        }
+        return rows;
+    }
+
+    public static int getOutstandingOrders() throws SQLException {
+        Statement statement = connection.createStatement();
+        int outstanding = 0;
+        String orders = "SELECT count(orderID) as orderNum " +
+                "FROM orders " +
+                "WHERE orderStatus = 'INCOMPLETE' AND userID = '" + getCurrentUser() + "' ;";
+        ResultSet orderFind = statement.executeQuery(orders);
+        while (orderFind.next() == true) {
+            outstanding = Integer.parseInt(orderFind.getString("orderNum"));
+        }
+        return outstanding;
+    }
+
+//    public static List<String> retrieveOrderIDs() {
+//        List<String> orderID = new ArrayList<>();
+//        String order = null;
+//        String orders = "SELECT orderID, a.assetName, o.orderType, o.orderTime, o.orderPrice, o.orderQuantity " +
+//                "FROM orders AS o LEFT JOIN assets " +
+//                "AS a ON o.assetID = a.assetID " +
+//                "WHERE userID = '" + getCurrentUser() + "';";
+//        ResultSet orderFind = statement.executeQuery(orders);
+//        if (orderFind.next() && orderFind.getString("orderID") != null) {
+//            while(orderFind.next() == true){
+//                orderID = orderFind.getString("unitID");
+//            }
 //        }
-////
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.unitID = unitID;
-//        this.password = password;
-//        this.accountType = accountType;
-//    }
-
-
-    /**
-     * Returns the assets associated with the userID
-     */
-//    public void returnAssets(){
-//        //this.unitID
-//        //take the unitID and query the orders table to determine their orders
-//    }
-
-//    public void getNotifications(){
-//    }
-
-//    public void getWatchList(){
-//        //
-////        return this.firstName + " " + this.lastName;
+//        return exists;
 //    }
 }

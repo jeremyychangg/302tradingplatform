@@ -3,7 +3,10 @@
 package tradingPlatform.gui;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 
@@ -11,11 +14,9 @@ public class Table extends JPanel {
     Font tableSize = new Font("Avenir", Font.PLAIN, 16);
     Font headerSize = new Font("Avenir", Font.BOLD, 18);
 
-    public Table(String[] columns, Object[][] data, Integer[] width) {
+    public Table(String[] columns, String[][] data, Integer[] width) {
         //headers for the table
         JPanel panel = new JPanel();
-
-        //actual data for the table in a 2d array
 
         //create table with data
         JTable table = new JTable(data, columns);

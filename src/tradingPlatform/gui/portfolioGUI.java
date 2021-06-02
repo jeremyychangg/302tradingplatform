@@ -3,6 +3,8 @@
  */
 package tradingPlatform.gui;
 
+import tradingPlatform.Inventory;
+import tradingPlatform.InventoryItem;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -10,8 +12,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static tradingPlatform.user.User.retrieveOrderLength;
-import static tradingPlatform.user.User.retrieveOrders;
+import static tradingPlatform.user.User.*;
 
 public class portfolioGUI extends JPanel {
     private JPanel panel;
@@ -20,11 +21,11 @@ public class portfolioGUI extends JPanel {
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
 
-    public int heightPage = 1300;
+    public int heightPage = 1100;
 
     public GridBagConstraints gbc = new GridBagConstraints();
 
-    public portfolioGUI() throws SQLException {
+    public portfolioGUI() throws Exception {
         setUpPanel();
         welcomeMessagePortfolio(panel);
         chartSection();
@@ -37,7 +38,7 @@ public class portfolioGUI extends JPanel {
 
     private void setUpPanel() throws SQLException {
         // setting up black JPanel
-        this.heightPage = 1300 + retrieveOrderLength() * 50;
+        this.heightPage = 1100 + retrieveOrderLength() * 50;
         this.panel = new JPanel();
         this.panel.setPreferredSize(new Dimension(1380, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
@@ -75,7 +76,7 @@ public class portfolioGUI extends JPanel {
         panel.add(message, this.gbc);
     }
 
-    private void chartSection() {
+    private void chartSection() throws Exception {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
         chartSection.setPreferredSize(new Dimension(1220, 350));
@@ -90,8 +91,12 @@ public class portfolioGUI extends JPanel {
         chartGBC.fill = GridBagConstraints.HORIZONTAL;
         chartGBC.fill = GridBagConstraints.BOTH;
 
+//        Inventory values = new Inventory(User.getUnitID());
+        Inventory values = new Inventory("IT00001");
+        ArrayList<InventoryItem> inventory = values.unitInventory;
+
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-        Piechart pie = new Piechart(0, 0, 237);
+        Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
@@ -100,13 +105,48 @@ public class portfolioGUI extends JPanel {
         chartGBC.gridy = 0;
 
         JPanel legend = new JPanel();
-        legend.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
-        JLabel chart = new JLabel("Chart");
+        legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
+        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
+
+//        JLabel chart = new JLabel("Chart");
+        int i = 0;
+        for (InventoryItem c : inventory){
+            JPanel legendRow = new JPanel();
+            legendRow.setLayout(new BoxLayout(legendRow, BoxLayout.X_AXIS));
+//            legendRow.setBackground(Color.RED);
+            int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
+            int g = (255 / inventory.size()) * i;
+            int height = 20;
+            ColorSquare square = new ColorSquare(g, 0, height);
+            System.out.println("Here" + 350 / inventory.size());
+            legendRow.add(square, BorderLayout.WEST);
+
+            JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
+            JLabel inventoryName = new JLabel(c.asset.assetName);
+            JLabel inventoryPrice = new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
+
+            inventoryPercent.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+            inventoryName.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+            inventoryPrice.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+
+            legendRow.add(inventoryPercent, BorderLayout.WEST);
+            legendRow.add(inventoryName, BorderLayout.CENTER);
+            legendRow.add(inventoryPrice, BorderLayout.EAST);
+            i++;
+            legend.add(legendRow, BorderLayout.LINE_START);
+        }
+
+        if (inventory.size() == 0){
+            ColorSquare square = new ColorSquare(0, 50, 50);
+            legend.add(square, BorderLayout.LINE_START);
+            JLabel inventoryItem = new JLabel("None");
+            legend.add(inventoryItem, BorderLayout.CENTER);
+        }
 //        chart.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 //        legend.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        legend.add(chart);
-        legend.setBackground(Color.white);
+//        legend.add(chart);
+//        legend.setBackground(Color.white);
         chartSection.add(legend, chartGBC);
 
         this.gbc.gridx = 1;
@@ -142,7 +182,7 @@ public class portfolioGUI extends JPanel {
 
         // Retrieving the orders pending/incomplete of the user - and their status
         String[] columns = new String[] {
-                "     ID", "Name", "Type", "Date", "Price", "Quantity"
+                "     ID", "Name","Type", "Date", "Price", "Quantity", "Status"
         };
 
         ArrayList<ArrayList<String>> data1 = retrieveOrders();
@@ -151,17 +191,18 @@ public class portfolioGUI extends JPanel {
         int i = 0;
         for (ArrayList<String> c : data1)
         {
-            data[i] = new String[6];
+            data[i] = new String[7];
             data[i][0] = c.get(0);
             data[i][1] = c.get(1);
             data[i][2] = c.get(2);
             data[i][3] = c.get(3);
             data[i][4] = c.get(4);
             data[i][5] = c.get(5);
+            data[i][6] = c.get(6);
             i++;
         }
 
-        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
+        Integer[] width = new Integer[] { 150, 400, 100, 150, 100, 150, 150}; // has to equal
 
         orderHistoryList.add(new Table(columns, data, width));
 

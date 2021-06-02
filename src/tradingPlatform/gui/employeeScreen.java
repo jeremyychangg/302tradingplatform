@@ -4,6 +4,7 @@
 package tradingPlatform.gui;
 
 import tradingPlatform.Main;
+import tradingPlatform.exceptions.AssetTypeException;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -161,7 +162,7 @@ public class employeeScreen extends Screen {
                 pane.getVerticalScrollBar().setUnitIncrement(7);
                 pane.setPreferredSize(new Dimension(1390, 1060));
                 frame.add(pane, BorderLayout.CENTER);
-            } catch (SQLException throwable) {
+            } catch (Exception throwable) {
                 throwable.printStackTrace();
             }
             frame.setTitle("Portfolio");
@@ -181,6 +182,8 @@ public class employeeScreen extends Screen {
                 panel = new watchlistGUI();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } catch (AssetTypeException assetTypeException) {
+                assetTypeException.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Watchlist");
@@ -231,8 +234,8 @@ public class employeeScreen extends Screen {
 
         JLabel creditsUserLabel = new JLabel("Credit Balance");
         JLabel creditsUser = new JLabel(Float.toString(User.getCredits()));
-        JLabel outstandingLabel = new JLabel("Outstanding Units");
-        JLabel outstandingUser = new JLabel("5");
+        JLabel outstandingLabel = new JLabel("Outstanding Orders");
+        JLabel outstandingUser = new JLabel(Integer.toString(User.getOutstandingOrders()));
 
         outstandingUser.setAlignmentX(Component.CENTER_ALIGNMENT);
         outstandingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

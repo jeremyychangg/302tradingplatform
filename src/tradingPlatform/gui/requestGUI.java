@@ -28,15 +28,11 @@ public class requestGUI extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(requestHeading);
 
-        frame.add(panel, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("Request");
-        frame.pack();
-        frame.setVisible(true);
+        add(panel);
     }
 
     public static void main(String[] args) {
-        new requestGUI();
+//        new requestGUI();
     }
 
 }
