@@ -21,7 +21,7 @@ public class portfolioGUI extends JPanel {
     Font heading = new Font("Avenir", Font.PLAIN, 50);
     Font h1 = new Font("Avenir", Font.PLAIN, 25);
 
-    public int heightPage = 1100;
+    public int heightPage = Screen.screenHeight;
     public GridBagConstraints gbc = new GridBagConstraints();
 
 
@@ -46,9 +46,9 @@ public class portfolioGUI extends JPanel {
      */
     private void setUpPanel() throws SQLException {
         // setting up black JPanel
-        this.heightPage = 1100 + retrieveOrderLength() * 50;
+        this.heightPage = Screen.screenHeight + retrieveOrderLength() * 50;
         this.panel = new JPanel();
-        this.panel.setPreferredSize(new Dimension(1380, heightPage));
+        this.panel.setPreferredSize(new Dimension(Screen.screenWidth, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
         this.panel.setLayout(new GridBagLayout());
     }
@@ -191,7 +191,7 @@ public class portfolioGUI extends JPanel {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Order History");
         orderHistoryHeading.setFont(h1);
-        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 10));
+        orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(80, 0, 80, 10));
 
         this.gbc.gridx = 1;
         this.gbc.gridy = 4;

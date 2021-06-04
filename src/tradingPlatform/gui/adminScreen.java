@@ -109,9 +109,12 @@ public class adminScreen extends Screen {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 //        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+//        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+        sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
+
 //        panel = new requestGUI();
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(290, 0, 0, 0));
+//        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -176,7 +179,7 @@ public class adminScreen extends Screen {
             removePrevious();
             panel = new userGUI();
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Lead - Users");
+            frame.setTitle("Admin - Users");
             frame.pack();
             panel.setVisible(true);
 
@@ -190,7 +193,7 @@ public class adminScreen extends Screen {
             removePrevious();
             panel = new unitGUI();
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Lead - Unit");
+            frame.setTitle("Admin - Unit");
             frame.pack();
             panel.setVisible(true);
 
@@ -204,7 +207,7 @@ public class adminScreen extends Screen {
             removePrevious();
             panel = new assetGUI();
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Lead - Asset");
+            frame.setTitle("Admin - Asset");
             frame.pack();
             panel.setVisible(true);
             // Changing the image for the button
@@ -217,7 +220,7 @@ public class adminScreen extends Screen {
             removePrevious();
             panel = new requestGUI();
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Lead - Request");
+            frame.setTitle("Admin - Request");
             frame.pack();
             panel.setVisible(true);
             // Changing the image for the button

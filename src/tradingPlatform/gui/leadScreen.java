@@ -92,8 +92,9 @@ public class leadScreen extends Screen {
     private void leadSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(440, 0, 0, 0));
+//        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
+        sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(230, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -184,7 +185,8 @@ public class leadScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-                pane.setPreferredSize(new Dimension(1390, 1060));
+//                pane.setPreferredSize(new Dimension(1390, 1060));
+                pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
                 throwable.printStackTrace();

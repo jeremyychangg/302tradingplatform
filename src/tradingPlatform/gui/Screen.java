@@ -14,6 +14,16 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 public abstract class Screen implements ActionListener {
+    static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static int screenHeight = (int) screenSize.getHeight();
+    public static int screenWidth = (int) screenSize.getWidth() - 320;
+    // big screen
+    // 1390 - width
+    // 1000 - height
+    // small screen
+    // 1000 - width
+    // 800 - height
+
     public Screen() {
     }
 

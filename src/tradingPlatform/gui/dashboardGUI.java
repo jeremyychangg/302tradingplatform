@@ -24,16 +24,19 @@ public class dashboardGUI extends JPanel implements ActionListener {
         // setting up black JPanel
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
-        panel.setPreferredSize(new Dimension(1380, 1050));
+        panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
+//        panel.setPreferredSize(new Dimension(1380, 1050));
+
         panel.setLayout(new BorderLayout());
         panel.add(Box.createHorizontalGlue());
 
         left = new JPanel();
-        left.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 600));
+        left.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 0));
+//        Screen.screenWidth/2
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
         summary = new JPanel();
-        summary.setBorder(BorderFactory.createEmptyBorder(200, 0, 0, 0));
+        summary.setBorder(BorderFactory.createEmptyBorder(Screen.screenWidth/4, 0, 0, 0));
         summary.setBackground(Color.white);
         summary.setLayout(new BoxLayout(summary, BoxLayout.Y_AXIS));
         summary.setPreferredSize(new Dimension(500, 1200));

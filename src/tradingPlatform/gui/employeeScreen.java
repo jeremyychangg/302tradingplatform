@@ -45,6 +45,18 @@ public class employeeScreen extends Screen {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
+//        System.out.println(frame.getWidth());
+//        frame.addComponentListener(new ComponentAdapter(){
+//
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                if ( frame.getBounds().width < Screen.screenWidth ){//set flag
+//                    Screen.screenWidth = (int) frame.getWidth() - 320;
+//                    System.out.println(Screen.screenWidth);
+//                    panel.setPreferredSize(new Dimension(Screen.screenWidth, screenHeight));
+//                }
+//            }
+//        });
     }
 
     /**
@@ -105,8 +117,10 @@ public class employeeScreen extends Screen {
     private void employeeSidebar(){
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
+        sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
+        // default height 1000
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(280, 0, 0, 0));
+//        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -177,7 +191,8 @@ public class employeeScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-                pane.setPreferredSize(new Dimension(1390, 1060));
+//                pane.setPreferredSize(new Dimension(1390, 1060));
+                pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
                 throwable.printStackTrace();
@@ -270,8 +285,8 @@ public class employeeScreen extends Screen {
         creditsUser.setFont(heading);
         outstandingUser.setFont(heading);
 
-        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
-        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
+        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
         creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
 
