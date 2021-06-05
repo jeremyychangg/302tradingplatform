@@ -9,7 +9,12 @@ import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
 /**
+ * Initiates the user interface for the Lead screen. Can only be called when in login the user
+ * is found to be a lead. Listeners are also initiated within this class to ensure
+ * the relevant buttons are being used.
  *
+ * @author Natalie Smith
+ * @version 3.0
  */
 public class leadScreen extends Screen {
     private JFrame frame;
@@ -47,6 +52,10 @@ public class leadScreen extends Screen {
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
     private final ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
+
+    /**
+     * Constructor for the lead screen calls relevant methods to initialise the GUI
+     */
     public leadScreen() throws SQLException {
         initUI();
         addButtonListeners();
@@ -70,6 +79,7 @@ public class leadScreen extends Screen {
     /**
      * Method used to initialise the Lead Screen. When run, on load, it sets the panel to the
      * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     *
      * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
      */
     private void initUI() throws SQLException {
@@ -91,8 +101,8 @@ public class leadScreen extends Screen {
      * Initialises the lead sidebar, with the relevant elements and buttons. This
      * code is purely to create and setup up the layout and positioning of the buttons within the sidebar.
      * frame and panels. Given the sidebarPanel (which should be initiated already) the portfolio, dashboard,
-     * watchlist, orders, settings and logout buttons are placed. For larger screens/smaller screens, the method
-     * should resize the padding between the main buttons and the bottom pane.
+     * watchlist, orders, settings, requests and logout buttons are placed. For larger screens/smaller screens,
+     * the method should resize the padding between the main buttons and the bottom pane.
      *
      * @return a frame containing the lead main panel and sidebar panel
      */
@@ -119,15 +129,6 @@ public class leadScreen extends Screen {
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        portfolioButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-
         alignCenter(new JButton[]{portfolioButton, dashboardButton, watchlistButton, ordersButton, requestButton,
                 settingsButton, logoutButton});
 
@@ -149,7 +150,12 @@ public class leadScreen extends Screen {
     }
 
     /**
-     *
+     * Given a button is clicked on the lead graphical user interface, the actionPerformed points
+     * the program to the sidebarListeners method to choose an outcome based on the button. Thus, for each button, the
+     * method would remove the previous panel and initialise the relevant GUI associated with the button, alongside
+     * setting other properties such as the title of the frame. Additionally, to make the user aware of their position
+     * on the GUI, the program would change the button image to match the action - and clear buttons that are not the
+     * current page.
      * @param e
      */
     @Override
@@ -181,7 +187,6 @@ public class leadScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-//                pane.setPreferredSize(new Dimension(1390, 1060));
                 pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
@@ -255,6 +260,10 @@ public class leadScreen extends Screen {
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == settingsButton) {
             removePrevious();
+            try {
+                panel = new settingsGUI();
+            } catch (Exception exception) {
+            }
             frame.setTitle("Lead - Settings");
             try {
                 panel = new settingsGUI();
@@ -280,9 +289,10 @@ public class leadScreen extends Screen {
 
 
     /**
-     *
+     * When this method is called, would remove the current panel within the frame, and also removes the elements
+     * within the panel. Used to switch between panel selection.
      */
-    public void removePrevious(){
+    public void removePrevious() {
         frame.remove(panel);
         frame.remove(pane);
         panel.removeAll();

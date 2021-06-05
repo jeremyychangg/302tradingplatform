@@ -45,6 +45,10 @@ public class adminScreen extends Screen {
     private ImageIcon requestIconS = new ImageIcon("src/img/request-Press-01.png");
     private ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
+
+    /**
+     * Constructor for the administration screen calls relevant methods to initialise the GUI
+     */
     public adminScreen() {
         initUI();
         addButtonListeners();
@@ -79,7 +83,6 @@ public class adminScreen extends Screen {
         requestButton.addActionListener(this);
         settingsButton.addActionListener(this);
     }
-
 
 
     /**
@@ -138,10 +141,10 @@ public class adminScreen extends Screen {
     }
 
 
-
     /**
      * Given a button is clicked (trigggered by the actionListener initiated), the actionPerformed points
      * the program to the sidebarListeners method to choose an outcome based on the button.
+     *
      * @param e
      */
     @Override
@@ -153,18 +156,6 @@ public class adminScreen extends Screen {
     }
 
 
-
-    /**
-     * When this method is called, would remove the current panel within the frame, and also removes the elements
-     * within the panel. Used to switch between panel selection.
-     */
-    public void removePrevious(){
-        frame.remove(panel);
-        panel.removeAll();
-    }
-
-
-
     /**
      * Given that the actionPerformed method has been called, and pointed the program to this method, based on the
      * action - the button pressed - it would change the GUI panel to match the event. Thus, for each button, the
@@ -172,6 +163,7 @@ public class adminScreen extends Screen {
      * setting other properties such as the title of the frame. Additionally, to make the user aware of their position
      * on the GUI, the program would change the button image to match the action - and clear buttons that are not the
      * current page.
+     *
      * @param e
      * @throws Exception
      */
@@ -260,5 +252,15 @@ public class adminScreen extends Screen {
             new loginGUI();
             frame.dispose();
         }
+    }
+
+
+    /**
+     * When this method is called, would remove the current panel within the frame, and also removes the elements
+     * within the panel. Used to switch between panel selection.
+     */
+    public void removePrevious() {
+        frame.remove(panel);
+        panel.removeAll();
     }
 }

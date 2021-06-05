@@ -1,7 +1,7 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.gui.leadScreen;
+import tradingPlatform.gui.employeeScreen;
 
 import java.sql.Connection;
 
@@ -29,7 +29,7 @@ public class Main {
         }
 //        setCurrentUser("S0003");
 //        new adminScreen();
-            new leadScreen();
+            new employeeScreen();
 //        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
 
 //        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);
@@ -41,8 +41,6 @@ public class Main {
 //        User six = new User("Stephen", "King", "AD0001", "pass", UserType.Employee);
 
 
-//        System.out.println(verifyPassword("password.CAB302", "q/i13M0jPpAtG3hrGyh3ZTUx2GoLf6FqLtzxSh21vAFlkjaseju1KOrUC+Jie41fl/4leimzXZkRnPApH8E5ZA==", salt));
-//        System.out.println(retrieveOrders());
 //        new employeeScreen();
 
 //        Inventory values = new Inventory("IT00001");

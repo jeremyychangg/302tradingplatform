@@ -14,6 +14,10 @@ import static tradingPlatform.Main.setCurrentUser;
 import static tradingPlatform.passwordEncryption.verifyPassword;
 import static tradingPlatform.user.User.getAccountType;
 
+/**
+ *
+ * @implements ActionListener
+ */
 public class loginGUI implements ActionListener {
     private final JLabel logo = new JLabel();
     private final JFrame frame;
@@ -24,9 +28,6 @@ public class loginGUI implements ActionListener {
 
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
-    /**
-     *
-     */
     public loginGUI() {
         // Initialise the frame and panel used
         frame = new JFrame();

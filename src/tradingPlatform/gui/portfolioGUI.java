@@ -134,7 +134,6 @@ public class portfolioGUI extends JPanel {
 
         JPanel legend = new JPanel();
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
-//        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
         legend.setLayout(new GridLayout(4, inventory.size()));
 
         int i = 0;

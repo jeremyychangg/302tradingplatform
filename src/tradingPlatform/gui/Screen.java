@@ -13,6 +13,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
+/**
+ * Is the
+ */
 public abstract class Screen implements ActionListener {
     static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static int screenHeight = (int) screenSize.getHeight();
@@ -26,11 +29,12 @@ public abstract class Screen implements ActionListener {
     public static Font body = new Font("Avenir", Font.PLAIN, 13);
     public static Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
+
+
     public Screen() {
-        if (Screen.screenWidth > 1400){
+        if (Screen.screenWidth > 1400) {
             this.border = (int) (Screen.screenWidth * 0.2);
-        }
-        else {
+        } else {
             this.border = 80;
         }
     }
@@ -77,13 +81,13 @@ public abstract class Screen implements ActionListener {
      * be packed to return a frame to the main constructor. The appearance of the GUI is
      * ultimately decided on the inputted parameters.
      *
-     * @return a frame containing each the main panel and sidebar panel
      * @param frame
      * @param panel
      * @param sidebarPanel
      * @param title
+     * @return a frame containing each the main panel and sidebar panel
      */
-    protected JFrame setupFrame(String title, JPanel panel, JFrame frame, JPanel sidebarPanel){
+    protected JFrame setupFrame(String title, JPanel panel, JFrame frame, JPanel sidebarPanel) {
         frame = new JFrame();
 
         // Adding the panes to the final sidebar frame
@@ -97,12 +101,54 @@ public abstract class Screen implements ActionListener {
 
     /**
      * A method used to align a list of buttons in the center of a component
+     *
      * @param elements a JButton list of elements that are to be aligned to center
      */
-    public void alignCenter(JButton[] elements){
-        for (JButton component : elements){
+    public void alignCenter(JButton[] elements) {
+        for (JButton component : elements) {
             component.setAlignmentX(Component.CENTER_ALIGNMENT);
         }
+    }
+
+    /**
+     * @param panel
+     * @throws SQLException
+     */
+    public static void creditBalancePanel(JPanel panel) throws SQLException {
+        Font heading = new Font("Avenir", Font.PLAIN, 50);
+
+        JPanel creditsPanel = new JPanel();
+        JPanel ordersPanel = new JPanel();
+
+        JLabel creditsUserLabel = new JLabel("Credit Balance");
+        JLabel creditsUser = new JLabel(Float.toString(User.getCredits()));
+        JLabel outstandingLabel = new JLabel("Outstanding Orders");
+        JLabel outstandingUser = new JLabel(Integer.toString(User.getOutstandingOrders()));
+
+        outstandingUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        outstandingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        creditsUser.setAlignmentX(Component.CENTER_ALIGNMENT);
+        creditsUserLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        creditsUser.setFont(heading);
+        outstandingUser.setFont(heading);
+
+        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
+        creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
+
+        creditsPanel.add(creditsUser);
+        creditsPanel.add(creditsUserLabel);
+        ordersPanel.add(outstandingUser);
+        ordersPanel.add(outstandingLabel);
+
+        panel.add(creditsPanel);
+        panel.add(ordersPanel);
+
+        creditsPanel.setBackground(Color.white);
+        ordersPanel.setBackground(Color.white);
+        panel.setBackground(Color.white);
     }
 }
 

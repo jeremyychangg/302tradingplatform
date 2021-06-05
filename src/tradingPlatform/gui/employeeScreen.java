@@ -5,7 +5,6 @@ package tradingPlatform.gui;
 
 import tradingPlatform.Main;
 import tradingPlatform.exceptions.AssetTypeException;
-import tradingPlatform.user.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,11 +48,16 @@ public class employeeScreen extends Screen {
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
     private final ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
+
+    /**
+     * Constructor for the employee screen calls relevant methods to initialise the GUI
+     */
     public employeeScreen() throws SQLException {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
     }
+
 
     /**
      * Method used to initialise the Employee Screen. When run, on load, it sets the panel
@@ -74,28 +78,7 @@ public class employeeScreen extends Screen {
         logoutPane.setBackground(baseBlue);
 
         employeeSidebar();
-//        setupEmployeeFrame();
         this.frame = setupFrame("Venda - Employee", panel, frame, sidebarPanel);
-    }
-
-
-    /**
-     * Method used to initialise and pack the employee screen frame. Within, it adds the main panel on the right,
-     * and sets up the sidebar on the left of the frame. Additionally, sets up the frames title to make the user
-     * aware of where they are.
-     *
-     * @return JFrame A frame that would display the employee related elements
-     */
-    private JFrame setupEmployeeFrame() {
-        frame = new JFrame();
-
-        // Adding the panes to the final sidebar frame
-        frame.add(panel, BorderLayout.EAST);
-        frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda - Employee");
-        frame.pack();
-        frame.setVisible(true);
-        return frame;
     }
 
 
@@ -114,7 +97,13 @@ public class employeeScreen extends Screen {
 
 
     /**
-     * Method creates the GUI for the employee sidebar, and initialises the buttons.
+     * Initialises the employee sidebar, with the relevant elements and buttons. This
+     * code is purely to create and setup up the layout and positioning of the buttons within the sidebar.
+     * frame and panels. Given the sidebarPanel (which should be initiated already) the portfolio, dashboard,
+     * watchlist, orders, settings and logout buttons are placed. For larger screens/smaller screens, the method
+     * should resize the padding between the main buttons and the bottom pane.
+     *
+     * @return a frame containing the lead main panel and sidebar panel
      */
     private void employeeSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -139,7 +128,7 @@ public class employeeScreen extends Screen {
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
         alignCenter(new JButton[]{portfolioButton, dashboardButton, watchlistButton, ordersButton,
-                        settingsButton, logoutButton});
+                settingsButton, logoutButton});
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);
@@ -174,7 +163,7 @@ public class employeeScreen extends Screen {
                 frame.add(panel, BorderLayout.CENTER);
             } catch (SQLException throwable) {
             }
-            frame.setTitle("Dashboard");
+            frame.setTitle("Employee - Dashboard");
             frame.pack();
             panel.setVisible(true);
 
@@ -193,12 +182,11 @@ public class employeeScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-//                pane.setPreferredSize(new Dimension(1390, 1060));
                 pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
             }
-            frame.setTitle("Portfolio");
+            frame.setTitle("Employee - Portfolio");
             frame.pack();
             panel.setVisible(true);
 
@@ -219,7 +207,7 @@ public class employeeScreen extends Screen {
             } catch (AssetTypeException assetTypeException) {
             }
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Watchlist");
+            frame.setTitle("Employee - Watchlist");
             frame.pack();
             panel.setVisible(true);
             // Changing the image for the button
@@ -232,7 +220,7 @@ public class employeeScreen extends Screen {
         } else if (e.getSource() == ordersButton) {
             removePrevious();
 
-            frame.setTitle("Orders");
+            frame.setTitle("Employee - Orders");
             try {
                 panel = new orderGUI();
             } catch (SQLException throwables) {
@@ -251,7 +239,7 @@ public class employeeScreen extends Screen {
         } else if (e.getSource() == settingsButton) {
             removePrevious();
 
-            frame.setTitle("Settings");
+            frame.setTitle("Employee - Settings");
             try {
                 panel = new settingsGUI();
             } catch (Exception exception) {
@@ -277,53 +265,12 @@ public class employeeScreen extends Screen {
 
 
     /**
-     *
+     * When this method is called, would remove the current panel within the frame, and also removes the elements
+     * within the panel. Used to switch between panel selection.
      */
     public void removePrevious() {
         frame.remove(panel);
         frame.remove(pane);
         panel.removeAll();
-    }
-
-
-    /**
-     * @param panel
-     * @throws SQLException
-     */
-    public static void creditBalancePanel(JPanel panel) throws SQLException {
-        Font heading = new Font("Avenir", Font.PLAIN, 50);
-
-        JPanel creditsPanel = new JPanel();
-        JPanel ordersPanel = new JPanel();
-
-        JLabel creditsUserLabel = new JLabel("Credit Balance");
-        JLabel creditsUser = new JLabel(Float.toString(User.getCredits()));
-        JLabel outstandingLabel = new JLabel("Outstanding Orders");
-        JLabel outstandingUser = new JLabel(Integer.toString(User.getOutstandingOrders()));
-
-        outstandingUser.setAlignmentX(Component.CENTER_ALIGNMENT);
-        outstandingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        creditsUser.setAlignmentX(Component.CENTER_ALIGNMENT);
-        creditsUserLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        creditsUser.setFont(heading);
-        outstandingUser.setFont(heading);
-
-        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
-        creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
-
-        creditsPanel.add(creditsUser);
-        creditsPanel.add(creditsUserLabel);
-        ordersPanel.add(outstandingUser);
-        ordersPanel.add(outstandingLabel);
-
-        panel.add(creditsPanel);
-        panel.add(ordersPanel);
-
-        creditsPanel.setBackground(Color.white);
-        ordersPanel.setBackground(Color.white);
-        panel.setBackground(Color.white);
     }
 }
