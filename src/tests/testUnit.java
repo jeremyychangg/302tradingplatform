@@ -2,16 +2,11 @@ package tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tradingPlatform.Request;
 import tradingPlatform.Unit;
-import tradingPlatform.requestType;
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class testUnit {
     Unit unit;

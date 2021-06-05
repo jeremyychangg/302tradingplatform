@@ -278,6 +278,9 @@ public class userGUI extends JPanel implements ActionListener {
         if (e.getSource() == editAccTypeBtn){
             try {
                 editAccountType();
+            } catch (SQLException exception) {
+                String msg = "Unable to change user account in database";
+                JOptionPane.showMessageDialog(null, msg);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -305,10 +308,14 @@ public class userGUI extends JPanel implements ActionListener {
             Admin.editAccountType(userIDInput, accountTypeInput);
         }
         catch (NullPointerException e){
-            throw new Exception("Empty values. Please try again.");
+            String msg = "Empty values. Please try again.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new NullPointerException("Empty values. Please try again.");
         }
         catch (SQLException e){
-            throw new Exception("Could not add to database.");
+            String msg = "Could not add to database.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new Exception(msg);
         }
     }
 

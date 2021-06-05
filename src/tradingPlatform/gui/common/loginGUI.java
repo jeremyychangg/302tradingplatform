@@ -2,8 +2,9 @@ package tradingPlatform.gui.common;
 
 import tradingPlatform.gui.client.employeeScreen;
 import tradingPlatform.gui.client.leadScreen;
+import tradingPlatform.gui.server.adminScreen;
 
-import javax.security.auth.login.FailedLoginException;
+import javax.security.auth.login.LoginException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -124,19 +125,26 @@ public class loginGUI implements ActionListener {
                         new adminScreen();
                         break;
                     default:
-                        throw new Exception("Not a valid user");
+                        throw new LoginException("Not a valid user");
                 }
                 usernameField.setText("");
             }
+            else {
+                String msg = "Login password doesn't match username.";
+                JOptionPane.showMessageDialog(null, msg);
+            }
         }
-        catch (Exception exception) {
+        catch (LoginException | SQLException exception) {
             String msg = "User login details inputted invalid. Try again";
             try {
-                throw new FailedLoginException(msg);
-                //insert error message
-            } catch (FailedLoginException failedLoginException) {
-//                failedLoginException.printStackTrace();
+                throw new LoginException(msg);
+            } catch (LoginException failedLoginException) {
+                JOptionPane.showMessageDialog(null, msg);
             }
+        }
+        catch (Exception error){
+            String msg = "Login does not exist in system.";
+            JOptionPane.showMessageDialog(null, msg);
         }
     }
 

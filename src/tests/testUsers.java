@@ -22,8 +22,12 @@ package tests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tradingPlatform.enumerators.UserType;
 import tradingPlatform.exceptions.UnitException;
-import tradingPlatform.user.*;
+import tradingPlatform.user.Admin;
+import tradingPlatform.user.Employee;
+import tradingPlatform.user.Lead;
+import tradingPlatform.user.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

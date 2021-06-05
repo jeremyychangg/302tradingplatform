@@ -1,4 +1,4 @@
-package tradingPlatform.gui.client;
+package tradingPlatform.gui.server;
 
 import tradingPlatform.gui.common.Screen;
 

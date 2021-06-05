@@ -1,14 +1,13 @@
 /**
  * @author Natalie Smith
  */
-package tradingPlatform.gui.common;
+package tradingPlatform.gui.server;
 
 import tradingPlatform.Main;
-import tradingPlatform.gui.client.requestAdminGUI;
 import tradingPlatform.gui.client.requestGUI;
-import tradingPlatform.gui.server.assetGUI;
-import tradingPlatform.gui.server.unitGUI;
-import tradingPlatform.gui.server.userGUI;
+import tradingPlatform.gui.common.Screen;
+import tradingPlatform.gui.common.loginGUI;
+import tradingPlatform.gui.common.settingsGUI;
 
 import javax.swing.*;
 import java.awt.*;

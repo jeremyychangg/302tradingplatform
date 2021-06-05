@@ -23,7 +23,23 @@ public class UserException extends Exception {
      * relating to the user is found.
      * @param input String input that holds the message of the error
      */
-    public  UserException(String input){
+    public UserException(String input){
         super("User exception: " + input);
+    }
+
+    public UserException(){
+
+    }
+
+    public UserException(Throwable cause){
+        super(cause);
+    }
+
+    public UserException(String message, Throwable cause){
+        super(message, cause);
+    }
+
+    public UserException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
+        super(message, cause, suppression, writableStackTrace);
     }
 }
