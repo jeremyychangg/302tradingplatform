@@ -136,7 +136,7 @@ public class Admin extends User{
     }
 
 
-    public void newUnit(String unitName, double creditBalance, double creditLimit){
+    public void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException{
         Unit unitNew = new Unit(unitName,creditBalance, creditLimit);
     }
 

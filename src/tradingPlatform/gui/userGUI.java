@@ -1,5 +1,7 @@
 package tradingPlatform.gui;
 
+import tradingPlatform.user.Admin;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +15,7 @@ public class userGUI extends JPanel implements ActionListener {
     private JButton changeButton = new JButton("EDIT USER PASSWORD");
 
     private JButton submitNewUser = new JButton("SUBMIT");
+    private JButton editAccType;
     private JPanel functions;
 
     private JTextField firstName;
@@ -25,6 +28,8 @@ public class userGUI extends JPanel implements ActionListener {
     private JTextField userID;
     private JTextField passwordChange;
 
+    private JButton editAccTypeBtn;
+
 
     String[] userTypes = { "Admin", "Employee", "Lead" };
 
@@ -36,7 +41,6 @@ public class userGUI extends JPanel implements ActionListener {
     public userGUI() throws Exception {
         setUpPanel();
         Screen.welcomeMessage(panel);
-
         buttonInit();
         cards();
         panel.add(functions);
@@ -56,14 +60,14 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     private void cards(){
-        newUser();
-        editType();
-        changePassword();
+        newUserCard();
+        editTypeCard();
+        changePasswordCard();
 
 
     }
 
-    public void newUser(){
+    public void newUserCard(){
         SpringLayout createLayout = new SpringLayout();
         JLabel createLabel = new JLabel("Create New User");
         JLabel firstNameL = new JLabel("First Name");
@@ -138,7 +142,7 @@ public class userGUI extends JPanel implements ActionListener {
         accountType.addActionListener(this);
     }
 
-    public void editType(){
+    public void editTypeCard(){
         SpringLayout editLayout = new SpringLayout();
         JLabel editLabel = new JLabel("Edit Account Type");
         JPanel editUserForm = new JPanel();
@@ -148,20 +152,22 @@ public class userGUI extends JPanel implements ActionListener {
         JLabel userIDLabel = new JLabel("User ID");
         JLabel accountTypeEditLabel = new JLabel("Account Type");
 
-        JTextField userID = new JTextField(25);
+        userID = new JTextField(25);
         accountTypeEdit = new JComboBox(userTypes);
         accountTypeEdit.setSelectedIndex(1);
         accountTypeEdit.addActionListener(this);
-        JButton editAccType = new JButton("SUBMIT");
+        editAccTypeBtn = new JButton("SUBMIT");
 
-        buttonStyle(editAccType);
+        buttonStyle(editAccTypeBtn);
 
         editUserForm.add(editLabel);
         editUserForm.add(userIDLabel);
         editUserForm.add(userID);
         editUserForm.add(accountTypeEditLabel);
         editUserForm.add(accountTypeEdit);
-        editUserForm.add(editAccType);
+        editUserForm.add(editAccTypeBtn);
+
+        editAccTypeBtn.addActionListener(this);
 
         editLayout.putConstraint(SpringLayout.NORTH, editLabel, 50, SpringLayout.NORTH, editUserForm);
         editLayout.putConstraint(SpringLayout.WEST, editLabel, 50, SpringLayout.WEST, editUserForm);
@@ -186,7 +192,7 @@ public class userGUI extends JPanel implements ActionListener {
     }
 
 
-    public void changePassword(){
+    public void changePasswordCard(){
         SpringLayout changeLayout = new SpringLayout();
 
         JLabel changeLabel = new JLabel("Change User Password");
@@ -204,7 +210,7 @@ public class userGUI extends JPanel implements ActionListener {
         changePass.add(userID);
         changePass.add(passwordChange);
 
-        JButton editAccType = new JButton("SUBMIT");
+        editAccType = new JButton("SUBMIT");
 
         buttonStyle(editAccType);
 
@@ -275,6 +281,12 @@ public class userGUI extends JPanel implements ActionListener {
         if (e.getSource() == accountType){
             accountTypeValue = (String) accountType.getSelectedItem();
         }
+        if (e.getSource() == editAccType){
+
+        }
+        if (e.getSource() == accountTypeEdit){
+            accountTypeValue = (String) accountTypeEdit.getSelectedItem();
+        }
     }
 
     private void addNewUser(){
@@ -284,6 +296,17 @@ public class userGUI extends JPanel implements ActionListener {
         String accountInput = accountTypeValue;
         String passwordInput = password.getText();
         System.out.println(accountInput);
+    }
+
+    private void changePassword(){
+        String userIDInput = userID.getText();
+        String passwordInput = passwordChange.getText();
+    }
+
+    private void editAccountType() throws Exception {
+        String userIDInput = userID.getText();
+        String accountTypeInput = accountTypeValue;
+        Admin.editAccountType(userIDInput, accountTypeInput);
     }
 
     public void buttonStyle(JButton button){
