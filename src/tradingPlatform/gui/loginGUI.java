@@ -1,5 +1,6 @@
 package tradingPlatform.gui;
 
+import javax.security.auth.login.FailedLoginException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -125,8 +126,15 @@ public class loginGUI implements ActionListener {
                 }
                 usernameField.setText("");
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        }
+        catch (Exception exception) {
+            String msg = "User login details inputted invalid. Try again";
+            try {
+                throw new FailedLoginException(msg);
+                //insert error message
+            } catch (FailedLoginException failedLoginException) {
+//                failedLoginException.printStackTrace();
+            }
         }
     }
 

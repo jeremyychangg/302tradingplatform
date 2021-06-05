@@ -345,17 +345,32 @@ public class User {
 
 
     /**
-     * @param passMod
+     * @param
      */
-    protected void changePassword(String passMod) throws SQLException {
-        // determine if the value is a valid password
-        // input the SQL query for the database
-        String passwordInputQuery = "UPDATE users SET password = ? WHERE assetID = '?';";
-        PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
-        updatePassword.clearParameters();
-        updatePassword.setString(1, passMod);
-        updatePassword.setString(2, this.userID);
-        updatePassword.executeUpdate();
+    public static void changePassword(String oldPassword, String newPassword, String reEnter) throws SQLException {
+            Statement loginInput = connection.createStatement();
+            // determine if the value is a valid password
+            String login = "SELECT userID, password from users WHERE userID = '" + getCurrentUser() + "' AND password = '" + oldPassword + "';";
+            ResultSet loginResults = loginInput.executeQuery(login);
+
+            String userReturn = null;
+            String passwordReturn = null;
+
+            while (loginResults.next()) {
+                userReturn = loginResults.getString("userID");
+                passwordReturn = loginResults.getString("password");
+            }
+//        if (userReturn.equals(getCurrentUser()) && passwordReturn.equals(oldPassword) && newPassword == reEnter){
+
+            if (userReturn.equals(getCurrentUser()) && passwordReturn.equals(oldPassword) && newPassword.equals(reEnter)){
+                // input the SQL query for the database
+                String passwordInputQuery = "UPDATE users SET password = ? WHERE userID = ?;";
+                PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
+                updatePassword.clearParameters();
+                updatePassword.setString(1, String.valueOf(newPassword));
+                updatePassword.setString(2, getCurrentUser());
+                updatePassword.executeUpdate();
+            }
     }
 
 

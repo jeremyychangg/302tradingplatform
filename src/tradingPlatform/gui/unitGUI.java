@@ -35,7 +35,7 @@ public class unitGUI extends JPanel {
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
-        // setting up black JPanel
+        // setting up blank JPanel
         this.panel = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
