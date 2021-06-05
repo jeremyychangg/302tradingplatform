@@ -8,6 +8,7 @@ import tradingPlatform.InventoryItem;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -97,6 +98,12 @@ public class portfolioGUI extends JPanel {
      */
     private void chartSection() throws Exception {
         // Here make the graphical chart
+        this.gbc.gridx = 1;
+        this.gbc.gridy = 1;
+        JLabel inventoryLabel = new JLabel("Your Inventory");
+        inventoryLabel.setFont(Screen.h1);
+        panel.add(inventoryLabel, this.gbc);
+
         JPanel chartSection = new JPanel();
         chartSection.setPreferredSize(new Dimension(1220, 200));
         chartSection.setLayout(new GridBagLayout());
@@ -115,6 +122,7 @@ public class portfolioGUI extends JPanel {
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
+        pie.setBorder(new LineBorder(Color.BLACK, 3));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
 
@@ -123,7 +131,7 @@ public class portfolioGUI extends JPanel {
 
         JPanel legend = new JPanel();
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
-        legend.setPreferredSize(new Dimension(150, 100));
+//        legend.setPreferredSize(new Dimension(150, 100));
 //        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
         legend.setLayout(new GridLayout(4, inventory.size()));
 
@@ -138,12 +146,7 @@ public class portfolioGUI extends JPanel {
             JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
             JLabel inventoryName = new JLabel(c.asset.assetName);
             JLabel inventoryPrice = new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
-//
-//            inventoryPercent.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
-//            inventoryName.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
-//            inventoryPrice.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
 
-            System.out.println("LEGEND" + legendRow.getHeight());
             ColorSquare square = new ColorSquare(g, 0, 0);
 
             legendRow.add(square);
@@ -250,7 +253,13 @@ public class portfolioGUI extends JPanel {
                 data[i][6] = c.get(6);
                 i++;
             }
-            int length = (int) (Screen.screenWidth - Screen.screenWidth/3.7);
+            int length = 0;
+            if (Screen.screenWidth > 1400){
+                length = (int) (Screen.screenWidth - Screen.screenWidth * 0.2 - Screen.screenWidth/3.7);
+            }
+            else {
+                length = (int) (Screen.screenWidth - Screen.screenWidth/3.7);
+            }
             Integer[] width = new Integer[] { length/7, length/3, length/11, length/7, length/7, length/7, length/7}; // has to equal
 
             orderHistoryList.add(new Table(columns, data, width));
