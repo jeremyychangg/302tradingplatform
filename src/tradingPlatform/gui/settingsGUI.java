@@ -25,7 +25,8 @@ public class settingsGUI extends JPanel implements ActionListener {
      */
     public settingsGUI() throws Exception {
         setUpPanel();
-        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        Screen.welcomeMessage(panel);
         settingsSection();
 
         updateButton.addActionListener(this);
@@ -38,18 +39,14 @@ public class settingsGUI extends JPanel implements ActionListener {
      */
     private void setUpPanel() throws SQLException {
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-        welcomeMessage(panel);
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 2 * (Screen.screenHeight/4), (int) (screenWidth * 0.6)));
-        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
 
     private void settingsSection() {
         JPanel overall = new JPanel();
-        overall.setLayout(new BoxLayout(overall, BoxLayout.Y_AXIS));
-        overall.setPreferredSize(new Dimension(500, 500));
-//        overall.setBorder(BorderFactory.createEmptyBorder(0, , 50, ));
-        overall.setBackground(Color.red);
+        overall.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
         JPanel settings = new JPanel();
         settings.setBackground(Color.white);
 
@@ -59,15 +56,13 @@ public class settingsGUI extends JPanel implements ActionListener {
 
 
         JLabel settingsLabel = new JLabel("Change Password");
-        settings.setAlignmentX(Component.CENTER_ALIGNMENT);
-        settingsLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        overall.add(settingsLabel);
+        settingsLabel.setFont(Screen.h1);
+        panel.add(settingsLabel);
 
         oldPassField = new JPasswordField(25);
         newPassField = new JPasswordField(25);
         reEnterField = new JPasswordField(25);
         updateButton = new JButton("UPDATE");
-        updateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         updateButton.setMargin(new Insets(5, 20, 5, 20));
         updateButton.setBackground(new Color(0, 140, 237));
         updateButton.setOpaque(true);
@@ -75,13 +70,16 @@ public class settingsGUI extends JPanel implements ActionListener {
         updateButton.setForeground(Color.WHITE);
         updateButton.setFocusPainted(false);
 
-
         settings.add(oldPass);
         settings.add(oldPassField);
         settings.add(newPass);
         settings.add(newPassField);
         settings.add(reEnter);
         settings.add(reEnterField);
+
+        oldPass.setFont(body);
+        newPass.setFont(body);
+        reEnter.setFont(body);
 
         layout.putConstraint(SpringLayout.WEST, oldPass, 100, SpringLayout.WEST, settings);
         layout.putConstraint(SpringLayout.NORTH, oldPass, 100, SpringLayout.NORTH, settings);
@@ -93,17 +91,16 @@ public class settingsGUI extends JPanel implements ActionListener {
         layout.putConstraint(SpringLayout.WEST, newPassField, 35, SpringLayout.EAST, newPass);
         layout.putConstraint(SpringLayout.NORTH, newPassField, 30, SpringLayout.NORTH, oldPassField);
 
-
         layout.putConstraint(SpringLayout.WEST, reEnter, 100, SpringLayout.WEST, settings);
         layout.putConstraint(SpringLayout.NORTH, reEnter, 30, SpringLayout.NORTH, newPass);
-        layout.putConstraint(SpringLayout.WEST, reEnterField, 8, SpringLayout.EAST, reEnter);
+        layout.putConstraint(SpringLayout.WEST, reEnterField, 12, SpringLayout.EAST, reEnter);
         layout.putConstraint(SpringLayout.NORTH, reEnterField, 30, SpringLayout.NORTH, newPassField);
         overall.add(settings, BorderLayout.CENTER);
 
+        overall.add(updateButton);
 
-        overall.add(updateButton, BorderLayout.CENTER);
-
-        panel.add(overall);
+        panel.add(settings, BorderLayout.WEST);
+        panel.add(updateButton, BorderLayout.EAST);
     }
 
     @Override

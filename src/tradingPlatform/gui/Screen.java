@@ -22,13 +22,8 @@ public abstract class Screen implements ActionListener {
     public static Font font1 = new Font("Avenir", Font.BOLD, 40);
     public static Font heading = new Font("Avenir", Font.PLAIN, 50);
     public static Font h1 = new Font("Avenir", Font.PLAIN, 25);
+    public static Font body = new Font("Avenir", Font.PLAIN, 13);
     public static Font btnFont = new Font("Avenir", Font.PLAIN, 15);
-    // big screen
-    // 1390 - width
-    // 1000 - height
-    // small screen
-    // 1000 - width
-    // 800 - height
 
     public Screen() {
     }

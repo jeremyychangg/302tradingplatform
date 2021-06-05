@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class dashboardGUI extends JPanel implements ActionListener {
-    private JLabel label;
-    private JPanel panel;
     private JPanel summary;
     private JPanel left;
 
@@ -20,14 +18,12 @@ public class dashboardGUI extends JPanel implements ActionListener {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-//        panel.setPreferredSize(new Dimension(1380, 1050));
 
         panel.setLayout(new BorderLayout());
         panel.add(Box.createHorizontalGlue());
 
         left = new JPanel();
         left.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 0));
-//        Screen.screenWidth/2
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
         summary = new JPanel();
