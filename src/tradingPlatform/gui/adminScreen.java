@@ -27,6 +27,7 @@ public class adminScreen extends Screen {
     private JButton unitButton = new JButton();
     private JButton assetButton = new JButton();
     private JButton logoutButton = new JButton();
+    private JButton settingsButton = new JButton();
     private JButton requestButton = new JButton();
 
     // Images when unselected
@@ -35,14 +36,15 @@ public class adminScreen extends Screen {
     private ImageIcon usersIcon = new ImageIcon("src/img/users-01.png");
     private ImageIcon unitsIcon = new ImageIcon("src/img/units-01.png");
     private ImageIcon assetsIcon = new ImageIcon("src/img/assets-01.png");
+    private ImageIcon settingIcon = new ImageIcon("src/img/settings-01.png");
     private ImageIcon requestIcon = new ImageIcon("src/img/request-01.png");
 
     // Images when selected
-    private ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
     private ImageIcon usersIconS = new ImageIcon("src/img/userPress-01.png");
     private ImageIcon unitsIconS = new ImageIcon("src/img/unitPress-01.png");
     private ImageIcon assetsIconS = new ImageIcon("src/img/assetPress-01.png");
     private ImageIcon requestIconS = new ImageIcon("src/img/request-Press-01.png");
+    private ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
     public adminScreen() throws SQLException {
         initUI();
@@ -78,6 +80,7 @@ public class adminScreen extends Screen {
         assetButton.addActionListener(this);
         userButton.addActionListener(this);
         requestButton.addActionListener(this);
+        settingsButton.addActionListener(this);
     }
 
 
@@ -108,13 +111,7 @@ public class adminScreen extends Screen {
     private void adminSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-//        panel.setBorder(BorderFactory.createEmptyBorder(400, 400, 400, 970));
-//        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
         sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
-
-//        panel = new requestGUI();
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(290, 0, 0, 0));
-//        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -124,12 +121,12 @@ public class adminScreen extends Screen {
         logo.setBorder(BorderFactory.createEmptyBorder(50, 0, 100, 0));
 
         // Setting up the sidebar buttons
-//        changeButton(requestIcon, requestButton);
         changeButton(usersIcon, userButton);
         changeButton(unitsIcon, unitButton);
         changeButton(assetsIcon, assetButton);
         changeButton(logoutIcon, logoutButton);
-        changeButton(requestIcon, requestButton);
+        changeButton(settingIcon, settingsButton);
+        changeButton(requestIconS, requestButton);
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -147,8 +144,12 @@ public class adminScreen extends Screen {
         sidebarPanel.add(assetButton);
 
         // Adding logout pane to sidebar
+        logoutPane.add(settingsButton);
         logoutPane.add(logoutButton, BorderLayout.SOUTH);
         sidebarPanel.add(logoutPane, BorderLayout.SOUTH);
+
+        int padding = Screen.screenHeight - 700;
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
 
         // Background Colour
         Color baseBlue = new Color(0, 140, 237);
@@ -188,6 +189,7 @@ public class adminScreen extends Screen {
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIcon, assetButton);
             changeButton(requestIcon, requestButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == unitButton) {
             removePrevious();
@@ -202,6 +204,7 @@ public class adminScreen extends Screen {
             changeButton(unitsIconS, unitButton);
             changeButton(assetsIcon, assetButton);
             changeButton(requestIcon, requestButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == assetButton) {
             removePrevious();
@@ -215,10 +218,11 @@ public class adminScreen extends Screen {
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIconS, assetButton);
             changeButton(requestIcon, requestButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == requestButton) {
             removePrevious();
-            panel = new requestGUI();
+            panel = new requestAdminGUI();
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Admin - Request");
             frame.pack();
@@ -228,9 +232,26 @@ public class adminScreen extends Screen {
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIcon, assetButton);
             changeButton(requestIconS, requestButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
-        }
-        if (e.getSource() == logoutButton) {
+        } else if (e.getSource() == settingsButton) {
+            removePrevious();
+            frame.setTitle("Admin - Settings");
+            try {
+                panel = new settingsGUI();
+            } catch (Exception exception) {
+            }
+            frame.add(panel, BorderLayout.CENTER);
+            frame.pack();
+            panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(usersIcon, userButton);
+            changeButton(unitsIcon, unitButton);
+            changeButton(assetsIcon, assetButton);
+            changeButton(requestIcon, requestButton);
+            changeButton(settingIconS, settingsButton);
+            changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == logoutButton) {
             // insert reset functions
             Main.resetCurrentUser();
             new loginGUI();

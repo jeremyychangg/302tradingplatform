@@ -6,10 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import static tradingPlatform.gui.Screen.*;
 import static tradingPlatform.user.User.changePassword;
 
 public class settingsGUI extends JPanel implements ActionListener {
-    private JPanel panel;
+    private JPanel panel= new JPanel();;
     private JPasswordField oldPassField;
     private JPasswordField newPassField;
     private JPasswordField reEnterField;
@@ -18,17 +19,13 @@ public class settingsGUI extends JPanel implements ActionListener {
     private final JLabel oldPass = new JLabel("Old Password");
     private final JLabel newPass = new JLabel("New Password");
     private final JLabel reEnter = new JLabel("Re-enter Password");
-    public GridBagConstraints gbc = new GridBagConstraints();
-
-    Font submitFont = new Font("Avenir", Font.PLAIN, 15);
-    Font headingFont = new Font("Avenir", Font.PLAIN, 50);
 
     /**
      * @throws Exception
      */
     public settingsGUI() throws Exception {
         setUpPanel();
-        Screen.welcomeMessage(panel);
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         settingsSection();
 
         updateButton.addActionListener(this);
@@ -40,19 +37,19 @@ public class settingsGUI extends JPanel implements ActionListener {
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
-        // setting up black JPanel
-        this.panel = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-        panel.setBorder(BorderFactory.createEmptyBorder(80, 80, (int) (Screen.screenHeight / 1.5), Screen.screenWidth / 2));
-        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.setLayout(new BorderLayout());
+        welcomeMessage(panel);
+        panel.setBorder(BorderFactory.createEmptyBorder(80, (int) (Screen.screenWidth * 0.3), 2 * (Screen.screenHeight/4), (int) (screenWidth * 0.3)));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
 
     private void settingsSection() {
         JPanel overall = new JPanel();
         overall.setLayout(new BoxLayout(overall, BoxLayout.Y_AXIS));
-        overall.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
-        overall.setBackground(Color.white);
+        overall.setPreferredSize(new Dimension(500, 500));
+//        overall.setBorder(BorderFactory.createEmptyBorder(0, , 50, ));
+        overall.setBackground(Color.red);
         JPanel settings = new JPanel();
         settings.setBackground(Color.white);
 
@@ -62,7 +59,7 @@ public class settingsGUI extends JPanel implements ActionListener {
 
 
         JLabel settingsLabel = new JLabel("Change Password");
-        settingsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        settings.setAlignmentX(Component.CENTER_ALIGNMENT);
         settingsLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         overall.add(settingsLabel);
 

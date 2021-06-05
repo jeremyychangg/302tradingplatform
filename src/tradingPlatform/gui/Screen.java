@@ -17,6 +17,12 @@ public abstract class Screen implements ActionListener {
     static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static int screenHeight = (int) screenSize.getHeight();
     public static int screenWidth = (int) screenSize.getWidth() - 320;
+
+    // Font styling
+    public static Font font1 = new Font("Avenir", Font.BOLD, 40);
+    public static Font heading = new Font("Avenir", Font.PLAIN, 50);
+    public static Font h1 = new Font("Avenir", Font.PLAIN, 25);
+    public static Font btnFont = new Font("Avenir", Font.PLAIN, 15);
     // big screen
     // 1390 - width
     // 1000 - height
@@ -50,7 +56,7 @@ public abstract class Screen implements ActionListener {
 
         JLabel name = new JLabel(User.getFirstName());
         name.setFont(font1);
-        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        name.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         panel.add(name, BorderLayout.WEST);
     }
 

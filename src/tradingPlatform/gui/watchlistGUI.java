@@ -10,11 +10,6 @@ import static tradingPlatform.gui.Screen.welcomeMessage;
 
 public class watchlistGUI  extends JPanel {
     private JPanel panel = new JPanel();
-    // Font styling
-    Font font1 = new Font("Avenir", Font.BOLD, 40);
-    Font heading = new Font("Avenir", Font.PLAIN, 50);
-    Font h1 = new Font("Avenir", Font.PLAIN, 25);
-
     public GridBagConstraints gbc = new GridBagConstraints();
 
     /**
@@ -34,9 +29,7 @@ public class watchlistGUI  extends JPanel {
      *
      */
     public void setUpPanel(){
-//        panel.setPreferredSize(new Dimension(1380, 1050));
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
@@ -50,7 +43,7 @@ public class watchlistGUI  extends JPanel {
     private void watchlistDisplay() throws SQLException, AssetTypeException {
         // Order History section
         JLabel orderHistoryHeading = new JLabel("Unit Watchlist");
-        orderHistoryHeading.setFont(h1);
+        orderHistoryHeading.setFont(Screen.h1);
         orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(80, 0, 0, 10));
 
         this.gbc.gridx = 1;
@@ -76,7 +69,7 @@ public class watchlistGUI  extends JPanel {
 //            i++;
 //        }
 
-        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
+//        Integer[] width = new Integer[] { 150, 550, 100, 150, 100, 150}; // has to equal
 
 //        orderHistoryList.add(new Table(columns, data, width));
 

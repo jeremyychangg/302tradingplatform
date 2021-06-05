@@ -7,9 +7,6 @@ import java.sql.SQLException;
 public class unitGUI extends JPanel {
     private JPanel panel;
 
-    Font submitFont = new Font("Avenir", Font.PLAIN, 15);
-    Font headingFont = new Font("Avenir", Font.PLAIN, 50);
-
     /**
      * @throws Exception
      */

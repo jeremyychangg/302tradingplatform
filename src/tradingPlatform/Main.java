@@ -27,7 +27,7 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
-        setCurrentUser("S0001");
+        setCurrentUser("L0001");
         new employeeScreen();
 //        User test = new User("Angela", "Shibu", "IT00001", "password.CAB302", UserType.Employee);
 //        String salt = generateSalt(100).get();

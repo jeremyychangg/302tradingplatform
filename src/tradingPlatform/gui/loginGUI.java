@@ -14,8 +14,6 @@ import static tradingPlatform.Main.setCurrentUser;
 import static tradingPlatform.user.User.getAccountType;
 
 public class loginGUI implements ActionListener {
-    Font btnFont = new Font("Avenir", Font.PLAIN, 15);
-
     private final JLabel logo = new JLabel();
     private final JFrame frame;
     private final JPanel panel;
@@ -24,7 +22,6 @@ public class loginGUI implements ActionListener {
     private final JButton button;
 
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
-
 
     /**
      *
@@ -46,7 +43,7 @@ public class loginGUI implements ActionListener {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
         button.setMargin(new Insets(5, 20, 5, 20));
-        button.setFont(btnFont);
+        button.setFont(Screen.btnFont);
         button.setBackground(new Color(0, 140, 237));
         button.setOpaque(true);
         button.setBorderPainted(false);

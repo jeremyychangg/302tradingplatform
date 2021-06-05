@@ -16,11 +16,6 @@ public class dashboardGUI extends JPanel implements ActionListener {
     private JPanel left;
 
     public dashboardGUI() throws SQLException {
-        // Font styling
-        Font font1 = new Font("Avenir", Font.BOLD, 40);
-        Font heading = new Font("Avenir", Font.PLAIN, 50);
-        Font h1 = new Font("Avenir", Font.PLAIN, 25);
-
         // setting up black JPanel
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));

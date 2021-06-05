@@ -48,23 +48,12 @@ public class employeeScreen extends Screen {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
-//        System.out.println(frame.getWidth());
-//        frame.addComponentListener(new ComponentAdapter(){
-//
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                if ( frame.getBounds().width < Screen.screenWidth ){//set flag
-//                    Screen.screenWidth = (int) frame.getWidth() - 320;
-//                    System.out.println(Screen.screenWidth);
-//                    panel.setPreferredSize(new Dimension(Screen.screenWidth, screenHeight));
-//                }
-//            }
-//        });
     }
 
     /**
-     *  Method used to initialise the Employee Screen. When run, on load, it sets the panel to the
-     *  dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     * Method used to initialise the Employee Screen. When run, on load, it sets the panel to the
+     * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     *
      * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
      */
     private void initUI() throws SQLException {
@@ -87,9 +76,10 @@ public class employeeScreen extends Screen {
      * Method used to initialise and pack the employee screen frame. Within, it adds the main panel on the right,
      * and sets up the sidebar on the left of the frame. Additionally, sets up the frames title to make the user
      * aware of where they are.
+     *
      * @return JFrame A frame that would display the employee related elements
      */
-    private JFrame setupEmployeeFrame(){
+    private JFrame setupEmployeeFrame() {
         frame = new JFrame();
 
         // Adding the panes to the final sidebar frame
@@ -105,7 +95,7 @@ public class employeeScreen extends Screen {
     /**
      * Method adds relevant button listeners for the employee screen. When pressed, would trigger the actionListener function.
      */
-    private void addButtonListeners(){
+    private void addButtonListeners() {
         dashboardButton.addActionListener(this);
         portfolioButton.addActionListener(this);
         watchlistButton.addActionListener(this);
@@ -118,14 +108,10 @@ public class employeeScreen extends Screen {
     /**
      * Method creates the GUI for the employee sidebar, and initialises the buttons.
      */
-    private void employeeSidebar(){
+    private void employeeSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
         sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
-        // default height 1000
-        //280 before
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(250, 0, 0, 0));
-//        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -162,6 +148,9 @@ public class employeeScreen extends Screen {
         logoutPane.add(settingsButton);
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
+
+        int padding = Screen.screenHeight - 700;
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
     }
 
 
@@ -169,6 +158,7 @@ public class employeeScreen extends Screen {
      * When an actionListener is triggered - via, in this case, mostly button event listeners - this method is
      * triggered to change the panel display and also change the styling of the button to show what page the user is
      * on.
+     *
      * @param e
      */
     @Override
@@ -239,7 +229,11 @@ public class employeeScreen extends Screen {
             removePrevious();
 
             frame.setTitle("Orders");
-            panel = new orderGUI();
+            try {
+                panel = new orderGUI();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);
@@ -250,7 +244,7 @@ public class employeeScreen extends Screen {
             changeButton(watchlistIcon, watchlistButton);
             changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
-        }else if (e.getSource() == settingsButton) {
+        } else if (e.getSource() == settingsButton) {
             removePrevious();
 
             frame.setTitle("Settings");
@@ -281,7 +275,7 @@ public class employeeScreen extends Screen {
     /**
      *
      */
-    public void removePrevious(){
+    public void removePrevious() {
         frame.remove(panel);
         frame.remove(pane);
         panel.removeAll();
@@ -289,7 +283,6 @@ public class employeeScreen extends Screen {
 
 
     /**
-     *
      * @param panel
      * @throws SQLException
      */
