@@ -184,7 +184,6 @@ public class loginGUI implements ActionListener {
         Statement loginCheck = connection.createStatement();
 
         String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "';";
-        System.out.println(loginInput);
         ResultSet loginResults = loginCheck.executeQuery(loginInput);
 
         String userReturn = null;

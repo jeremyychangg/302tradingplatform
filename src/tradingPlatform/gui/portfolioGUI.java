@@ -38,7 +38,6 @@ public class portfolioGUI extends JPanel {
         chartSection();
         summaryDisplay();
         orderHistoryDisplay();
-
         add(panel, this.gbc);
     }
 
@@ -48,6 +47,7 @@ public class portfolioGUI extends JPanel {
      * to the others, and is scrollable. Thus, in order to adjust the height (which is affected by the
      * order history list) the number of rows in the order history list are estimated and added to the height
      * to ensure the GUI isn't affected by the GridBagLayout set.
+     *
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
@@ -104,18 +104,25 @@ public class portfolioGUI extends JPanel {
 
 
     /**
+     * This method is used to construct the chart section a.k.a the pie chart section.
+     * It is used to visualise the inventory (current) of the user by retrieving their
+     * unitID and associated inventory items.
+     *
      * @throws Exception
      */
     private void chartSection() throws Exception {
         // Here make the graphical chart
+        // Add heading
         this.gbc.gridx = 1;
         this.gbc.gridy = 1;
         JLabel inventoryLabel = new JLabel("Your Inventory");
         inventoryLabel.setFont(Screen.h1);
         panel.add(inventoryLabel, this.gbc);
 
+        // Create section panel for the chart
         JPanel chartSection = new JPanel();
         chartSection.setPreferredSize(new Dimension(1220, 200));
+        chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         chartSection.setLayout(new GridBagLayout());
         GridBagConstraints chartGBC = new GridBagConstraints();
         chartGBC.gridx = 1;
@@ -126,12 +133,13 @@ public class portfolioGUI extends JPanel {
         chartGBC.fill = GridBagConstraints.HORIZONTAL;
         chartGBC.fill = GridBagConstraints.BOTH;
 
+        // Retrieve the inventory values of the user, and output pie chart based on these values
         Inventory values = new Inventory(User.getUnitID());
         ArrayList<InventoryItem> inventory = values.unitInventory;
 
-        chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
+        // Draw the pie chart based on inventory values
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
-
+        // Initialise border to be smaller if screen is bigger
         int pieBorder = 240;
         if (Screen.screenHeight > 1400) {
             pieBorder = 200;
@@ -143,23 +151,29 @@ public class portfolioGUI extends JPanel {
         chartGBC.gridx = 2;
         chartGBC.gridy = 0;
 
+        // Create a legend panel, and thus, based on the pie chart inventory, display these values
         JPanel legend = new JPanel();
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
         legend.setLayout(new GridLayout(4, inventory.size()));
 
         int i = 0;
         for (InventoryItem c : inventory) {
+            // Construct a 'row' for each of the legend values
             JPanel legendRow = new JPanel();
             legendRow.setLayout(new GridLayout(0, 4));
 
+            // Output details about each of the inventory items - percentage, name, price
             int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice) / values.inventorySize));
-            int g = (255 / inventory.size()) * i;
             JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
             JLabel inventoryName = new JLabel(c.asset.assetName);
-            JLabel inventoryPrice = new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
+            JLabel inventoryPrice =
+                    new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
 
+            // Increasingly adjust color based on item
+            int g = (255 / inventory.size()) * i;
             ColorSquare square = new ColorSquare(g, 0, 0);
 
+            // Add to the legend row
             legendRow.add(square);
             legendRow.add(inventoryPercent);
             legendRow.add(inventoryName);
@@ -167,6 +181,8 @@ public class portfolioGUI extends JPanel {
             legend.add(legendRow);
             i++;
         }
+
+        // Output a blank chart if there were no inventory items from the associate unit
         if (inventory.size() == 0) {
             legend = new JPanel();
             legend.setPreferredSize(new Dimension(50, 4));
@@ -176,14 +192,20 @@ public class portfolioGUI extends JPanel {
             JLabel inventoryItem = new JLabel("None");
             legend.add(inventoryItem);
         }
+
+        // Add the legend to the chart
         chartSection.add(legend, chartGBC);
         this.gbc.gridx = 1;
         this.gbc.gridy = 2;
+
+        // Add the complete chart section to the panel
         panel.add(chartSection, this.gbc);
     }
 
 
     /**
+     * The summary display is a method used to display the users associated current credit balance
+     * and outstanding orders, given the unitID and userID. This is placed in a container.
      * @throws SQLException
      */
     private void summaryDisplay() throws SQLException {
@@ -194,27 +216,27 @@ public class portfolioGUI extends JPanel {
         summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         this.gbc.gridx = 1;
         this.gbc.gridy = 3;
-
         panel.add(summaryInfo, this.gbc);
     }
 
 
     /**
-     * In this function, when called, it displays the order history section based on the inputted userID.
-     *
+     * In this function, when called, it displays the order history section based on the inputted userID. This
+     * would be displayed in a table format, displaying the asset ordered, it's ID, price, quantity, status, date
+     * applied and current status.
      * @throws SQLException
      */
     private void orderHistoryDisplay() throws SQLException {
         // Order History section
+        // Add heading to the section
         JLabel orderHistoryHeading = new JLabel("Order History");
         orderHistoryHeading.setFont(Screen.h1);
         orderHistoryHeading.setBorder(BorderFactory.createEmptyBorder(80, 0, 80, 10));
-
         this.gbc.gridx = 1;
         this.gbc.gridy = 4;
-
         panel.add(orderHistoryHeading, this.gbc);
 
+        // Create a table of order history if there are more than 0 entries
         if (retrieveOrderLength() > 0) {
             JPanel orderHistoryList = new JPanel();
 
@@ -223,10 +245,11 @@ public class portfolioGUI extends JPanel {
                     "     ID", "Name", "Type", "Date", "Price", "Quantity", "Status"
             };
 
-            ArrayList<ArrayList<String>> data1 = retrieveOrders();
-            String[][] data = new String[data1.size()][];
+            // Retrieves orders and Construct a string nested array based on the order array list
+            ArrayList<ArrayList<String>> orders = retrieveOrders();
+            String[][] data = new String[orders.size()][];
             int i = 0;
-            for (ArrayList<String> c : data1) {
+            for (ArrayList<String> c : orders) {
                 data[i] = new String[7];
                 data[i][0] = c.get(0);
                 data[i][1] = c.get(1);
@@ -237,24 +260,29 @@ public class portfolioGUI extends JPanel {
                 data[i][6] = c.get(6);
                 i++;
             }
+
+            // Adjust the sizing of each of the columns based on the screen width
             int length = 0;
             if (Screen.screenWidth > 1400) {
                 length = (int) (Screen.screenWidth - Screen.screenWidth * 0.2 - Screen.screenWidth / 3.7);
             } else {
                 length = (int) (Screen.screenWidth - Screen.screenWidth / 3.7);
             }
-            Integer[] width = new Integer[]{length / 7, length / 3, length / 11, length / 7, length / 7, length / 7, length / 7}; // has to equal
+            Integer[] width = new Integer[]{length / 7, length / 3, length / 11,
+                    length / 7, length / 7, length / 7, length / 7}; // has to equal
 
             orderHistoryList.add(new Table(columns, data, width));
-
             orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
             orderHistoryList.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
             this.gbc.gridx = 1;
             this.gbc.gridy = 5;
 
+            // Add to the panel
             panel.add(orderHistoryList, this.gbc);
         } else if (retrieveOrderLength() <= 0) {
-            JLabel noOrders = new JLabel("Currently, this unit doesn't have any orders in their history up to date.");
+            // If no orders, replace with a message
+            JLabel noOrders =
+                    new JLabel("Currently, this unit doesn't have any orders in their history up to date.");
             noOrders.setFont(Screen.body);
             noOrders.setBorder(BorderFactory.createEmptyBorder(100, 0, 40, 0));
             panel.add(noOrders, this.gbc);

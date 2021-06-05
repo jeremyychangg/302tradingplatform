@@ -33,7 +33,7 @@ public class requestGUI extends JPanel {
     }
 
     public static void main(String[] args) {
-//        new requestGUI();
+        new requestGUI();
     }
 
 }

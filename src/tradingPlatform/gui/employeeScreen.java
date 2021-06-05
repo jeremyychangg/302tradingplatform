@@ -5,11 +5,14 @@ package tradingPlatform.gui;
 
 import tradingPlatform.Main;
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.user.Admin;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+
+import static tradingPlatform.Main.getCurrentUser;
 
 /**
  * Initiates the user interface for the Employee screen. Can only be called when in login the user
@@ -17,6 +20,7 @@ import java.sql.SQLException;
  * the relevant buttons are being used.
  */
 public class employeeScreen extends Screen {
+    Admin currentAdmin;
     private JFrame frame;
     private JPanel panel;
     private JPanel sidebarPanel;
@@ -53,6 +57,7 @@ public class employeeScreen extends Screen {
      * Constructor for the employee screen calls relevant methods to initialise the GUI
      */
     public employeeScreen() throws SQLException {
+        currentAdmin = new Admin(getCurrentUser());
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
@@ -259,7 +264,6 @@ public class employeeScreen extends Screen {
             Main.resetCurrentUser();
             new loginGUI();
             frame.dispose();
-            System.out.println(Main.getCurrentUser());
         }
     }
 

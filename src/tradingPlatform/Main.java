@@ -1,7 +1,7 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.gui.employeeScreen;
+import tradingPlatform.gui.adminScreen;
 
 import java.sql.Connection;
 
@@ -27,9 +27,9 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
-//        setCurrentUser("S0003");
-//        new adminScreen();
-            new employeeScreen();
+        setCurrentUser("A0001");
+        new adminScreen();
+//            new employeeScreen();
 //        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
 
 //        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);

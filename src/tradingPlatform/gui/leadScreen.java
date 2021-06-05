@@ -2,11 +2,14 @@ package tradingPlatform.gui;
 
 import tradingPlatform.Main;
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.user.Lead;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
+
+import static tradingPlatform.Main.getCurrentUser;
 
 /**
  * Initiates the user interface for the Lead screen. Can only be called when in login the user
@@ -17,6 +20,7 @@ import java.sql.SQLException;
  * @version 3.0
  */
 public class leadScreen extends Screen {
+    Lead currentLead;
     private JFrame frame;
     private JPanel panel;
     private JPanel sidebarPanel;
@@ -57,6 +61,7 @@ public class leadScreen extends Screen {
      * Constructor for the lead screen calls relevant methods to initialise the GUI
      */
     public leadScreen() throws SQLException {
+        currentLead = new Lead(getCurrentUser());
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
