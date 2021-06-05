@@ -75,7 +75,7 @@ public class portfolioGUI extends JPanel {
         JLabel name = new JLabel(User.getFirstName());
         name.setFont(font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
+        message.setPreferredSize(new Dimension(Screen.screenWidth - border, 60));
         message.add(name);
         this.gbc.gridx = 1;
         this.gbc.gridy = 0;
@@ -120,7 +120,7 @@ public class portfolioGUI extends JPanel {
 
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
-        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
+        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 200, 0));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
 
@@ -129,7 +129,6 @@ public class portfolioGUI extends JPanel {
 
         JPanel legend = new JPanel();
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
-//        legend.setPreferredSize(new Dimension(150, 100));
 //        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
         legend.setLayout(new GridLayout(4, inventory.size()));
 
@@ -138,7 +137,6 @@ public class portfolioGUI extends JPanel {
             JPanel legendRow = new JPanel();
             legendRow.setLayout(new GridLayout(0, 4));
 
-//            legendRow.setBackground(Color.RED);
             int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
             int g = (255 / inventory.size()) * i;
             JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
@@ -153,42 +151,18 @@ public class portfolioGUI extends JPanel {
             legendRow.add(inventoryPrice);
             legend.add(legendRow);
             i++;
-
-            /*
-                        JPanel legendRow = new JPanel();
-            legendRow.setLayout(new BoxLayout(legendRow, BoxLayout.X_AXIS));
-//            legendRow.setBackground(Color.RED);
-            int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
-            int g = (255 / inventory.size()) * i;
-            int height = 20;
-            ColorSquare square = new ColorSquare(g, 0, height);
-            legendRow.add(square, BorderLayout.WEST);
-
-            JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
-            JLabel inventoryName = new JLabel(c.asset.assetName);
-            JLabel inventoryPrice = new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
-
-            inventoryPercent.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
-            inventoryName.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
-            inventoryPrice.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
-
-            legendRow.add(inventoryPercent, BorderLayout.WEST);
-            legendRow.add(inventoryName, BorderLayout.CENTER);
-            legendRow.add(inventoryPrice, BorderLayout.EAST);
-            legend.add(legendRow, BorderLayout.LINE_START);
-            i++;
-             */
         }
-
-
         if (inventory.size() == 0){
-            ColorSquare square = new ColorSquare(0, 50, 50);
-            legend.add(square, BorderLayout.LINE_START);
+            legend = new JPanel();
+            legend.setPreferredSize(new Dimension(50, 4));
+            legend.setLayout(new GridLayout(1, 2));
+            ColorSquare square = new ColorSquare(0, 0, 0);
+            legend.add(square);
+//            legend.setBackground(Color.red);
             JLabel inventoryItem = new JLabel("None");
-            legend.add(inventoryItem, BorderLayout.CENTER);
+            legend.add(inventoryItem);
         }
         chartSection.add(legend, chartGBC);
-
         this.gbc.gridx = 1;
         this.gbc.gridy = 2;
         panel.add(chartSection, this.gbc);
@@ -201,11 +175,10 @@ public class portfolioGUI extends JPanel {
      */
     private void summaryDisplay() throws SQLException {
         // Setting up the container for the summary
-        JPanel summaryInfo = new JPanel();
+        JPanel summaryInfo = new JPanel(new GridLayout(1, 0));
         employeeScreen.creditBalancePanel(summaryInfo);
         summaryInfo.setAlignmentX(Component.LEFT_ALIGNMENT);
         summaryInfo.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
         this.gbc.gridx = 1;
         this.gbc.gridy = 3;
 
