@@ -87,7 +87,13 @@ class testUnit {
     // * needs to be completed * //
 
     // check that the list is not empty
-    // check that the list returns a list of users
+
+    // check that the list returns a list of users that belong to a unit
+    @Test
+    public void userInUnit() {
+        ArrayList<userList> userUnit;
+        userUnit = unit1.searchUser("A0002");
+    }
     // check when you add a unit
     // check when you remove a unit
 
@@ -102,13 +108,9 @@ class testUnit {
     public void noList() {
         Unit testCases = new Unit();
         List<String> result = testCases.userArray();
-        AssertNull("List shouldn't be null", result);
+        AssertNotNull("List shouldn't be null", result);
     }
-    // - Test 3: check if the unit has a list of users
-    @Test
-    public void noUsers() {
 
-    }
 
     // - Test 5: check if the list of users is full of strings
     @Test
