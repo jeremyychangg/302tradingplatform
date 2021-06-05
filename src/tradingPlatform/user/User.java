@@ -17,6 +17,7 @@
 // 	******************************************************************************************
 /**
  * This class is used to
+ *
  * @author Natalie Smith
  */
 package tradingPlatform.user;
@@ -32,8 +33,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import static tradingPlatform.Main.*;
-import static tradingPlatform.passwordEncryption.generateSalt;
-import static tradingPlatform.passwordEncryption.hashPassword;
+import static tradingPlatform.passwordEncryption.*;
 
 public class User {
     private String userID;
@@ -86,6 +86,19 @@ public class User {
         }
     }
 
+
+    /**
+     * This user constructor is the sole constructor used to initiate a new User within the database. Given that all of the
+     * parameters are inputted into the program, the user is able to create a new user which - if fulfils the requirements -
+     * is added to the database.
+     *
+     * @param firstName
+     * @param lastName
+     * @param unitID
+     * @param password
+     * @param accountType
+     * @throws Exception
+     */
     public User(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -136,10 +149,7 @@ public class User {
                 throw new UserException("Not valid UserType");
         }
 
-        // Generate a password
-        String salt = generateSalt(100).get();
-        String key = hashPassword(password, salt).get();
-        String passwordCombo = key + salt;
+        String newPassword = encryptPassword(password);
 
         Statement statement = connection.createStatement();
 
@@ -163,7 +173,7 @@ public class User {
         newUser.setString(3, lastName);
         newUser.setString(4, unitID);
         newUser.setString(5, accType);
-        newUser.setString(6, passwordCombo);
+        newUser.setString(6, newPassword);
 
         newUser.execute();
     }
@@ -346,32 +356,48 @@ public class User {
 
 
     /**
-     * @param
+     * Given an old password, new password and re entered password string values, the changePassword method
+     * would update the password of the current user to the new password provided. Within the method, it would
+     * retrieve the users database given the current user, and return their current password, which would be checked
+     * against the old password input to validate that they are user. If this condition is met, the old password is
+     * replaced by a generated new encrypted password.
+     *
+     * @param newPassword
+     * @param reEnter
+     * @param oldPassword
      */
     public static void changePassword(String oldPassword, String newPassword, String reEnter) throws SQLException {
-            Statement loginInput = connection.createStatement();
-            // determine if the value is a valid password
-            String login = "SELECT userID, password from users WHERE userID = '" + getCurrentUser() + "' AND password = '" + oldPassword + "';";
-            ResultSet loginResults = loginInput.executeQuery(login);
+        Statement loginInput = connection.createStatement();
+        // Determine if the value is a valid password
+        String login = "SELECT userID, password from users WHERE userID = '" + getCurrentUser() + "' AND password = '" + oldPassword + "';";
+        ResultSet loginResults = loginInput.executeQuery(login);
 
-            String userReturn = null;
-            String passwordReturn = null;
+        String userReturn = null;
+        String passwordReturn = null;
 
-            while (loginResults.next()) {
-                userReturn = loginResults.getString("userID");
-                passwordReturn = loginResults.getString("password");
-            }
-//        if (userReturn.equals(getCurrentUser()) && passwordReturn.equals(oldPassword) && newPassword == reEnter){
+        while (loginResults.next()) {
+            userReturn = loginResults.getString("userID");
+            passwordReturn = loginResults.getString("password");
+        }
 
-            if (userReturn.equals(getCurrentUser()) && passwordReturn.equals(oldPassword) && newPassword.equals(reEnter)){
-                // input the SQL query for the database
-                String passwordInputQuery = "UPDATE users SET password = ? WHERE userID = ?;";
-                PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
-                updatePassword.clearParameters();
-                updatePassword.setString(1, String.valueOf(newPassword));
-                updatePassword.setString(2, getCurrentUser());
-                updatePassword.executeUpdate();
-            }
+        String salt = passwordReturn.substring(88);
+        String passDatabase = passwordReturn.substring(0, 88);
+        Boolean isCorrectPassword = verifyPassword(String.valueOf(passwordReturn), passDatabase, salt);
+
+        // Encrypt the new password
+        String encryptedPassword = encryptPassword(newPassword);
+
+        // Update the dataset if the user is the one being edited, the old password matches the old and new password is same
+        // as re-enter value
+        if (userReturn.equals(getCurrentUser()) && isCorrectPassword && newPassword.equals(reEnter)) {
+            // input the SQL query for the database
+            String passwordInputQuery = "UPDATE users SET password = ? WHERE userID = ?;";
+            PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
+            updatePassword.clearParameters();
+            updatePassword.setString(1, encryptedPassword);
+            updatePassword.setString(2, getCurrentUser());
+            updatePassword.executeUpdate();
+        }
     }
 
 
@@ -442,5 +468,18 @@ public class User {
             outstanding = Integer.parseInt(orderFind.getString("orderNum"));
         }
         return outstanding;
+    }
+
+
+    /**
+     * @param password
+     * @return
+     */
+    public static String encryptPassword(String password) {
+        // Generate a password
+        String salt = generateSalt(100).get();
+        String key = hashPassword(password, salt).get();
+        String passwordCombo = key + salt;
+        return passwordCombo;
     }
 }
