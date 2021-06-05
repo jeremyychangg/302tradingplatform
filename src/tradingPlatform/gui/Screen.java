@@ -29,8 +29,6 @@ public abstract class Screen implements ActionListener {
     public static Font body = new Font("Avenir", Font.PLAIN, 13);
     public static Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
-
-
     public Screen() {
         if (Screen.screenWidth > 1400) {
             this.border = (int) (Screen.screenWidth * 0.2);

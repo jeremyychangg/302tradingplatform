@@ -22,6 +22,13 @@ public class portfolioGUI extends JPanel {
     public int border;
 
     /**
+     * The portfolio GUI constructor initiates and builds a panel containing the
+     * elements of the interface used to update the user's portfolio. In particular,
+     * this would construct the piechart, summary of details, and order history associated
+     * to the user and their respective unit ID. Additionally, it would initiate and add an
+     * action listener to the update button, so that if the
+     * user does enter values into the fields and presses the button, it would call methods
+     * to update the password.
      *
      * @throws Exception
      */
@@ -37,16 +44,20 @@ public class portfolioGUI extends JPanel {
 
 
     /**
-     *
+     * This method is used to set up the panel for the portfolio. Note that this panel is different
+     * to the others, and is scrollable. Thus, in order to adjust the height (which is affected by the
+     * order history list) the number of rows in the order history list are estimated and added to the height
+     * to ensure the GUI isn't affected by the GridBagLayout set.
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
-        if (retrieveOrderLength() > 0){
+        // If there are orders, add the height of the table at bottom
+        if (retrieveOrderLength() > 0) {
             this.heightPage = this.heightPage + retrieveOrderLength() * 50;
-        }
-        else {
+        } else {
             this.heightPage = Screen.screenHeight + 300;
         }
+        // Initiate the panel
         this.panel = new JPanel();
         this.panel.setPreferredSize(new Dimension(Screen.screenWidth, heightPage));
         this.panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, 0, Screen.border));
@@ -54,26 +65,27 @@ public class portfolioGUI extends JPanel {
     }
 
 
-
     /**
+     * The welcome message for this method is used to send the personalised message to the user. To achieve
+     * this, the user's name is retrieved by relevant methods, and outputted to the program in a label.
+     * Additional properties and settings are applied to achieve the layout for the GUI.
      *
      * @param panel
      * @throws SQLException
      */
     protected void welcomeMessagePortfolio(JPanel panel) throws SQLException {
+        // New message panel
         JPanel message = new JPanel();
         message.setLayout(new BoxLayout(message, BoxLayout.Y_AXIS));
 
-        Font font1 = new Font("Avenir", Font.BOLD, 40);
-
+        // Write the personalised message, and set up layout and other properties and styles
         JLabel welcome = new JLabel("Hi,");
         welcome.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        welcome.setFont(font1);
-
+        welcome.setFont(Screen.font1);
         message.add(welcome);
 
         JLabel name = new JLabel(User.getFirstName());
-        name.setFont(font1);
+        name.setFont(Screen.font1);
         name.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         message.setPreferredSize(new Dimension(Screen.screenWidth - border, 60));
         message.add(name);
@@ -86,13 +98,12 @@ public class portfolioGUI extends JPanel {
         this.gbc.weightx = 1.0;
         this.gbc.weighty = 1.0;
 
+        // Add message to the panel
         panel.add(message, this.gbc);
     }
 
 
-
     /**
-     *
      * @throws Exception
      */
     private void chartSection() throws Exception {
@@ -122,7 +133,7 @@ public class portfolioGUI extends JPanel {
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
 
         int pieBorder = 240;
-        if (Screen.screenHeight > 1400){
+        if (Screen.screenHeight > 1400) {
             pieBorder = 200;
         }
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, pieBorder, 0));
@@ -137,11 +148,11 @@ public class portfolioGUI extends JPanel {
         legend.setLayout(new GridLayout(4, inventory.size()));
 
         int i = 0;
-        for (InventoryItem c : inventory){
+        for (InventoryItem c : inventory) {
             JPanel legendRow = new JPanel();
             legendRow.setLayout(new GridLayout(0, 4));
 
-            int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
+            int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice) / values.inventorySize));
             int g = (255 / inventory.size()) * i;
             JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
             JLabel inventoryName = new JLabel(c.asset.assetName);
@@ -156,7 +167,7 @@ public class portfolioGUI extends JPanel {
             legend.add(legendRow);
             i++;
         }
-        if (inventory.size() == 0){
+        if (inventory.size() == 0) {
             legend = new JPanel();
             legend.setPreferredSize(new Dimension(50, 4));
             legend.setLayout(new GridLayout(1, 2));
@@ -173,7 +184,6 @@ public class portfolioGUI extends JPanel {
 
 
     /**
-     *
      * @throws SQLException
      */
     private void summaryDisplay() throws SQLException {
@@ -191,6 +201,7 @@ public class portfolioGUI extends JPanel {
 
     /**
      * In this function, when called, it displays the order history section based on the inputted userID.
+     *
      * @throws SQLException
      */
     private void orderHistoryDisplay() throws SQLException {
@@ -204,19 +215,18 @@ public class portfolioGUI extends JPanel {
 
         panel.add(orderHistoryHeading, this.gbc);
 
-        if (retrieveOrderLength() > 0){
+        if (retrieveOrderLength() > 0) {
             JPanel orderHistoryList = new JPanel();
 
             // Retrieving the orders pending/incomplete of the user - and their status
-            String[] columns = new String[] {
-                    "     ID", "Name","Type", "Date", "Price", "Quantity", "Status"
+            String[] columns = new String[]{
+                    "     ID", "Name", "Type", "Date", "Price", "Quantity", "Status"
             };
 
             ArrayList<ArrayList<String>> data1 = retrieveOrders();
             String[][] data = new String[data1.size()][];
             int i = 0;
-            for (ArrayList<String> c : data1)
-            {
+            for (ArrayList<String> c : data1) {
                 data[i] = new String[7];
                 data[i][0] = c.get(0);
                 data[i][1] = c.get(1);
@@ -228,27 +238,25 @@ public class portfolioGUI extends JPanel {
                 i++;
             }
             int length = 0;
-            if (Screen.screenWidth > 1400){
-                length = (int) (Screen.screenWidth - Screen.screenWidth * 0.2 - Screen.screenWidth/3.7);
+            if (Screen.screenWidth > 1400) {
+                length = (int) (Screen.screenWidth - Screen.screenWidth * 0.2 - Screen.screenWidth / 3.7);
+            } else {
+                length = (int) (Screen.screenWidth - Screen.screenWidth / 3.7);
             }
-            else {
-                length = (int) (Screen.screenWidth - Screen.screenWidth/3.7);
-            }
-            Integer[] width = new Integer[] { length/7, length/3, length/11, length/7, length/7, length/7, length/7}; // has to equal
+            Integer[] width = new Integer[]{length / 7, length / 3, length / 11, length / 7, length / 7, length / 7, length / 7}; // has to equal
 
             orderHistoryList.add(new Table(columns, data, width));
 
             orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-            orderHistoryList.setBorder(BorderFactory.createEmptyBorder(0,0,40,0));
+            orderHistoryList.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
             this.gbc.gridx = 1;
             this.gbc.gridy = 5;
 
             panel.add(orderHistoryList, this.gbc);
-        }
-        else if (retrieveOrderLength() <= 0){
+        } else if (retrieveOrderLength() <= 0) {
             JLabel noOrders = new JLabel("Currently, this unit doesn't have any orders in their history up to date.");
             noOrders.setFont(Screen.body);
-            noOrders.setBorder(BorderFactory.createEmptyBorder(100, 0,40,0));
+            noOrders.setBorder(BorderFactory.createEmptyBorder(100, 0, 40, 0));
             panel.add(noOrders, this.gbc);
         }
     }

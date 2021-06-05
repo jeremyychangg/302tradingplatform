@@ -10,6 +10,15 @@ import static tradingPlatform.gui.Screen.body;
 import static tradingPlatform.gui.Screen.screenWidth;
 import static tradingPlatform.user.User.changePassword;
 
+
+/**
+ * A class that represents a panel for the settings GUI, associated with
+ * the user features. Currently, it extends the JPanel class and implements
+ * ActionListener. To call this, there should be an associated Screen / Frame
+ * that is open for it to be displayed in the GUI.
+ *
+ * @author Natalie Smith
+ */
 public class settingsGUI extends JPanel implements ActionListener {
     private JPanel panel = new JPanel();
     ;
@@ -21,6 +30,7 @@ public class settingsGUI extends JPanel implements ActionListener {
     private final JLabel oldPass = new JLabel("Old Password");
     private final JLabel newPass = new JLabel("New Password");
     private final JLabel reEnter = new JLabel("Re-enter Password");
+
 
     /**
      * The settings GUI constructor initiates and builds a panel containing the
@@ -42,12 +52,14 @@ public class settingsGUI extends JPanel implements ActionListener {
 
 
     /**
+     * The setup panel method is used to establish the panel border, layout and preferred size,
+     * to ensure it matches the style guide developed in the beginning.
+     *
      * @throws SQLException
      */
-    private void setUpPanel() throws SQLException {
+    private void setUpPanel() {
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
         panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, (Screen.screenHeight / 4), (int) (screenWidth * 0.4)));
-//        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
 
@@ -147,7 +159,7 @@ public class settingsGUI extends JPanel implements ActionListener {
      * enter three parameters - old, new and reentered password - to successfully change their password. If
      * these conditions are not met, exceptions are thrown.
      */
-    private void updatePassword(){
+    private void updatePassword() {
         // Retrieve the inputted values of the fields
         char[] old = oldPassField.getPassword();
         char[] newP = newPassField.getPassword();
