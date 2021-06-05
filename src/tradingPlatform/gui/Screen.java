@@ -68,6 +68,41 @@ public abstract class Screen implements ActionListener {
         }
     }
 
+    /**
+     * Makes a JFrame that would initialise and set up the GUI window. This
+     * code is purely to create and setup up the frame and panels. The frame would
+     * add the main sidebar panel - with BorderLayout - to keep on the WEST of the frame,
+     * whilst the main panel (a.k.a. panel) would be set up to sit on the east of the frame.
+     * The title of the window is set to the respective user type, and all of the data would
+     * be packed to return a frame to the main constructor. The appearance of the GUI is
+     * ultimately decided on the inputted parameters.
+     *
+     * @return a frame containing each the main panel and sidebar panel
+     * @param frame
+     * @param panel
+     * @param sidebarPanel
+     * @param title
+     */
+    protected JFrame setupFrame(String title, JPanel panel, JFrame frame, JPanel sidebarPanel){
+        frame = new JFrame();
 
+        // Adding the panes to the final sidebar frame
+        frame.add(panel, BorderLayout.EAST);
+        frame.add(sidebarPanel, BorderLayout.WEST);
+        frame.setTitle(title);
+        frame.pack();
+        frame.setVisible(true);
+        return frame;
+    }
+
+    /**
+     * A method used to align a list of buttons in the center of a component
+     * @param elements a JButton list of elements that are to be aligned to center
+     */
+    public void alignCenter(JButton[] elements){
+        for (JButton component : elements){
+            component.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+    }
 }
 

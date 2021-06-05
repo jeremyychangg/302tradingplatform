@@ -8,10 +8,9 @@ import tradingPlatform.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
 
 /**
- * Initiates the user interface for the Admin screen. Can only be called when the usertype
+ * Initiates the user interface for the Admin screen. Can only be called when in login the user
  * is found to be an admin. Listeners are also initiated within this class to ensure
  * the relevant buttons are being used.
  */
@@ -46,7 +45,7 @@ public class adminScreen extends Screen {
     private ImageIcon requestIconS = new ImageIcon("src/img/request-Press-01.png");
     private ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
-    public adminScreen() throws SQLException {
+    public adminScreen() {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
@@ -64,10 +63,8 @@ public class adminScreen extends Screen {
         panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-//        panel.setPreferredSize(new Dimension(1380, 1050));
-
         adminSidebar();
-        setupAdminFrame();
+        this.frame = setupFrame("Venda - Admin", panel, frame, sidebarPanel);
     }
 
 
@@ -84,30 +81,16 @@ public class adminScreen extends Screen {
     }
 
 
+
     /**
-     * Makes a JFrame that would initialise and set up the Admin UI window. This
-     * code is purely to create and setup up the frame and panels. The frame would
-     * add the main sidebar panel - with BorderLayout - to keep on the WEST of the frame,
-     * whilst the main panel (a.k.a. panel) would be set up to sit on the east of the frame.
-     * The title of the window is set to Admin, and all of the data would be packed to return
-     * a frame to the main constructor.
+     * Initialises the administration sidebar, alongside their relevant elements and buttons. This
+     * code is purely to create and setup up the layout and positioning of the buttons within the sidebar.
+     * frame and panels. Given the sidebarPanel (which should be initiated already) the user, unit, asset, logout,
+     * settings and requests buttons are placed. For larger screens/smaller screens, the method should resize the
+     * padding between the main buttons and the bottom pane.
      *
-     * @return a frame containing each the main panel and sidebar panel
+     * @return a frame containing the admin main panel and sidebar panel
      */
-    private JFrame setupAdminFrame() {
-        // Initialize the frame for the admin UI
-        frame = new JFrame();
-
-        // Adding the panes to the final sidebar frame
-        frame.add(panel, BorderLayout.EAST);
-        frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda - Admin");
-        frame.pack();
-        frame.setVisible(true);
-        return frame;
-    }
-
-
     private void adminSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
@@ -130,11 +113,7 @@ public class adminScreen extends Screen {
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        unitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        assetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        alignCenter(new JButton[]{userButton, unitButton, assetButton, requestButton, logoutButton});
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);
@@ -148,6 +127,7 @@ public class adminScreen extends Screen {
         logoutPane.add(logoutButton, BorderLayout.SOUTH);
         sidebarPanel.add(logoutPane, BorderLayout.SOUTH);
 
+        // Adjust padding based on the screen height of the device
         int padding = Screen.screenHeight - 700;
         logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
 
@@ -157,17 +137,26 @@ public class adminScreen extends Screen {
         logoutPane.setBackground(baseBlue);
     }
 
+
+
+    /**
+     * Given a button is clicked (trigggered by the actionListener initiated), the actionPerformed points
+     * the program to the sidebarListeners method to choose an outcome based on the button.
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
             sidebarListeners(e);
         } catch (Exception exception) {
-            exception.printStackTrace();
         }
     }
 
+
+
     /**
-     *
+     * When this method is called, would remove the current panel within the frame, and also removes the elements
+     * within the panel. Used to switch between panel selection.
      */
     public void removePrevious(){
         frame.remove(panel);
@@ -175,6 +164,17 @@ public class adminScreen extends Screen {
     }
 
 
+
+    /**
+     * Given that the actionPerformed method has been called, and pointed the program to this method, based on the
+     * action - the button pressed - it would change the GUI panel to match the event. Thus, for each button, the
+     * method would remove the previous panel and initialise the relevant GUI associated with the button, alongside
+     * setting other properties such as the title of the frame. Additionally, to make the user aware of their position
+     * on the GUI, the program would change the button image to match the action - and clear buttons that are not the
+     * current page.
+     * @param e
+     * @throws Exception
+     */
     public void sidebarListeners(ActionEvent e) throws Exception {
         if (e.getSource() == userButton) {
             removePrevious();
@@ -184,7 +184,7 @@ public class adminScreen extends Screen {
             frame.pack();
             panel.setVisible(true);
 
-            // Changing the image for the button
+            // Change button to show on users
             changeButton(usersIconS, userButton);
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIcon, assetButton);
@@ -199,7 +199,7 @@ public class adminScreen extends Screen {
             frame.pack();
             panel.setVisible(true);
 
-            // Changing the image for the button
+            // Change button to show on Unit
             changeButton(usersIcon, userButton);
             changeButton(unitsIconS, unitButton);
             changeButton(assetsIcon, assetButton);
@@ -213,7 +213,8 @@ public class adminScreen extends Screen {
             frame.setTitle("Admin - Asset");
             frame.pack();
             panel.setVisible(true);
-            // Changing the image for the button
+
+            // Change the image to show the user on assets
             changeButton(usersIcon, userButton);
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIconS, assetButton);
@@ -227,7 +228,8 @@ public class adminScreen extends Screen {
             frame.setTitle("Admin - Request");
             frame.pack();
             panel.setVisible(true);
-            // Changing the image for the button
+
+            // Change the image to show user on requests
             changeButton(usersIcon, userButton);
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIcon, assetButton);
@@ -244,7 +246,8 @@ public class adminScreen extends Screen {
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);
-            // Changing the image for the button
+
+            // Changing the image to show on settings
             changeButton(usersIcon, userButton);
             changeButton(unitsIcon, unitButton);
             changeButton(assetsIcon, assetButton);
@@ -258,5 +261,4 @@ public class adminScreen extends Screen {
             frame.dispose();
         }
     }
-
 }

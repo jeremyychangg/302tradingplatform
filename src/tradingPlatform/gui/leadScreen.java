@@ -83,12 +83,18 @@ public class leadScreen extends Screen {
         logoutPane.setBackground(baseBlue);
 
         leadSidebar();
-        setupLeadFrame();
+        this.frame = setupFrame("Venda - Lead", panel, frame, sidebarPanel);
     }
 
 
     /**
+     * Initialises the lead sidebar, with the relevant elements and buttons. This
+     * code is purely to create and setup up the layout and positioning of the buttons within the sidebar.
+     * frame and panels. Given the sidebarPanel (which should be initiated already) the portfolio, dashboard,
+     * watchlist, orders, settings and logout buttons are placed. For larger screens/smaller screens, the method
+     * should resize the padding between the main buttons and the bottom pane.
      *
+     * @return a frame containing the lead main panel and sidebar panel
      */
     private void leadSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -113,13 +119,17 @@ public class leadScreen extends Screen {
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        portfolioButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        portfolioButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        alignCenter(new JButton[]{portfolioButton, dashboardButton, watchlistButton, ordersButton, requestButton,
+                settingsButton, logoutButton});
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);
@@ -137,25 +147,6 @@ public class leadScreen extends Screen {
         int padding = Screen.screenHeight - 750;
         logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
     }
-
-
-    /**
-     *
-     * @return
-     */
-    private JFrame setupLeadFrame() {
-        // Setting up the frame and panels
-        frame = new JFrame();
-
-        // Adding the panes to the final sidebar frame
-        frame.add(panel, BorderLayout.EAST);
-        frame.add(sidebarPanel, BorderLayout.WEST);
-        frame.setTitle("Venda - Lead");
-        frame.pack();
-        frame.setVisible(true);
-        return frame;
-    }
-
 
     /**
      *

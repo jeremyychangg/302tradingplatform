@@ -12,6 +12,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
+/**
+ * Initiates the user interface for the Employee screen. Can only be called when in login the user
+ * is found to be an employee. Listeners are also initiated within this class to ensure
+ * the relevant buttons are being used.
+ */
 public class employeeScreen extends Screen {
     private JFrame frame;
     private JPanel panel;
@@ -51,8 +56,9 @@ public class employeeScreen extends Screen {
     }
 
     /**
-     * Method used to initialise the Employee Screen. When run, on load, it sets the panel to the
-     * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     * Method used to initialise the Employee Screen. When run, on load, it sets the panel
+     * to the dashboard. On the left side, it also initialises the sidebar buttons and the
+     * button action listeners.
      *
      * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
      */
@@ -68,7 +74,8 @@ public class employeeScreen extends Screen {
         logoutPane.setBackground(baseBlue);
 
         employeeSidebar();
-        setupEmployeeFrame();
+//        setupEmployeeFrame();
+        this.frame = setupFrame("Venda - Employee", panel, frame, sidebarPanel);
     }
 
 
@@ -93,7 +100,8 @@ public class employeeScreen extends Screen {
 
 
     /**
-     * Method adds relevant button listeners for the employee screen. When pressed, would trigger the actionListener function.
+     * Method adds relevant button listeners for the employee screen. When pressed, would trigger the actionListener
+     * function.
      */
     private void addButtonListeners() {
         dashboardButton.addActionListener(this);
@@ -130,12 +138,8 @@ public class employeeScreen extends Screen {
 
         // Setting the alignment
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        portfolioButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        alignCenter(new JButton[]{portfolioButton, dashboardButton, watchlistButton, ordersButton,
+                        settingsButton, logoutButton});
 
         // Adding each of the buttons to the sidebar
         sidebarPanel.add(logo);

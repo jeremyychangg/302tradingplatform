@@ -1,9 +1,7 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.enumerators.UserType;
-import tradingPlatform.gui.employeeScreen;
-import tradingPlatform.user.User;
+import tradingPlatform.gui.leadScreen;
 
 import java.sql.Connection;
 
@@ -30,9 +28,9 @@ public class Main {
         } catch (Exception e) {
         }
 //        setCurrentUser("S0003");
-        new employeeScreen();
-
-        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
+//        new adminScreen();
+            new leadScreen();
+//        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
 
 //        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);
 //        User one = new User("John", "Smith", "ADM00001",  "admin1", UserType.Admin);
