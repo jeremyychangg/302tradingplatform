@@ -39,7 +39,7 @@ public class settingsGUI extends JPanel implements ActionListener {
     private void setUpPanel() throws SQLException {
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
         welcomeMessage(panel);
-        panel.setBorder(BorderFactory.createEmptyBorder(80, (int) (Screen.screenWidth * 0.3), 2 * (Screen.screenHeight/4), (int) (screenWidth * 0.3)));
+        panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 2 * (Screen.screenHeight/4), (int) (screenWidth * 0.6)));
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     }
