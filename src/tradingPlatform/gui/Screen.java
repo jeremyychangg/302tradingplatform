@@ -17,6 +17,7 @@ public abstract class Screen implements ActionListener {
     static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static int screenHeight = (int) screenSize.getHeight();
     public static int screenWidth = (int) screenSize.getWidth() - 320;
+    public static int border;
 
     // Font styling
     public static Font font1 = new Font("Avenir", Font.BOLD, 40);
@@ -26,6 +27,12 @@ public abstract class Screen implements ActionListener {
     public static Font btnFont = new Font("Avenir", Font.PLAIN, 15);
 
     public Screen() {
+        if (Screen.screenWidth > 1400){
+            this.border = (int) (Screen.screenWidth * 0.2);
+        }
+        else {
+            this.border = 80;
+        }
     }
 
     @Override

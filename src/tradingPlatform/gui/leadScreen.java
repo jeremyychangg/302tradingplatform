@@ -134,7 +134,7 @@ public class leadScreen extends Screen {
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
 
-        int padding = Screen.screenHeight - 700;
+        int padding = Screen.screenHeight - 750;
         logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
     }
 

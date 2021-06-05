@@ -12,14 +12,14 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static tradingPlatform.user.User.*;
+import static tradingPlatform.user.User.retrieveOrderLength;
+import static tradingPlatform.user.User.retrieveOrders;
 
 public class portfolioGUI extends JPanel {
     private JPanel panel;
-
     public int heightPage = Screen.screenHeight + 300;
     public GridBagConstraints gbc = new GridBagConstraints();
-
+    public int border;
 
     /**
      *
@@ -41,14 +41,16 @@ public class portfolioGUI extends JPanel {
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
-        // setting up black JPanel
-        System.out.println("Height " + heightPage);
-        this.heightPage = this.heightPage + retrieveOrderLength() * 50;
+        if (retrieveOrderLength() > 0){
+            this.heightPage = this.heightPage + retrieveOrderLength() * 50;
+        }
+        else {
+            this.heightPage = Screen.screenHeight + 300;
+        }
         this.panel = new JPanel();
         this.panel.setPreferredSize(new Dimension(Screen.screenWidth, heightPage));
-        this.panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
+        this.panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, 0, Screen.border));
         this.panel.setLayout(new GridBagLayout());
-        System.out.println("Height " + heightPage);
     }
 
 
@@ -96,7 +98,7 @@ public class portfolioGUI extends JPanel {
     private void chartSection() throws Exception {
         // Here make the graphical chart
         JPanel chartSection = new JPanel();
-        chartSection.setPreferredSize(new Dimension(1220, 350));
+        chartSection.setPreferredSize(new Dimension(1220, 200));
         chartSection.setLayout(new GridBagLayout());
         GridBagConstraints chartGBC = new GridBagConstraints();
         chartGBC.gridx = 1;
@@ -121,11 +123,38 @@ public class portfolioGUI extends JPanel {
 
         JPanel legend = new JPanel();
         legend.setBorder(BorderFactory.createEmptyBorder(80, 100, 80, 100));
-        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
+        legend.setPreferredSize(new Dimension(150, 100));
+//        legend.setLayout(new BoxLayout(legend, BoxLayout.Y_AXIS));
+        legend.setLayout(new GridLayout(4, inventory.size()));
 
         int i = 0;
         for (InventoryItem c : inventory){
             JPanel legendRow = new JPanel();
+            legendRow.setLayout(new GridLayout(0, 4));
+
+//            legendRow.setBackground(Color.RED);
+            int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
+            int g = (255 / inventory.size()) * i;
+            JLabel inventoryPercent = new JLabel(String.format(String.valueOf(percentage)) + "%");
+            JLabel inventoryName = new JLabel(c.asset.assetName);
+            JLabel inventoryPrice = new JLabel(String.format(String.valueOf(Math.floor(c.purchasePrice * c.quantity))) + " CPU");
+//
+//            inventoryPercent.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+//            inventoryName.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+//            inventoryPrice.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 30));
+
+            System.out.println("LEGEND" + legendRow.getHeight());
+            ColorSquare square = new ColorSquare(g, 0, 0);
+
+            legendRow.add(square);
+            legendRow.add(inventoryPercent);
+            legendRow.add(inventoryName);
+            legendRow.add(inventoryPrice);
+            legend.add(legendRow);
+            i++;
+
+            /*
+                        JPanel legendRow = new JPanel();
             legendRow.setLayout(new BoxLayout(legendRow, BoxLayout.X_AXIS));
 //            legendRow.setBackground(Color.RED);
             int percentage = (int) ((int) 100 * ((c.quantity * c.purchasePrice)/values.inventorySize));
@@ -147,7 +176,9 @@ public class portfolioGUI extends JPanel {
             legendRow.add(inventoryPrice, BorderLayout.EAST);
             legend.add(legendRow, BorderLayout.LINE_START);
             i++;
+             */
         }
+
 
         if (inventory.size() == 0){
             ColorSquare square = new ColorSquare(0, 50, 50);
@@ -195,38 +226,47 @@ public class portfolioGUI extends JPanel {
         this.gbc.gridy = 4;
 
         panel.add(orderHistoryHeading, this.gbc);
-        JPanel orderHistoryList = new JPanel();
 
-        // Retrieving the orders pending/incomplete of the user - and their status
-        String[] columns = new String[] {
-                "     ID", "Name","Type", "Date", "Price", "Quantity", "Status"
-        };
+        if (retrieveOrderLength() > 0){
+            JPanel orderHistoryList = new JPanel();
 
-        ArrayList<ArrayList<String>> data1 = retrieveOrders();
-        String[][] data = new String[data1.size()][];
-        int i = 0;
-        for (ArrayList<String> c : data1)
-        {
-            data[i] = new String[7];
-            data[i][0] = c.get(0);
-            data[i][1] = c.get(1);
-            data[i][2] = c.get(2);
-            data[i][3] = c.get(3);
-            data[i][4] = c.get(4);
-            data[i][5] = c.get(5);
-            data[i][6] = c.get(6);
-            i++;
+            // Retrieving the orders pending/incomplete of the user - and their status
+            String[] columns = new String[] {
+                    "     ID", "Name","Type", "Date", "Price", "Quantity", "Status"
+            };
+
+            ArrayList<ArrayList<String>> data1 = retrieveOrders();
+            String[][] data = new String[data1.size()][];
+            int i = 0;
+            for (ArrayList<String> c : data1)
+            {
+                data[i] = new String[7];
+                data[i][0] = c.get(0);
+                data[i][1] = c.get(1);
+                data[i][2] = c.get(2);
+                data[i][3] = c.get(3);
+                data[i][4] = c.get(4);
+                data[i][5] = c.get(5);
+                data[i][6] = c.get(6);
+                i++;
+            }
+            int length = (int) (Screen.screenWidth - Screen.screenWidth/3.7);
+            Integer[] width = new Integer[] { length/7, length/3, length/11, length/7, length/7, length/7, length/7}; // has to equal
+
+            orderHistoryList.add(new Table(columns, data, width));
+
+            orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            this.gbc.gridx = 1;
+            this.gbc.gridy = 5;
+
+            panel.add(orderHistoryList, this.gbc);
         }
-        int length = (int) (Screen.screenWidth - Screen.screenWidth/3.7);
-        Integer[] width = new Integer[] { length/7, length/3, length/11, length/7, length/7, length/7, length/7}; // has to equal
-
-        orderHistoryList.add(new Table(columns, data, width));
-
-        orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        this.gbc.gridx = 1;
-        this.gbc.gridy = 5;
-
-        panel.add(orderHistoryList, this.gbc);
+        else if (retrieveOrderLength() <= 0){
+            JLabel noOrders = new JLabel("Currently, this unit doesn't have any orders in their history up to date.");
+            noOrders.setFont(Screen.body);
+            noOrders.setBorder(BorderFactory.createEmptyBorder(100, 0,40,0));
+            panel.add(noOrders, this.gbc);
+        }
     }
 }

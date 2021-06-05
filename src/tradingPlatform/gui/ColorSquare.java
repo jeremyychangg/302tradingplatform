@@ -22,9 +22,9 @@ public class ColorSquare extends JPanel {
     public ColorSquare(int g, int x, int y){
         this.width = 20;
         this.height = 20;
-//        this.x += x;
-        this.y += y;
         this.g = g;
+        this.x = x;
+        this.y = y;
     }
 
 
@@ -36,6 +36,6 @@ public class ColorSquare extends JPanel {
     protected void paintComponent(Graphics graphic){
         super.paintComponent(graphic);
         graphic.setColor(new Color(this.r, this.g, this.b));
-        graphic.fillRect(this.x, this.y, this.width, this.height);
+        graphic.fillRect(20, this.getHeight()/2 - 10, this.width, this.height);
     }
 }

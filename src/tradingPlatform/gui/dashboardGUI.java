@@ -16,7 +16,7 @@ public class dashboardGUI extends JPanel implements ActionListener {
     public dashboardGUI() throws SQLException {
         // setting up black JPanel
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, Screen.border, 0, 0));
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
 
         panel.setLayout(new BorderLayout());
