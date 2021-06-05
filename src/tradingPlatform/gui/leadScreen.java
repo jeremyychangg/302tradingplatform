@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
+/**
+ *
+ */
 public class leadScreen extends Screen {
     private JFrame frame;
     private JPanel panel;
@@ -22,6 +25,7 @@ public class leadScreen extends Screen {
     private JButton dashboardButton = new JButton();
     private JButton watchlistButton = new JButton();
     private JButton ordersButton = new JButton();
+    private JButton settingsButton = new JButton();
     private JButton requestButton = new JButton();
 
     // Images when unselected
@@ -32,6 +36,7 @@ public class leadScreen extends Screen {
     private final ImageIcon dashboardIcon = new ImageIcon("src/img/dashboard-01.jpg");
     private final ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
     private final ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
+    private final ImageIcon settingIcon = new ImageIcon("src/img/settings-01.png");
 
     // Images when selected
     private final ImageIcon logoutIconS = new ImageIcon("src/img/logoutPress-01.jpg");
@@ -40,6 +45,7 @@ public class leadScreen extends Screen {
     private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
+    private final ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
     public leadScreen() throws SQLException {
         initUI();
@@ -47,6 +53,10 @@ public class leadScreen extends Screen {
         frame.addWindowListener(new ClosingListener());
     }
 
+
+    /**
+     * Method adds relevant button listeners for the lead screen. When pressed, would trigger the actionListener function.
+     */
     private void addButtonListeners() {
         requestButton.addActionListener(this);
         dashboardButton.addActionListener(this);
@@ -56,10 +66,14 @@ public class leadScreen extends Screen {
         logoutButton.addActionListener(this);
     }
 
+
+    /**
+     * Method used to initialise the Lead Screen. When run, on load, it sets the panel to the
+     * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
+     */
     private void initUI() throws SQLException {
         panel = new dashboardGUI();
-//        panel.setPreferredSize(new Dimension(1380, 1050));
-//        panel = new requestGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
 
@@ -68,16 +82,18 @@ public class leadScreen extends Screen {
         sidebarPanel.setBackground(baseBlue);
         logoutPane.setBackground(baseBlue);
 
-
         leadSidebar();
         setupLeadFrame();
     }
 
+
+    /**
+     *
+     */
     private void leadSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(440, 0, 0, 0));
+        sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -89,9 +105,10 @@ public class leadScreen extends Screen {
         // Setting up the sidebar buttons
         changeButton(requestIcon, requestButton);
         changeButton(portfolioIcon, portfolioButton);
-        changeButton(dashboardIcon, dashboardButton);
+        changeButton(dashboardIconS, dashboardButton);
         changeButton(watchlistIcon, watchlistButton);
         changeButton(ordersIcon, ordersButton);
+        changeButton(settingIcon, settingsButton);
         changeButton(logoutIcon, logoutButton);
 
         // Setting the alignment
@@ -101,6 +118,7 @@ public class leadScreen extends Screen {
         watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         requestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Adding each of the buttons to the sidebar
@@ -112,10 +130,19 @@ public class leadScreen extends Screen {
         sidebarPanel.add(requestButton);
 
         // Adding logout pane to sidebar
+        logoutPane.add(settingsButton);
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
+
+        int padding = Screen.screenHeight - 750;
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
     }
 
+
+    /**
+     *
+     * @return
+     */
     private JFrame setupLeadFrame() {
         // Setting up the frame and panels
         frame = new JFrame();
@@ -129,6 +156,11 @@ public class leadScreen extends Screen {
         return frame;
     }
 
+
+    /**
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dashboardButton) {
@@ -139,7 +171,7 @@ public class leadScreen extends Screen {
             } catch (SQLException throwable) {
                 throwable.printStackTrace();
             }
-            frame.setTitle("Dashboard");
+            frame.setTitle("Lead - Dashboard");
             frame.pack();
             panel.setVisible(true);
 
@@ -158,12 +190,13 @@ public class leadScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-                pane.setPreferredSize(new Dimension(1390, 1060));
+//                pane.setPreferredSize(new Dimension(1390, 1060));
+                pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
                 throwable.printStackTrace();
             }
-            frame.setTitle("Portfolio");
+            frame.setTitle("Lead - Portfolio");
             frame.pack();
             panel.setVisible(true);
 
@@ -185,7 +218,7 @@ public class leadScreen extends Screen {
                 assetTypeException.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
-            frame.setTitle("Watchlist");
+            frame.setTitle("Lead - Watchlist");
             frame.pack();
             panel.setVisible(true);
             // Changing the image for the button
@@ -198,8 +231,12 @@ public class leadScreen extends Screen {
         } else if (e.getSource() == ordersButton) {
             removePrevious();
 
-            frame.setTitle("Orders");
-            panel = new orderGUI();
+            frame.setTitle("Lead - Orders");
+            try {
+                panel = new orderGUI();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);
@@ -211,7 +248,7 @@ public class leadScreen extends Screen {
             changeButton(requestIcon, requestButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == requestButton) {
-            frame.setTitle("Requests");
+            frame.setTitle("Lead - Requests");
             frame.remove(panel);
             panel.removeAll();
             panel = new requestGUI();
@@ -225,6 +262,23 @@ public class leadScreen extends Screen {
             changeButton(watchlistIcon, watchlistButton);
             changeButton(requestIconS, requestButton);
             changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == settingsButton) {
+            removePrevious();
+            frame.setTitle("Lead - Settings");
+            try {
+                panel = new settingsGUI();
+            } catch (Exception exception) {
+            }
+            frame.add(panel, BorderLayout.CENTER);
+            frame.pack();
+            panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(ordersIcon, ordersButton);
+            changeButton(portfolioIcon, portfolioButton);
+            changeButton(dashboardIcon, dashboardButton);
+            changeButton(watchlistIcon, watchlistButton);
+            changeButton(settingIconS, settingsButton);
+            changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == logoutButton) {
             // insert reset functions
             Main.resetCurrentUser();
@@ -233,6 +287,10 @@ public class leadScreen extends Screen {
         }
     }
 
+
+    /**
+     *
+     */
     public void removePrevious(){
         frame.remove(panel);
         frame.remove(pane);

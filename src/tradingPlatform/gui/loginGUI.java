@@ -1,5 +1,6 @@
 package tradingPlatform.gui;
 
+import javax.security.auth.login.FailedLoginException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,11 +11,10 @@ import java.util.Objects;
 
 import static tradingPlatform.Main.connection;
 import static tradingPlatform.Main.setCurrentUser;
+import static tradingPlatform.passwordEncryption.verifyPassword;
 import static tradingPlatform.user.User.getAccountType;
 
 public class loginGUI implements ActionListener {
-    Font btnFont = new Font("Avenir", Font.PLAIN, 15);
-
     private final JLabel logo = new JLabel();
     private final JFrame frame;
     private final JPanel panel;
@@ -24,28 +24,31 @@ public class loginGUI implements ActionListener {
 
     private final ImageIcon mainIcon = new ImageIcon("src/img/loginLogo-01.png");
 
+    /**
+     *
+     */
     public loginGUI() {
         // Initialise the frame and panel used
         frame = new JFrame();
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
+        // Create the blue side in the login page
         JPanel side = new JPanel();
         side.setBorder(BorderFactory.createEmptyBorder(0, 300, 0, 0));
         side.setBackground(new Color(0, 140, 237));
-
         frame.add(side, BorderLayout.WEST);
 
+        // Initialise and style the login button
         button = new JButton("LOGIN");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(this);
         button.setMargin(new Insets(5, 20, 5, 20));
-        button.setFont(btnFont);
+        button.setFont(Screen.btnFont);
         button.setBackground(new Color(0, 140, 237));
-//        button.setPreferredSize(new Dimension(40, 30));
-//        button.setOpaque(true);
-//        button.setBorderPainted(false);
-        button.setForeground(new Color(0, 140, 237));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setForeground(Color.WHITE);
         button.setFocusable(false);
 
         // Logo
@@ -92,6 +95,11 @@ public class loginGUI implements ActionListener {
         frame.requestFocusInWindow();
     }
 
+
+    /**
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String usernameInput = usernameField.getText();
@@ -116,10 +124,19 @@ public class loginGUI implements ActionListener {
                 }
                 usernameField.setText("");
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        }
+        catch (Exception exception) {
+            String msg = "User login details inputted invalid. Try again";
+            try {
+                throw new FailedLoginException(msg);
+                //insert error message
+            } catch (FailedLoginException failedLoginException) {
+//                failedLoginException.printStackTrace();
+            }
         }
     }
+
+
 
     /**
      * This code was adapted from https://stackoverflow.com/questions/1738966/java-jtextfield-with-input-hint
@@ -154,11 +171,18 @@ public class loginGUI implements ActionListener {
         }
     }
 
-    //GUI
-    public boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
+
+    /**
+     *
+     * @param usernameInput
+     * @param passwordInput
+     * @return
+     * @throws SQLException
+     */
+    public static boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
         Statement loginCheck = connection.createStatement();
 
-        String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "' AND password = '" + String.valueOf(passwordInput) + "';";
+        String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "';";
         System.out.println(loginInput);
         ResultSet loginResults = loginCheck.executeQuery(loginInput);
 
@@ -168,24 +192,18 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-
-        /////////////////////////////////////////////////
-        //
-        //
-        //
-        //
-        //                   INSERT VERIFICATION PASSWORD HERE - PROPER
-        //
-        //
-        //
-        //
-        //
-        //////////////////////////////////////////////////
-
-        return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
+        String salt = passwordReturn.substring(88);
+        String passDatabase = passwordReturn.substring(0, 88);
+        return verifyPassword(String.valueOf(passwordInput), passDatabase, salt);
     }
 
-    public String getString(char[] passwordInput) {
+
+    /**
+     *
+     * @param passwordInput
+     * @return
+     */
+    public static String getString(char[] passwordInput) {
         StringBuilder passwordString = new StringBuilder();
         for (Character ch : passwordInput) {
             passwordString.append(ch);
@@ -193,6 +211,10 @@ public class loginGUI implements ActionListener {
         return passwordString.toString();
     }
 
+
+    /**
+     * Window closing listener. When the window is closed, the program exits.
+     */
     protected static class ClosingListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             System.exit(0);

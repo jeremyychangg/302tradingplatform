@@ -25,6 +25,7 @@ public class employeeScreen extends Screen {
     private JButton dashboardButton = new JButton();
     private JButton watchlistButton = new JButton();
     private JButton ordersButton = new JButton();
+    private JButton settingsButton = new JButton();
     private JButton logoutButton = new JButton();
 
     // Button images when unselected
@@ -33,6 +34,7 @@ public class employeeScreen extends Screen {
     private final ImageIcon watchlistIcon = new ImageIcon("src/img/watchlist-01.jpg");
     private final ImageIcon ordersIcon = new ImageIcon("src/img/order-01.jpg");
     private final ImageIcon mainIcon = new ImageIcon("src/img/mainLogo-01.png");
+    private final ImageIcon settingIcon = new ImageIcon("src/img/settings-01.png");
     private final ImageIcon logoutIcon = new ImageIcon("src/img/logout-01.jpg");
 
     // Button images when selected
@@ -40,27 +42,25 @@ public class employeeScreen extends Screen {
     private final ImageIcon dashboardIconS = new ImageIcon("src/img/dashboardPress-01.jpg");
     private final ImageIcon watchlistIconS = new ImageIcon("src/img/watchPress-01.jpg");
     private final ImageIcon ordersIconS = new ImageIcon("src/img/orderPress-01.jpg");
+    private final ImageIcon settingIconS = new ImageIcon("src/img/settingsPress-01.png");
 
     public employeeScreen() throws SQLException {
         initUI();
         addButtonListeners();
-
-//        System.out.println("Sidebar " + sidebarPanel.getHeight());
-//        System.out.println(frame.getWidth());
-//        System.out.println(sidebarPanel.getWidth());
-//        System.out.println(frame.getHeight());
-
         frame.addWindowListener(new ClosingListener());
     }
 
-
+    /**
+     * Method used to initialise the Employee Screen. When run, on load, it sets the panel to the
+     * dashboard. On the left side, it also initialises the sidebar buttons and the button action listeners.
+     *
+     * @throws SQLException Triggered if the dashboardGUI is unable to create GUI based on SQL database input - userID
+     */
     private void initUI() throws SQLException {
         // Setting up the frame and panels
-        // panel = new JPanel();
         panel = new dashboardGUI();
         logoutPane = new JPanel();
         sidebarPanel = new JPanel();
-//        panel.setPreferredSize(new Dimension(1380, 1050));
 
         // Background Colour
         Color baseBlue = new Color(0, 140, 237);
@@ -71,7 +71,15 @@ public class employeeScreen extends Screen {
         setupEmployeeFrame();
     }
 
-    private JFrame setupEmployeeFrame(){
+
+    /**
+     * Method used to initialise and pack the employee screen frame. Within, it adds the main panel on the right,
+     * and sets up the sidebar on the left of the frame. Additionally, sets up the frames title to make the user
+     * aware of where they are.
+     *
+     * @return JFrame A frame that would display the employee related elements
+     */
+    private JFrame setupEmployeeFrame() {
         frame = new JFrame();
 
         // Adding the panes to the final sidebar frame
@@ -83,20 +91,27 @@ public class employeeScreen extends Screen {
         return frame;
     }
 
-    private void addButtonListeners(){
+
+    /**
+     * Method adds relevant button listeners for the employee screen. When pressed, would trigger the actionListener function.
+     */
+    private void addButtonListeners() {
         dashboardButton.addActionListener(this);
         portfolioButton.addActionListener(this);
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
+        settingsButton.addActionListener(this);
         logoutButton.addActionListener(this);
     }
 
 
-    private void employeeSidebar(){
+    /**
+     * Method creates the GUI for the employee sidebar, and initialises the buttons.
+     */
+    private void employeeSidebar() {
         sidebarPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
-        sidebarPanel.setPreferredSize(new Dimension(310, 1000));
-        logoutPane.setBorder(BorderFactory.createEmptyBorder(500, 0, 0, 0));
+        sidebarPanel.setPreferredSize(new Dimension(310, screenHeight));
 
         // Resizing the size of Main Logo
         Image mainImg = mainIcon.getImage();
@@ -110,6 +125,7 @@ public class employeeScreen extends Screen {
         changeButton(dashboardIconS, dashboardButton);
         changeButton(watchlistIcon, watchlistButton);
         changeButton(ordersIcon, ordersButton);
+        changeButton(settingIcon, settingsButton);
         changeButton(logoutIcon, logoutButton);
 
         // Setting the alignment
@@ -118,6 +134,7 @@ public class employeeScreen extends Screen {
         dashboardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         watchlistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         ordersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Adding each of the buttons to the sidebar
@@ -128,10 +145,22 @@ public class employeeScreen extends Screen {
         sidebarPanel.add(ordersButton);
 
         // Adding logout pane to sidebar
+        logoutPane.add(settingsButton);
         logoutPane.add(logoutButton);
         sidebarPanel.add(logoutPane);
+
+        int padding = Screen.screenHeight - 700;
+        logoutPane.setBorder(BorderFactory.createEmptyBorder(padding, 0, 0, 0));
     }
 
+
+    /**
+     * When an actionListener is triggered - via, in this case, mostly button event listeners - this method is
+     * triggered to change the panel display and also change the styling of the button to show what page the user is
+     * on.
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dashboardButton) {
@@ -140,7 +169,6 @@ public class employeeScreen extends Screen {
                 panel = new dashboardGUI();
                 frame.add(panel, BorderLayout.CENTER);
             } catch (SQLException throwable) {
-                throwable.printStackTrace();
             }
             frame.setTitle("Dashboard");
             frame.pack();
@@ -151,6 +179,7 @@ public class employeeScreen extends Screen {
             changeButton(ordersIcon, ordersButton);
             changeButton(portfolioIcon, portfolioButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == portfolioButton) {
             removePrevious();
@@ -160,10 +189,10 @@ public class employeeScreen extends Screen {
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
                 pane.getVerticalScrollBar().setUnitIncrement(7);
-                pane.setPreferredSize(new Dimension(1390, 1060));
+//                pane.setPreferredSize(new Dimension(1390, 1060));
+                pane.setPreferredSize(new Dimension(screenWidth + 10, screenHeight));
                 frame.add(pane, BorderLayout.CENTER);
             } catch (Exception throwable) {
-                throwable.printStackTrace();
             }
             frame.setTitle("Portfolio");
             frame.pack();
@@ -174,6 +203,7 @@ public class employeeScreen extends Screen {
             changeButton(dashboardIcon, dashboardButton);
             changeButton(ordersIcon, ordersButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == watchlistButton) {
             removePrevious();
@@ -183,7 +213,6 @@ public class employeeScreen extends Screen {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             } catch (AssetTypeException assetTypeException) {
-                assetTypeException.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Watchlist");
@@ -194,12 +223,17 @@ public class employeeScreen extends Screen {
             changeButton(portfolioIcon, portfolioButton);
             changeButton(dashboardIcon, dashboardButton);
             changeButton(ordersIcon, ordersButton);
+            changeButton(settingIcon, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == ordersButton) {
             removePrevious();
 
             frame.setTitle("Orders");
-            panel = new orderGUI();
+            try {
+                panel = new orderGUI();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);
@@ -208,6 +242,25 @@ public class employeeScreen extends Screen {
             changeButton(portfolioIcon, portfolioButton);
             changeButton(dashboardIcon, dashboardButton);
             changeButton(watchlistIcon, watchlistButton);
+            changeButton(settingIcon, settingsButton);
+            changeButton(logoutIcon, logoutButton);
+        } else if (e.getSource() == settingsButton) {
+            removePrevious();
+
+            frame.setTitle("Settings");
+            try {
+                panel = new settingsGUI();
+            } catch (Exception exception) {
+            }
+            frame.add(panel, BorderLayout.CENTER);
+            frame.pack();
+            panel.setVisible(true);
+            // Changing the image for the button
+            changeButton(ordersIcon, ordersButton);
+            changeButton(portfolioIcon, portfolioButton);
+            changeButton(dashboardIcon, dashboardButton);
+            changeButton(watchlistIcon, watchlistButton);
+            changeButton(settingIconS, settingsButton);
             changeButton(logoutIcon, logoutButton);
         } else if (e.getSource() == logoutButton) {
             // insert reset functions
@@ -219,13 +272,20 @@ public class employeeScreen extends Screen {
     }
 
 
-    public void removePrevious(){
+    /**
+     *
+     */
+    public void removePrevious() {
         frame.remove(panel);
         frame.remove(pane);
         panel.removeAll();
     }
 
 
+    /**
+     * @param panel
+     * @throws SQLException
+     */
     public static void creditBalancePanel(JPanel panel) throws SQLException {
         Font heading = new Font("Avenir", Font.PLAIN, 50);
 
@@ -245,8 +305,8 @@ public class employeeScreen extends Screen {
         creditsUser.setFont(heading);
         outstandingUser.setFont(heading);
 
-        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
-        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 100, 0, 100));
+        creditsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        ordersPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         ordersPanel.setLayout(new BoxLayout(ordersPanel, BoxLayout.Y_AXIS));
         creditsPanel.setLayout(new BoxLayout(creditsPanel, BoxLayout.Y_AXIS));
 
