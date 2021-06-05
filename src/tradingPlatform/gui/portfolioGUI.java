@@ -8,7 +8,6 @@ import tradingPlatform.InventoryItem;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -122,7 +121,6 @@ public class portfolioGUI extends JPanel {
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
         pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 500, 0));
-        pie.setBorder(new LineBorder(Color.BLACK, 3));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
 
@@ -265,7 +263,7 @@ public class portfolioGUI extends JPanel {
             orderHistoryList.add(new Table(columns, data, width));
 
             orderHistoryList.setAlignmentX(Component.LEFT_ALIGNMENT);
-
+            orderHistoryList.setBorder(BorderFactory.createEmptyBorder(0,0,40,0));
             this.gbc.gridx = 1;
             this.gbc.gridy = 5;
 
