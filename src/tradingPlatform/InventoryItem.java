@@ -21,6 +21,7 @@
 package tradingPlatform;
 
 import tradingPlatform.exceptions.InvalidAssetException;
+import tradingPlatform.Asset;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import static tradingPlatform.Main.connection;
 
 public class InventoryItem {
+    String unitID;
     Asset asset;
     double purchasePrice;
     int quantity;
@@ -42,8 +44,9 @@ public class InventoryItem {
      * @param purchasePrice
      * @param quantity
      */
-    public InventoryItem(String assetID, double purchasePrice, int quantity) throws SQLException, InvalidAssetException {
-        this.asset = findAsset(assetID);
+    public InventoryItem(String unitID, String assetID, double purchasePrice, int quantity) throws SQLException, InvalidAssetException {
+        this.unitID = unitID;
+        this.asset = Asset.findAsset(assetID);
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
 
@@ -60,8 +63,23 @@ public class InventoryItem {
      * @param assetID
      * @param quantity
      */
-    public InventoryItem(String assetID, int quantity) throws SQLException, InvalidAssetException {
-        new InventoryItem(assetID, 0, quantity);
+    public InventoryItem(String unitID, String assetID, int quantity) throws SQLException, InvalidAssetException {
+        new InventoryItem(unitID, assetID, 0, quantity);
+    }
+
+
+    /**
+     * For creating portfolio items
+     * @param assetID
+     * @param averagePrice
+     * @param quantity
+     * @throws SQLException
+     * @throws InvalidAssetException
+     */
+    public InventoryItem(String assetID, double averagePrice, int quantity) throws SQLException, InvalidAssetException {
+        this.asset = Asset.findAsset(assetID);
+        this.purchasePrice = averagePrice;
+        this.quantity = quantity;
     }
 
 
@@ -72,8 +90,9 @@ public class InventoryItem {
      * @param quantity
      * @param orderID
      */
-    public InventoryItem(String assetID, double purchasePrice, int quantity, String orderID) throws SQLException, InvalidAssetException {
-        this.asset = findAsset(assetID);
+    public InventoryItem(String unitID, String assetID, double purchasePrice, int quantity, String orderID) throws SQLException, InvalidAssetException {
+        this.unitID = unitID;
+        this.asset = Asset.findAsset(assetID);
         this.purchasePrice = purchasePrice;
         this.quantity = quantity;
         this.orderID = orderID;
@@ -86,36 +105,13 @@ public class InventoryItem {
 
     }
 
-    /**
-     *
-     * @param assetID
-     * @return
-     */
-    public Asset findAsset(String assetID) throws SQLException, InvalidAssetException {
-        Asset matchingAsset;
 
-        Statement statement = connection.createStatement();
-        String sqlFindAsset = "SELECT * from assets WHERE assetID = '" + assetID + "';";
-        ResultSet getAsset = statement.executeQuery(sqlFindAsset);
-
-        if (getAsset.next() && getAsset.getString("assetID") != null) {
-            matchingAsset = new Asset(
-                    getAsset.getString("assetID"),
-                    getAsset.getString("assetName"),
-                    getAsset.getString("assetType")
-            );
-        } else {
-            throw new InvalidAssetException("Asset not found.");
-        }
-
-        return matchingAsset;
-    }
 
     public void AddToDatabase() throws SQLException {
         PreparedStatement newInvItem =
                 connection.prepareStatement("INSERT INTO inventory (unitID, assetID, orderID, quantity, price) VALUES (?,?,?,?,?);");
 
-//        newInvItem.setString(1, Main.unitID);       // Find method/variable which stores unit ID
+        newInvItem.setString(1, this.unitID);       // Find method/variable which stores unit ID
         newInvItem.setString(2, this.asset.GetAssetID());
         newInvItem.setString(3, this.orderID);
         newInvItem.setInt(4, this.quantity);
@@ -123,4 +119,5 @@ public class InventoryItem {
 
         newInvItem.execute();
     }
+
 }
