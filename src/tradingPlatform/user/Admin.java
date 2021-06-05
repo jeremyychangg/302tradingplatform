@@ -11,9 +11,12 @@ import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.passwordEncryption.verifyPassword;
 
 public class Admin extends User{
     private String unitID;
@@ -30,6 +33,10 @@ public class Admin extends User{
         super(firstName, lastName, unitID, UserType.Admin);
         this.unitID = unitID;
         this.accountType = accountType;
+    }
+
+    public Admin(String userID) throws SQLException {
+        super(userID);
     }
 
     @Override
@@ -129,7 +136,7 @@ public class Admin extends User{
     }
 
 
-    public void newUnit(String unitName, double creditBalance, double creditLimit){
+    public void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException{
         Unit unitNew = new Unit(unitName,creditBalance, creditLimit);
     }
 
@@ -206,6 +213,42 @@ public class Admin extends User{
 
     public void viewRequests(){
 
+    }
+
+
+    public static void changeUserPassword(String userID, String oldPassword, String newPassword, String reEnter)
+            throws SQLException {
+        Statement loginInput = connection.createStatement();
+        // Determine if the value is a valid password
+        String login = "SELECT userID, password from users WHERE userID = '" + userID + "' AND password = '" + oldPassword + "';";
+        ResultSet loginResults = loginInput.executeQuery(login);
+
+        String userReturn = null;
+        String passwordReturn = null;
+
+        while (loginResults.next()) {
+            userReturn = loginResults.getString("userID");
+            passwordReturn = loginResults.getString("password");
+        }
+
+        String salt = passwordReturn.substring(88);
+        String passDatabase = passwordReturn.substring(0, 88);
+        Boolean isCorrectPassword = verifyPassword(String.valueOf(passwordReturn), passDatabase, salt);
+
+        // Encrypt the new password
+        String encryptedPassword = encryptPassword(newPassword);
+
+        // Update the dataset if the user is the one being edited, the old password matches the old and new password is same
+        // as re-enter value
+        if (userReturn.equals(userID) && isCorrectPassword && newPassword.equals(reEnter)) {
+            // input the SQL query for the database
+            String passwordInputQuery = "UPDATE users SET password = ? WHERE userID = ?;";
+            PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);
+            updatePassword.clearParameters();
+            updatePassword.setString(1, encryptedPassword);
+            updatePassword.setString(2, userID);
+            updatePassword.executeUpdate();
+        }
     }
 
 }

@@ -22,6 +22,10 @@ public class Lead extends User {
         super(firstName, lastName, unitID, password, UserType.Lead);
     }
 
+    public Lead(String userID) throws SQLException {
+        super(userID);
+    }
+
     public void requestNewUser(String userID, String firstName, String lastName) throws SQLException {
         String message = "User " + getCurrentUser() + "has requested a new account is made for "
                 + firstName + " " + lastName + " in unit " + getUnitID() + " for a " + getAccountType() + ".";
