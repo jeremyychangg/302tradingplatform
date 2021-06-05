@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static tradingPlatform.Main.connection;
 import static tradingPlatform.Main.setCurrentUser;
+import static tradingPlatform.passwordEncryption.verifyPassword;
 import static tradingPlatform.user.User.getAccountType;
 
 public class loginGUI implements ActionListener {
@@ -178,10 +179,10 @@ public class loginGUI implements ActionListener {
      * @return
      * @throws SQLException
      */
-    public boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
+    public static boolean passwordCorrect(String usernameInput, char[] passwordInput) throws SQLException {
         Statement loginCheck = connection.createStatement();
 
-        String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "' AND password = '" + String.valueOf(passwordInput) + "';";
+        String loginInput = "SELECT userID, password from users WHERE userID = '" + usernameInput + "';";
         System.out.println(loginInput);
         ResultSet loginResults = loginCheck.executeQuery(loginInput);
 
@@ -191,16 +192,9 @@ public class loginGUI implements ActionListener {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-
-        /////////////////////////////////////////////////
-        //
-        //
-        //                   INSERT VERIFICATION PASSWORD HERE - PROPER
-        //
-        //
-        //////////////////////////////////////////////////
-
-        return userReturn.equals(usernameInput) && passwordReturn.equals(getString(passwordInput));
+        String salt = passwordReturn.substring(88);
+        String passDatabase = passwordReturn.substring(0, 88);
+        return verifyPassword(String.valueOf(passwordInput), passDatabase, salt);
     }
 
 
@@ -209,7 +203,7 @@ public class loginGUI implements ActionListener {
      * @param passwordInput
      * @return
      */
-    public String getString(char[] passwordInput) {
+    public static String getString(char[] passwordInput) {
         StringBuilder passwordString = new StringBuilder();
         for (Character ch : passwordInput) {
             passwordString.append(ch);

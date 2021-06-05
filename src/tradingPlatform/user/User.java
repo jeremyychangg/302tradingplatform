@@ -137,7 +137,9 @@ public class User {
         }
 
         // Generate a password
-        String key = hashPassword(password, generateSalt(100).get()).get();
+        String salt = generateSalt(100).get();
+        String key = hashPassword(password, salt).get();
+        String passwordCombo = key + salt;
 
         Statement statement = connection.createStatement();
 
@@ -152,7 +154,6 @@ public class User {
         }
 
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
-        System.out.println(newUserID);
         this.userID = newUserID;
 
         PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
@@ -162,7 +163,7 @@ public class User {
         newUser.setString(3, lastName);
         newUser.setString(4, unitID);
         newUser.setString(5, accType);
-        newUser.setString(6, key);
+        newUser.setString(6, passwordCombo);
 
         newUser.execute();
     }

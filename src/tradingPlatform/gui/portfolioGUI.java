@@ -120,7 +120,12 @@ public class portfolioGUI extends JPanel {
 
         chartSection.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         Piechart pie = new Piechart(0, 0, 237, inventory, values.inventorySize);
-        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, 200, 0));
+
+        int pieBorder = 240;
+        if (Screen.screenHeight > 1400){
+            pieBorder = 200;
+        }
+        pie.setBorder(BorderFactory.createEmptyBorder(50, 500, pieBorder, 0));
         pie.setAlignmentX(Component.LEFT_ALIGNMENT);
         chartSection.add(pie, chartGBC);
 
@@ -156,9 +161,8 @@ public class portfolioGUI extends JPanel {
             legend = new JPanel();
             legend.setPreferredSize(new Dimension(50, 4));
             legend.setLayout(new GridLayout(1, 2));
-            ColorSquare square = new ColorSquare(0, 0, 0);
+            ColorSquare square = new ColorSquare(140, 0, 0);
             legend.add(square);
-//            legend.setBackground(Color.red);
             JLabel inventoryItem = new JLabel("None");
             legend.add(inventoryItem);
         }

@@ -11,17 +11,7 @@ public class userGUI extends JPanel {
      */
     public userGUI() throws Exception {
         setUpPanel();
-//        JLabel requestHeading = new JLabel("Make A Request");
-//        requestHeading.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-//        requestHeading.setFont(headingFont);
 
-        /////////////////////////////////////////////////////
-        //
-        //
-        //                  INSERT HERE
-        //
-        //
-        ////////////////////////////////////////////////////
         Screen.welcomeMessage(panel);
         add(panel);
     }

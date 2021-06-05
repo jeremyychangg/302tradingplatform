@@ -1,7 +1,9 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
+import tradingPlatform.enumerators.UserType;
 import tradingPlatform.gui.employeeScreen;
+import tradingPlatform.user.User;
 
 import java.sql.Connection;
 
@@ -27,10 +29,19 @@ public class Main {
             new JBDCConnection();
         } catch (Exception e) {
         }
-        setCurrentUser("S0003");
+//        setCurrentUser("S0003");
         new employeeScreen();
-//        User test = new User("Angela", "Shibu", "IT00001", "password.CAB302", UserType.Employee);
-//        String salt = generateSalt(100).get();
+
+        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
+
+//        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);
+//        User one = new User("John", "Smith", "ADM00001",  "admin1", UserType.Admin);
+//        User two = new User("Peter", "La", "IT00000034",   "password.1", UserType.Admin);
+//        User three = new User("Angela", "Da Cost", "IT00001", "password", UserType.Admin);
+//        User four = new User("Pat", "Kam", "IT00001", "password", UserType.Lead);
+//        User five = new User("Ian", "Musk", "IT00001", "pass", UserType.Employee);
+//        User six = new User("Stephen", "King", "AD0001", "pass", UserType.Employee);
+
 
 //        System.out.println(verifyPassword("password.CAB302", "q/i13M0jPpAtG3hrGyh3ZTUx2GoLf6FqLtzxSh21vAFlkjaseju1KOrUC+Jie41fl/4leimzXZkRnPApH8E5ZA==", salt));
 //        System.out.println(retrieveOrders());
