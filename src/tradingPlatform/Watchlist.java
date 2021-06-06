@@ -22,6 +22,7 @@
 package tradingPlatform;
 
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.exceptions.InvalidAssetException;
 
 import java.sql.Statement;
 import java.sql.PreparedStatement;
@@ -44,7 +45,7 @@ public class Watchlist {
      * @param unitID
      * @throws SQLException
      */
-    public Watchlist(String unitID) throws SQLException, AssetTypeException {
+    public Watchlist(String unitID) throws SQLException, AssetTypeException, InvalidAssetException {
         this.unitID = unitID;
         this.watchlist = GetWatchlist();
     }
@@ -53,14 +54,16 @@ public class Watchlist {
      * Queries database and finds current watchlist for a given unit
      * @return
      */
-    public ArrayList<Asset> GetWatchlist() throws SQLException, AssetTypeException {
+    public ArrayList<Asset> GetWatchlist() throws SQLException, AssetTypeException, InvalidAssetException {
         ArrayList<Asset> unitWatchlist = new ArrayList<>();
 
         // Joins with asset table to find current asset info
         String getWatchlist =
                         "SELECT DISTINCT " +
-                            "a.assetID, " +
-                            "b.* " +
+                            "a.assetID as assetID, " +
+                            "b.assetName as assetName, " +
+                                "b.currentPrice as currentPrice, " +
+                                "b.assetType as assetType " +
                         "FROM " +
                             "watchlists as a " +
                                 "LEFT JOIN " +
@@ -73,12 +76,8 @@ public class Watchlist {
 
         // Loop through ResultSet and append fields as new assets in unitWatchlist
         while (wlResult.next()) {
-            unitWatchlist.add(new Asset(
-                    wlResult.getString("assetName"),
-                    wlResult.getString("assetType"),
-                    wlResult.getDouble("currentPrice")
-                    )
-            );
+            unitWatchlist.add(Asset.findAsset(wlResult.getString("assetID")));
+
         }
 
         // Set watchlist and return

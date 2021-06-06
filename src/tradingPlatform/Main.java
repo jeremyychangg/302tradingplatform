@@ -1,7 +1,13 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
+import tradingPlatform.enumerators.UserType;
+import tradingPlatform.gui.client.employeeScreen;
+import tradingPlatform.gui.client.orderGUI;
+import tradingPlatform.gui.client.watchlistGUI;
 import tradingPlatform.gui.common.loginGUI;
+import tradingPlatform.user.Admin;
+import tradingPlatform.user.User;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -11,6 +17,7 @@ import static tradingPlatform.user.User.getUnitID;
 
 public class Main {
     private static String currentUser;
+    private static String currentUnit;
 
     public static String getCurrentUser() {
         return Main.currentUser;
@@ -18,7 +25,7 @@ public class Main {
 
 
     public static String getCurrentUnit() throws SQLException {
-        return getUnitID();
+        return Main.currentUnit;
     }
 
     public static void resetCurrentUser() {
@@ -39,18 +46,31 @@ public class Main {
             JOptionPane.showMessageDialog(null, msg);
             throw new SQLException(msg, thr);
         }
-//        setCurrentUser("A0001");
+        setCurrentUser("S0001");
+        Main.currentUnit = "IT00001";
+
 //        new adminScreen();
-        new loginGUI();
-//            new employeeScreen();
+//        new watchlistGUI();
+            new employeeScreen();
 //        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
 
+//
+//
 //        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);
+//
+//
+//        Admin.addUserToDatabase(test);
 //        User one = new User("John", "Smith", "ADM00001",  "admin1", UserType.Admin);
+//        Admin.addUserToDatabase(one);
 //        User two = new User("Peter", "La", "IT00000034",   "password.1", UserType.Admin);
+//        Admin.addUserToDatabase(two);
 //        User three = new User("Angela", "Da Cost", "IT00001", "password", UserType.Admin);
+//        Admin.addUserToDatabase(three);
 //        User four = new User("Pat", "Kam", "IT00001", "password", UserType.Lead);
+//         Admin.addUserToDatabase(four);
 //        User five = new User("Ian", "Musk", "IT00001", "pass", UserType.Employee);
+//        Admin.addUserToDatabase(five);
+//
 //        User six = new User("Stephen", "King", "AD0001", "pass", UserType.Employee);
 
 

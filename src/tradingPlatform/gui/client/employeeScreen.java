@@ -210,9 +210,10 @@ public class employeeScreen extends Screen {
 
             try {
                 panel = new watchlistGUI();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             } catch (AssetTypeException assetTypeException) {
+            } catch (Exception throwables) {
+                System.out.println(throwables.getMessage());
+                throwables.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Employee - Watchlist");
