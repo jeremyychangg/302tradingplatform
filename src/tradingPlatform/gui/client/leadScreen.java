@@ -221,6 +221,8 @@ public class leadScreen extends Screen {
                 throwables.printStackTrace();
             } catch (AssetTypeException assetTypeException) {
                 assetTypeException.printStackTrace();
+            } catch (Exception ex) {
+
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.setTitle("Lead - Watchlist");

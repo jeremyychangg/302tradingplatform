@@ -58,7 +58,7 @@ public class Asset {
         this.assetName = assetName;
         this.assetType = assetType;
 
-        String IDsubstring;
+        String IDsubstring = "";
 
         // Find asset type for new ID
         if (assetType == "Computer Accessories") {
@@ -117,7 +117,7 @@ public class Asset {
         this.assetType = assetType;
         this.currentPrice = currentPrice;
 
-        String IDsubstring;
+        String IDsubstring = "";
 
         if (assetType == "Computer Accessories") {
             IDsubstring = "CA";
