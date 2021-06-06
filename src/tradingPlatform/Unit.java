@@ -91,17 +91,48 @@ public class Unit {
         // Assign unitID to unit:
 
         // Assign unit codes by choosing random letters in the unit name
+        ArrayList<String> unitCodes = new ArrayList<>();
+
+        Statement smt = connection.createStatement();
+        String sqlUnitCodes
+                = "SELECT DISTINCT substring(unitID, 1, 2) as unitCodes FROM units;";
+        ResultSet getCodes= smt.executeQuery(sqlUnitCodes);
+
+        while(getCodes.next()) {
+            unitCodes.add(getCodes.getString("unitCodes"));
+        }
+
         Random rand = new Random();
         unitCasing = unitName.toUpperCase();
         randPos = rand.nextInt(unitCasing.length());
-        unitCode = unitCode + unitCasing.charAt(0) + unitCasing.charAt(randPos);
-        if (randPos == unitCasing.charAt(0)) {
+        if (randPos == 0) {
             randPos += 1;
         }
-        // Assign random two digit number
-        unitNum = rand.nextInt(90) + 10;
+        unitCode = unitCode + unitCasing.charAt(0) + unitCasing.charAt(randPos);
+
+        while (unitCodes.contains(unitCode)) {
+            randPos = rand.nextInt(unitCasing.length());
+            if (randPos == 0) {
+                randPos += 1;
+            }
+            unitCode = unitCode + unitCasing.charAt(0) + unitCasing.charAt(randPos);
+        }
+
+        // Get max ID number
+        String sqlmaxID
+                = "SELECT max(substring(unitID, 3, 8)) as maxID FROM units WHERE substring(unitID, 1, 2) = '"
+                + unitCode + "';";
+        ResultSet getMaxID= smt.executeQuery(sqlmaxID);
+
+        if (getMaxID.next() && getMaxID.getString("maxID") != null) {
+            unitNum = Integer.parseInt(getMaxID.getString("maxID"));
+        }
+
+        // Increment current maxID
+        unitNum ++;
+
         // Concatenate  to create new ID
-        String assignID = unitCode + "000000" + unitNum.toString();
+        String assignID = unitCode + String.format("%08d", unitNum.toString());
         this.unitID = assignID;
 
         // Add unitID, unitName, creditBalance, limit into database
@@ -134,12 +165,12 @@ public class Unit {
         if (creditBalance < 0) {
             throw new NegativePriceException("Asset price cannot be negative");
         } else {
-            this.creditBalance = creditBalance;
+            this.creditBalance += creditBalance;
 
-            String assignNewBalance = "UPDATE units SET creditBalance = ? WHERE unitID = '?';";
+            String assignNewBalance = "UPDATE units SET creditBalance = ? WHERE unitID = ?;";
             PreparedStatement updateBalance = connection.prepareStatement(assignNewBalance);
             updateBalance.clearParameters();
-            updateBalance.setDouble(1, creditBalance);
+            updateBalance.setDouble(1, this.creditBalance);
             updateBalance.setString(2, unitID);
             updateBalance.executeUpdate();
         }
