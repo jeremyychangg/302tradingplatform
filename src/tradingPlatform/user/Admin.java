@@ -17,16 +17,32 @@ import java.sql.Statement;
 import static tradingPlatform.Main.connection;
 import static tradingPlatform.Unit.getUnit;
 
+/**
+ * An admin is a user who is given special privileges to control functions on the back end of the
+ * server. Thus, the methods involved allow admins to be create, and also enable them to fulfil admin
+ * related methods - such as editing units, assets and users.
+ */
 public class Admin extends User {
     private String userID;
     private String unitID;
 
-
+    /**
+     * Constructor to build general user. This sets the private variables of the User.
+     * @param firstName
+     * @param lastName
+     * @param unitID
+     * @param password
+     * @throws Exception
+     */
     public Admin(String firstName, String lastName, String unitID, String password) throws Exception {
         super(firstName, lastName, unitID, password, UserType.Admin);
         this.unitID = unitID;
     }
-
+    /**
+     * Constructor to build general user. This sets the private variables of the User.
+     * @param userID
+     * @throws Exception
+     */
     public Admin(String userID) throws SQLException {
         super(userID);
     }
@@ -142,16 +158,42 @@ public class Admin extends User {
         }
     }
 
-
+    /**
+     * To add a new unit to the database, this method constructs a unit object and applies
+     * methods to add this to the database
+     * @param unitName
+     * @param creditBalance
+     * @param creditLimit
+     * @throws SQLException
+     */
     public static void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException {
         Unit newUnit = new Unit(unitName, creditBalance, creditLimit);
         newUnit.addUnit(unitName, creditBalance, creditLimit);
     }
 
+    /**
+     * To add a new asset to the database, this method constructs a unit object and applies
+     * methods to add this to the database
+     * @param assetName
+     * @param assetType
+     * @throws SQLException
+     * @throws AssetTypeException
+     */
     public static void newAsset(String assetName, String assetType) throws SQLException, AssetTypeException {
         Asset assetNew = new Asset(assetName, assetType);
     }
 
+    /**
+     * To add a new asset to the database, this method constructs a unit object and applies
+     * methods to add this to the database. Note that this differs from the previous function
+     * and requires the price as well as the default values
+     *
+     * @param assetName
+     * @param price
+     * @param assetType
+     * @throws SQLException
+     * @throws AssetTypeException
+     */
     public static void newAsset(String assetName, double price, String assetType) throws SQLException, AssetTypeException {
         Asset assetNew = new Asset(assetName, assetType, price);
     }
@@ -188,10 +230,4 @@ public class Admin extends User {
         // if it is valid, then edit
         // else, throw exception and return
     }
-
-    public void viewRequests() {
-
-    }
-
-
 }

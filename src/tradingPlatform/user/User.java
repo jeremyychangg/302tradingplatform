@@ -67,7 +67,15 @@ public class User {
         return this.password;
     }
 
-
+    /**
+     * Constructor to build general user. This sets the private variables of the User.
+     * @param firstName
+     * @param lastName
+     * @param unitID
+     * @param accountType
+     * @throws UserException
+     * @throws SQLException
+     */
     public User(String firstName, String lastName, String unitID, UserType accountType) throws UserException, SQLException {
         this.firstName = firstName;
         this.lastName = lastName;
