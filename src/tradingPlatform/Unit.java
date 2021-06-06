@@ -355,7 +355,7 @@ public class Unit {
     }
 
     /**
-     * Assigns the current unit's spending limit to limit. 
+     * Assigns the current unit's spending limit to limit.
      */
     // Set New Limit
     public void setLimit() {
