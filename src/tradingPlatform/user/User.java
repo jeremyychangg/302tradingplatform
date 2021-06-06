@@ -86,49 +86,6 @@ public class User {
         }
     }
 
-
-    public static void verifyInput(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
-        // Throw exceptions if requirements not met
-        if (firstName.equals(null) || firstName.equals("") || firstName.equals(null) || firstName.equals(" ")) {
-            String msg = "New User Error: First Name cannot be null or empty.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-        if (lastName.equals(null) || lastName.equals("") || lastName.equals(null) || lastName.equals(" ")) {
-            String msg = "New User Error: Last Name cannot be null or empty.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-        if (unitID.equals(null) || unitID.equals("") || unitID.equals(null) || unitID.equals(" ")) {
-            String msg = "New User Error: Unit ID cannot be null or empty.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-        try {
-            if (!unitExists(unitID)) {
-                String msg = "New User Error: Unit ID" + unitID + " doesn't exist. Enter in valid unitID.";
-                throw new UserException(msg);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        if (password.equals(null) || password.equals("") || password.equals(" ") || password.equals(null)) {
-            String msg = "New User Error: Password cannot be null or empty.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-        if (accountType.equals(null)) {
-            String msg = "New User error: Account Type cannot be null or empty.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-        if (userTypeToS(accountType).equals(null)) {
-            String msg = "New User error: Account Type not a valid Account Type.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UserException(msg);
-        }
-    }
-
     /**
      * This user constructor is the sole constructor used to initiate a new User within the database. Given that all of the
      * parameters are inputted into the program, the user is able to create a new user which - if fulfils the requirements -
@@ -184,7 +141,58 @@ public class User {
 
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         this.userID = newUserID;
+    }
 
+
+    /**
+     * Verify that the inputted variables are actually valid - not null etc.
+     * @param firstName
+     * @param lastName
+     * @param unitID
+     * @param password
+     * @param accountType
+     * @throws Exception
+     */
+    public static void verifyInput(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
+        // Throw exceptions if requirements not met
+        if (firstName.equals(null) || firstName.equals("") || firstName.equals(null) || firstName.equals(" ")) {
+            String msg = "New User Error: First Name cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (lastName.equals(null) || lastName.equals("") || lastName.equals(null) || lastName.equals(" ")) {
+            String msg = "New User Error: Last Name cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (unitID.equals(null) || unitID.equals("") || unitID.equals(null) || unitID.equals(" ")) {
+            String msg = "New User Error: Unit ID cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        try {
+            if (!unitExists(unitID)) {
+                String msg = "New User Error: Unit ID" + unitID + " doesn't exist. Enter in valid unitID.";
+                throw new UserException(msg);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        if (password.equals(null) || password.equals("") || password.equals(" ") || password.equals(null)) {
+            String msg = "New User Error: Password cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (accountType.equals(null)) {
+            String msg = "New User error: Account Type cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (userTypeToS(accountType).equals(null)) {
+            String msg = "New User error: Account Type not a valid Account Type.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
     }
 
 
@@ -342,6 +350,11 @@ public class User {
     }
 
 
+    /**
+     * Retrieve the unit ID of the current user and return the string value
+     * @return
+     * @throws SQLException
+     */
     public static String getUnitID() throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
@@ -354,6 +367,12 @@ public class User {
     }
 
 
+    /**
+     * get the unit ID of another user ID and return the string value
+     * @param userID
+     * @return
+     * @throws SQLException
+     */
     public String getUnitID(String userID) throws SQLException {
         String exists = null;
         Statement statement = connection.createStatement();
@@ -466,6 +485,8 @@ public class User {
 
     /**
      *
+     * Retrieve the length of the orders the user currently has, and return the length
+     *
      * @return
      * @throws SQLException
      */
@@ -482,6 +503,11 @@ public class User {
         return rows;
     }
 
+    /**
+     * Get the number of oustanding orders i.e. incomplete for the user
+     * @return
+     * @throws SQLException
+     */
     public static int getOutstandingOrders() throws SQLException {
         Statement statement = connection.createStatement();
         int outstanding = 0;
