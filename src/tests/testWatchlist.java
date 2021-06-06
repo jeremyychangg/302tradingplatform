@@ -37,7 +37,7 @@ public class testWatchlist{
     @Test
     public void addsToWatchlist() throws InvalidAssetException {
         watchlist.addsToWatchlist("CA00000001");
-        assertEquals(watchlist.GetAssetID() == "CA00000001");
+        assertEquals("CA00000001", watchlist.GetAssetID());
     }
 
     // - Test 2: Test remove from watch list method
