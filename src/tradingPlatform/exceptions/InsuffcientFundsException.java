@@ -1,6 +1,6 @@
 // 	******************************************************************************************
 // 	**																						**
-// 	**	Filename: NegativePriceException.java  												**
+// 	**	Filename: InsufficientFundsException.java											**
 // 	**																						**
 // 	**	Description:																		**
 // 	**																						**
@@ -21,14 +21,15 @@
 package tradingPlatform.exceptions;
 
 /**
- * Exception thrown when the pricing of a system asset is set to negative.
+ * Exception thrown when an order is made by a unit with insufficient credit balance to facilitate the buy order
  */
-public class NegativePriceException extends Exception {
+public class InsuffcientFundsException extends Exception {
     /**
-     * Exception thrown when the pricing of a system asset is set to negative.
+     * Exception thrown when an order is made by a unit with insufficient credit balance to facilitate the buy order
      * @param message Error message
      */
-    public NegativePriceException(String message) {
+    public InsuffcientFundsException(String message) {
+
         super(message);
     }
 }

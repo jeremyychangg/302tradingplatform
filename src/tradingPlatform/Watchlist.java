@@ -32,14 +32,15 @@ import java.util.ArrayList;
 import static tradingPlatform.Main.connection;
 
 /**
- *
+ * Watchlist of a unit when considering purchasing an asset
  */
 public class Watchlist {
+    // Watchlist fields
     String unitID;
     private ArrayList<Asset> watchlist;
 
     /**
-     *
+     * Finds watchlist of associated units and creates a list of assets
      * @param unitID
      * @throws SQLException
      */
@@ -49,11 +50,13 @@ public class Watchlist {
     }
 
     /**
-     *
+     * Queries database and finds current watchlist for a given unit
      * @return
      */
     public ArrayList<Asset> GetWatchlist() throws SQLException, AssetTypeException {
         ArrayList<Asset> unitWatchlist = new ArrayList<>();
+
+        // Joins with asset table to find current asset info
         String getWatchlist =
                         "SELECT DISTINCT " +
                             "a.assetID, " +
@@ -70,18 +73,23 @@ public class Watchlist {
 
         // Loop through ResultSet and append fields as new assets in unitWatchlist
         while (wlResult.next()) {
-            unitWatchlist.add(new Asset(wlResult.getString("assetName"), wlResult.getString("assetType"), wlResult.getDouble("currentPrice")));
+            unitWatchlist.add(new Asset(
+                    wlResult.getString("assetName"),
+                    wlResult.getString("assetType"),
+                    wlResult.getDouble("currentPrice")
+                    )
+            );
         }
 
+        // Set watchlist and return
         this.watchlist = unitWatchlist;
-
         return this.watchlist;
     }
 
     /**
-     *
+     * Adds a given asset to the watchlist of a unit
      * @param asset
-     * @return
+     * @return If added return true, else false
      * @throws SQLException
      */
     public boolean AddToWatchlist(Asset asset) throws SQLException {
@@ -104,16 +112,16 @@ public class Watchlist {
     }
 
     /**
-     *
+     * Removes a given asset from a unit's watchlist
      * @param asset
-     * @return
+     * @return If removed return true, else return false
      * @throws SQLException
      */
     public boolean RemoveFromWatchlist(Asset asset) throws SQLException {
         boolean removeStatus;
         String removeID = asset.GetAssetID();
 
-        PreparedStatement removeAsset =  connection.prepareStatement("DELETE FROM watchlists where unitID = '?' and assetID = '?';");
+        PreparedStatement removeAsset =  connection.prepareStatement("DELETE FROM watchlists where unitID = ? and assetID = ?;");
         removeAsset.clearParameters();
         removeAsset.setString(1, unitID);
         removeAsset.setString(2, removeID);
@@ -130,21 +138,19 @@ public class Watchlist {
     }
 
     /**
-     *
+     * Gets the number of assets a unit has in their watchlist
      * @return
      * @throws SQLException
      */
     public int GetWatchlistCount() throws SQLException {
-        int count;
+        int count = 0;
         Statement statement = connection.createStatement();
         String sqlCount = "SELECT DISTINCT count(assetID) as count FROM watchlists WHERE unitID = '" + unitID + "';";
         ResultSet countResult = statement.executeQuery(sqlCount);
 
-        count = countResult.getInt(1);
-
+        if (countResult.next()) {
+            count = countResult.getInt(1);
+        }
         return count;
     }
-
-
-
 }

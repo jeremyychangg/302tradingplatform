@@ -149,7 +149,7 @@ public class Unit {
 
     public void deleteUnit(String unitID) throws SQLException, UnitException, MultipleRowDeletionException {
 
-        PreparedStatement deleteUnit =  connection.prepareStatement("DELETE FROM units where unitID = '?';");
+        PreparedStatement deleteUnit =  connection.prepareStatement("DELETE FROM units where unitID = ?;");
         deleteUnit.clearParameters();
         deleteUnit.setString(1, unitID);
         int rowsDeleted = deleteUnit.executeUpdate();
