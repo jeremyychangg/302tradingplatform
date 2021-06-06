@@ -31,11 +31,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static tradingPlatform.Main.connection;
 
+/**
+ *
+ */
 public class Order {
     String orderID;
     String userID;
@@ -67,7 +72,8 @@ public class Order {
         this.quantRemain = quantRemain;
     }
 
-    public Order(String userID, String assetID, OrderStatus orderStatus, OrderType orderType,
+
+    public Order(String userID, String assetID, OrderType orderType,
                  double orderPrice, int orderQuant) throws SQLException {
         this.userID = userID;
         this.assetID = assetID;
@@ -80,15 +86,10 @@ public class Order {
 
         // Get unitID from user information
         // this.unitID = userID.GetUnitID();
-        this.unitID = "FI00000008";
+        this.unitID = Main.getCurrentUnit();
 
         // Get current date time
         this.orderTime = LocalDateTime.now();
-
-
-
-
-
     }
 
     public void AddOrderDatabase() throws SQLException, InvalidAssetException {
@@ -100,7 +101,6 @@ public class Order {
             orderSubstring = "SL";
         }
 
-
         // Check if asset exists
         try {
             if (!CheckAssetExists(this.assetID)) {
@@ -109,7 +109,6 @@ public class Order {
         } catch (InvalidAssetException e) {
             System.out.println(e.getMessage());
         }
-
 
         // Get highest orderID from database
         int maxID = 0;
@@ -120,11 +119,6 @@ public class Order {
         ResultSet getMaxID = smt.executeQuery(sqlMaxID);
 
         // Extract string result and parse as integer
-//        if (getMaxID.next() == true) {
-//            while (getMaxID.next()) {
-//                maxID = Integer.parseInt(getMaxID.getString("maxID"));
-//            }
-//        }
         if (getMaxID.next() && getMaxID.getString("maxID") != null) {
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
@@ -132,7 +126,7 @@ public class Order {
         String newID = orderSubstring + String.format("%08d", maxID + 1);
         this.orderID = newID;
 
-//        insert fields into database
+        // Insert fields into database
         PreparedStatement newOrder =
                 connection.prepareStatement(
                         "INSERT INTO orders VALUES (?,?,?,?,?,?,?,?,?,?,?);");
@@ -157,8 +151,6 @@ public class Order {
         } catch (SQLException e) {
 
             // Handle if no database
-
-
 
             System.out.println("New Order Error: " + e.getMessage());
         }
@@ -230,15 +222,42 @@ public class Order {
         if (this.orderStatus != orderStatus) {
             this.orderStatus = orderStatus;
 
-            String sqlUpdateStatus = "UPDATE orders SET orderStatus = '?' WHERE orderID = '" + this.orderID + "';";
+            String sqlUpdateStatus = "UPDATE orders SET orderStatus = ? WHERE orderID = ?;";
             PreparedStatement smt = connection.prepareStatement(sqlUpdateStatus);
             smt.setString(1, this.orderStatus.name());
+            smt.setString(2, this.orderID);
             smt.executeUpdate();
         }
     }
 
     public void ChangeAveragePrice(double price) {
         // Weighted Average Price of all units
+    }
+
+    public static Order findOrder(String orderID) throws SQLException, InvalidOrderException {
+        Order matchingOrder;
+
+        Statement smt = connection.createStatement();
+        String findOrder = "SELECT * FROM orders WHERE orderID = '" + orderID + "';";
+        ResultSet getOrder = smt.executeQuery(findOrder);
+
+        if (getOrder.next() && getOrder.getString("orderID") != null) {
+            return new Order(
+                    getOrder.getString("orderID"),
+                    getOrder.getString("userID"),
+                    getOrder.getString("unitID"),
+                    getOrder.getString("assetID"),
+                    getOrder.getString("orderTime").substring(0,19),
+                    OrderStatus.valueOf(getOrder.getString("orderStatus")),
+                    OrderType.valueOf(getOrder.getString("orderType")),
+                    getOrder.getDouble("orderPrice"),
+                    getOrder.getInt("orderQuantity"),
+                    getOrder.getInt("quantFilled"),
+                    getOrder.getInt("quantRemain")
+            );
+        } else {
+            throw new InvalidOrderException("Order Error: Order not found.");
+        }
     }
 
 }

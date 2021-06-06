@@ -21,17 +21,14 @@
 
 package tradingPlatform;
 
-import tradingPlatform.exceptions.AssetRemovalException;
-import tradingPlatform.exceptions.AssetTypeException;
-import tradingPlatform.exceptions.MultipleRowDeletionException;
-import tradingPlatform.exceptions.NegativePriceException;
+import tradingPlatform.exceptions.*;
 
 import java.sql.*;
 
 import static tradingPlatform.Main.connection;
 
 public class Asset {
-    public String assetID;
+    private String assetID;
     public String assetName;
     public String assetType;
     private double currentPrice;
@@ -42,10 +39,11 @@ public class Asset {
      * @param assetName
      * @param assetType
      */
-    public Asset(String assetID, String assetName, String assetType) {
+    public Asset(String assetID, String assetName, String assetType, double currentPrice) {
         this.assetID = assetID;
         this.assetName = assetName;
         this.assetType = assetType;
+        this.currentPrice = currentPrice;
     }
 
     /**
@@ -86,7 +84,7 @@ public class Asset {
         ResultSet getMaxID = statement.executeQuery(sqlMaxID);
 
         // Extract string result and parse as integer
-        while (getMaxID.next()) {
+        if (getMaxID.next() && getMaxID.getString("maxID") != null) {
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
 
@@ -188,19 +186,18 @@ public class Asset {
         } else {
             this.currentPrice = price;
 
-            String sqlPrice = "UPDATE assets SET currentPrice = ? WHERE assetID = '?';";
+            String sqlPrice = "UPDATE assets SET currentPrice = ? WHERE assetID = ?;";
             PreparedStatement changePrice = connection.prepareStatement(sqlPrice);
             changePrice.clearParameters();
             changePrice.setDouble(1, price);
             changePrice.setString(2, assetID);
             changePrice.executeUpdate();
         }
-
     }
 
     public void RemoveAsset(String assetID) throws SQLException, AssetRemovalException, MultipleRowDeletionException {
 
-        PreparedStatement removeAsset =  connection.prepareStatement("DELETE FROM assets where assetID = '?';");
+        PreparedStatement removeAsset =  connection.prepareStatement("DELETE FROM assets WHERE assetID = ?;");
         removeAsset.clearParameters();
         removeAsset.setString(1, assetID);
         int rowsDeleted = removeAsset.executeUpdate();
@@ -212,4 +209,29 @@ public class Asset {
         }
     }
 
+    /**
+     *
+     * @param assetID
+     * @return
+     */
+    public static Asset findAsset(String assetID) throws SQLException, InvalidAssetException {
+        Asset matchingAsset;
+
+        Statement statement = connection.createStatement();
+        String sqlFindAsset = "SELECT * from assets WHERE assetID = '" + assetID + "';";
+        ResultSet getAsset = statement.executeQuery(sqlFindAsset);
+
+        if (getAsset.next() && getAsset.getString("assetID") != null) {
+            matchingAsset = new Asset(
+                    getAsset.getString("assetID"),
+                    getAsset.getString("assetName"),
+                    getAsset.getString("assetType"),
+                    getAsset.getDouble("currentPrice")
+            );
+        } else {
+            throw new InvalidAssetException("Asset not found.");
+        }
+
+        return matchingAsset;
+    }
 }
