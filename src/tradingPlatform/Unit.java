@@ -113,7 +113,7 @@ public class Unit {
                     unitInfo.getString("unitID"),
                     unitInfo.getString("unitName"),
                     unitInfo.getDouble("creditBalance"),
-                    unitInfo.getDouble("limit")
+                    unitInfo.getDouble("creditLimit")
             );
         } else {
             throw new UnitException("This unit does not exist.");
