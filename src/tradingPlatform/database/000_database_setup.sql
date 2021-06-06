@@ -4,7 +4,6 @@ USE tradingPlatform;
 
 CREATE TABLE users (
     userID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
-    userName        VARCHAR(144)                        NOT NULL    ,
     firstName       VARCHAR(144)                        NOT NULL    ,
     lastName        VARCHAR(144)                        NOT NULL    ,
     unitID          CHAR(10)                                        ,
@@ -23,14 +22,16 @@ CREATE TABLE assets (
     assetID         CHAR(10)            PRIMARY KEY     NOT NULL    ,
     assetName       VARCHAR(64)                         NOT NULL    ,
     currentPrice    FLOAT                                           ,
-    assetType       VARCHAR(64)
+    assetType       VARCHAR(64)                                     ,
+    UNIQUE  (assetName, assetType)
 );
 
 CREATE TABLE inventory (
-	unitID          CHAR(10)            PRIMARY KEY     NOT NULL    ,
+    unitID          CHAR(10)                            NOT NULL    ,
     assetID         CHAR(10)                            NOT NULL    ,
-    quantity        INT(8)                                          ,
-	orderID         CHAR(10)
+    orderID         CHAR(10)                                        ,
+    quantity        INT(8)                              NOT NULL    ,
+    price           FLOAT
 );
 
 CREATE TABLE orders (

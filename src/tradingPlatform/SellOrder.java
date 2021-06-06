@@ -23,10 +23,7 @@ package tradingPlatform;
 
 import tradingPlatform.enumerators.OrderStatus;
 import tradingPlatform.enumerators.OrderType;
-import tradingPlatform.exceptions.InsufficientInventoryException;
-import tradingPlatform.exceptions.InvalidAssetException;
-import tradingPlatform.exceptions.InvalidOrderException;
-import tradingPlatform.exceptions.NegativePriceException;
+import tradingPlatform.exceptions.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,9 +33,24 @@ import java.util.ArrayList;
 import static tradingPlatform.Main.connection;
 
 /**
- *
+ * Sell Order class to facilitate different types of sell orders. Inherits order class.
  */
 public class SellOrder extends Order {
+    /**
+     * Sell Order instance with all fields. This constructor does not create the instance in the database as it already exists.
+     * It will call the super class's constructor to do so.
+     * @param orderID orderID
+     * @param userID userID
+     * @param unitID unitID
+     * @param assetID assetID
+     * @param orderTime Time of order
+     * @param orderStatus Completed or Incomplete
+     * @param orderType Buy or Sell
+     * @param orderPrice Price of order
+     * @param orderQuant Quantity of order
+     * @param quantFilled Quantity of order filled
+     * @param quantRemain Quantity of order remaining
+     */
     public SellOrder(String orderID, String userID, String unitID, String assetID, String orderTime, OrderStatus orderStatus,
                      OrderType orderType, double orderPrice, int orderQuant, int quantFilled, int quantRemain) {
         super(orderID, userID, unitID, assetID, orderTime, orderStatus,
@@ -46,7 +58,8 @@ public class SellOrder extends Order {
     }
 
     /**
-     *
+     * Sell order constructor that connects to GUI for new orders. It creates a new instance and adds it to the database.
+     * Upon entering to database, it will attempt to execute the sell order.
      * @param userID
      * @param assetID
      * @param orderPrice
@@ -58,7 +71,7 @@ public class SellOrder extends Order {
      * @throws InsufficientInventoryException
      */
     public SellOrder(String userID, String assetID, double orderPrice, int orderQuant)
-            throws SQLException, InvalidAssetException, InvalidOrderException, NegativePriceException, InsufficientInventoryException {
+            throws SQLException, InvalidAssetException, InvalidOrderException, NegativePriceException, InsufficientInventoryException, UnitException {
 
         super(userID, assetID, OrderType.SELL, orderPrice, orderQuant);
 
@@ -73,19 +86,22 @@ public class SellOrder extends Order {
             throw new InsufficientInventoryException("Order Error: Insufficient asset quantity in inventory");
         }
 
+        // Add to database
         AddOrderDatabase();
 
+        //
         ExecuteSellOrder();
     }
 
     /**
-     *
+     * Algorithm to sequence matching orders and attempt to execute the sell order with existing buy orders
      * @throws SQLException
      * @throws InvalidOrderException
      * @throws InvalidAssetException
      * @throws NegativePriceException
+     * @throws UnitException
      */
-    public void ExecuteSellOrder() throws SQLException, InvalidOrderException, InvalidAssetException, NegativePriceException {
+    public void ExecuteSellOrder() throws SQLException, InvalidOrderException, InvalidAssetException, NegativePriceException, UnitException {
         // Current asset instance
         Asset currentAsset = Asset.findAsset(this.assetID);
 
@@ -159,6 +175,7 @@ public class SellOrder extends Order {
             // How much can this corresponding order faciliate of this order
             int buyQuant = requiredOrders.get(i).quantRemain;
 
+            // Track executed quantity
             int executed = 0;
 
             if (buyQuant > sellQuant) {
@@ -238,8 +255,10 @@ public class SellOrder extends Order {
             new InventoryItem(requiredOrders.get(i).unitID, requiredOrders.get(i).assetID, requiredOrders.get(i).orderPrice, executed, requiredOrders.get(i).orderID);
 
             // Set credit balance of units
-            // Unit.ChangeUnitBalance(this.unitID, this.orderPrice * executed);
-            // Unit.ChangeUnitBalance(requiredOrders.get(i).unitID, -this.orderPrice * executed);
+            Unit sellerUnit = Unit.getUnit(this.unitID);
+            sellerUnit.ChangeUnitBalance(this.unitID, requiredOrders.get(i).orderPrice * executed);
+            Unit buyerUnit = Unit.getUnit(requiredOrders.get(i).unitID);
+            buyerUnit.ChangeUnitBalance(requiredOrders.get(i).unitID, -requiredOrders.get(i).orderPrice * executed);
         }
 
         // If requiredOrders is empty, no current buy orders are able to facilitate sell order

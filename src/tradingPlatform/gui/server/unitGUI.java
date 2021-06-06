@@ -1,6 +1,5 @@
 package tradingPlatform.gui.server;
 
-import tradingPlatform.exceptions.NegativePriceException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 import tradingPlatform.gui.common.Screen;
@@ -258,12 +257,7 @@ public class unitGUI extends JPanel implements ActionListener {
         String unitNameInput = unitName.getText();
         String creditBalanceInput = creditBalance.getText();
         String limitInput = limit.getText();
-        try {
-            Admin.newUnit(unitNameInput, Double.parseDouble(creditBalanceInput), Double.parseDouble(limitInput));
-            JOptionPane.showMessageDialog(null, "New Unit: Unit successfully created!" );
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(null, "New Unit: Unit creation unsuccessful." );
-        }
+        Admin.newUnit(unitNameInput, Double.parseDouble(creditBalanceInput), Double.parseDouble(limitInput));
 
         // Reset Values
         unitName.setText("");
@@ -280,11 +274,7 @@ public class unitGUI extends JPanel implements ActionListener {
     private void editBalance() throws Exception, UnitException {
         String unitIDInput = unitID.getText();
         String creditBalanceInput = creditBalanceChange.getText();
-        try {
-            Admin.editCredits(unitIDInput, creditBalanceInput);
-        } catch (NegativePriceException e){
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
+        Admin.editCredits(unitIDInput, creditBalanceInput);
 
     }
 

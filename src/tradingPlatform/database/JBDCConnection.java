@@ -1,3 +1,23 @@
+// 	******************************************************************************************
+// 	**																						**
+// 	**	Filename: JBDCConnection.java														**
+// 	**																						**
+// 	**	Description: Connects Java to MariaDB MySQL database via JBDC						**
+// 	**																						**
+// 	**																						**
+// 	**	Contributors: Jeremy Chang															**
+// 	**																						**
+// 	**																						**
+// 	**	Date Created: 15/05/2021															**
+// 	**																						**
+// 	**																						**
+// 	**	Change Documentation																**
+// 	**		> Initial Version																**
+// 	**																						**
+// 	**																						**
+// 	**																						**
+// 	******************************************************************************************
+
 package tradingPlatform.database;
 
 import tradingPlatform.Main;
@@ -9,7 +29,7 @@ public class JBDCConnection {
         try {
 
             // specify the data source, username and password
-            String url = "jdbc:mysql://localhost:3306/tradingPlatform";
+            String url = "jdbc:mysql://localhost:3308/tradingPlatform";
             String username = "root";
             String password = "password.1";
 
