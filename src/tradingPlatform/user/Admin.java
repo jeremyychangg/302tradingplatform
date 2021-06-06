@@ -148,23 +148,22 @@ public class Admin extends User {
         newUnit.addUnit(unitName, creditBalance, creditLimit);
     }
 
-
-    public void newAsset(String assetName, String assetType) throws SQLException, AssetTypeException {
+    public static void newAsset(String assetName, String assetType) throws SQLException, AssetTypeException {
         Asset assetNew = new Asset(assetName, assetType);
     }
 
-    public void newAsset(String assetName, String assetType, double price) throws SQLException, AssetTypeException {
+    public static void newAsset(String assetName, double price, String assetType) throws SQLException, AssetTypeException {
         Asset assetNew = new Asset(assetName, assetType, price);
     }
 
     public static void editCredits(String unitID, String creditBalance) throws Exception, UnitException {
         try {
             Unit changing = getUnit(unitID);
-            changing.ChangeUnitBalance(changing.unitID, Double.parseDouble(creditBalance));
+            changing.adjustBalance(changing.unitID, Double.parseDouble(creditBalance));
         } catch (NegativePriceException e) {
 
         } catch (NullPointerException e) {
-            String msg = "Edit User Error: Empty values. Please try again.";
+            String msg = "Edit Unit Error: Empty values. Please try again.";
             JOptionPane.showMessageDialog(null, msg);
             throw new NullPointerException(msg);
         } catch (SQLException e) {
@@ -174,6 +173,12 @@ public class Admin extends User {
     }
 
 
+    /**
+     * Incomplete method - adding items
+     * @param unitID
+     * @param assetID
+     * @param quantity
+     */
     public void editInventory(String unitID, String assetID, int quantity) {
         // retrieve their current inventory storage
 

@@ -18,7 +18,6 @@
 // 	**																						**
 // 	******************************************************************************************
 
-
 package tradingPlatform;
 
 import tradingPlatform.exceptions.*;
@@ -27,7 +26,11 @@ import java.sql.*;
 
 import static tradingPlatform.Main.connection;
 
+/**
+ * Used to manipulate different assets in system
+ */
 public class Asset {
+    // Asset fields
     private String assetID;
     public String assetName;
     public String assetType;
@@ -55,9 +58,9 @@ public class Asset {
         this.assetName = assetName;
         this.assetType = assetType;
 
-
         String IDsubstring;
 
+        // Find asset type for new ID
         if (assetType == "Computer Accessories") {
             IDsubstring = "CA";
         } else if (assetType == "Furniture") {
@@ -74,7 +77,6 @@ public class Asset {
             throw new AssetTypeException("Invalid Asset Type");
         }
 
-
         // Get highest ID value existing in database
         int maxID = 0;
         Statement statement = connection.createStatement();
@@ -87,13 +89,6 @@ public class Asset {
         if (getMaxID.next() && getMaxID.getString("maxID") != null) {
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
-
-
-
-//        ADD IF NO RESULT IN QUERY FOR BOTH CONSTRUCTORS
-
-
-
 
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);
@@ -109,7 +104,14 @@ public class Asset {
         newAsset.execute();
     }
 
-
+    /**
+     * Creates asset instance with asset with a price
+     * @param assetName
+     * @param assetType
+     * @param currentPrice
+     * @throws AssetTypeException
+     * @throws SQLException
+     */
     public Asset(String assetName, String assetType, double currentPrice) throws AssetTypeException, SQLException {
         this.assetName = assetName;
         this.assetType = assetType;
@@ -133,7 +135,6 @@ public class Asset {
             throw new AssetTypeException("Invalid Asset Type");
         }
 
-
         // Get highest ID value existing in database
         int maxID = 0;
         Statement statement = connection.createStatement();
@@ -144,10 +145,9 @@ public class Asset {
 
         // If result set contains something, then assign maxID
         if (getMaxID.next() && getMaxID.getString("maxID") != null) {
+            // Extract string result and parse as integer
             maxID = Integer.parseInt(getMaxID.getString("maxID"));
         }
-        // Extract string result and parse as integer
-
 
         // Add 1 to current max ID to get new ID number for this asset and append to asset type code
         String newID = IDsubstring + String.format("%08d", maxID + 1);
@@ -160,26 +160,39 @@ public class Asset {
         newAsset.setString(2, assetName);
         newAsset.setDouble(3, currentPrice);
         newAsset.setString(4, assetType);
-
-        try {
-            newAsset.execute();
-        } catch (SQLException e) {
-            System.out.println("New Asset Error: " + e.getMessage());
-        }
+        newAsset.execute();
     }
 
+    /**
+     * Getter method to return a private assetID
+     * @return AssetID of queried asset
+     */
     public String GetAssetID() {
         return this.assetID;
     }
 
+    /**
+     * Getter method to return name of asset
+     * @return Asset name of queried asset
+     */
     public String GetAssetName() {
         return this.assetName;
     }
 
+    /**
+     * Getter method to return asset price
+     * @return Asset price
+     */
     public double GetPrice() {
         return this.currentPrice;
     }
 
+    /**
+     * Sets the price of an asset
+     * @param price
+     * @throws SQLException
+     * @throws NegativePriceException
+     */
     public void SetPrice(double price) throws SQLException, NegativePriceException {
         if (price < 0) {
             throw new NegativePriceException("Asset price cannot be negative");
@@ -195,13 +208,21 @@ public class Asset {
         }
     }
 
+    /**
+     * Removes asset from system
+     * @param assetID
+     * @throws SQLException
+     * @throws AssetRemovalException
+     * @throws MultipleRowDeletionException
+     */
     public void RemoveAsset(String assetID) throws SQLException, AssetRemovalException, MultipleRowDeletionException {
-
+        // Delete from database
         PreparedStatement removeAsset =  connection.prepareStatement("DELETE FROM assets WHERE assetID = ?;");
         removeAsset.clearParameters();
         removeAsset.setString(1, assetID);
         int rowsDeleted = removeAsset.executeUpdate();
 
+        // Throw error if no asset was removed or if too many assets removed
         if (rowsDeleted == 0) {
             throw new AssetRemovalException("No asset was removed");
         } else if (rowsDeleted > 0) {
@@ -210,17 +231,19 @@ public class Asset {
     }
 
     /**
-     *
+     * Finds asset given its provided an assetID
      * @param assetID
-     * @return
+     * @return Returns instance of an asset
      */
     public static Asset findAsset(String assetID) throws SQLException, InvalidAssetException {
         Asset matchingAsset;
 
+        // Queries database on assetID
         Statement statement = connection.createStatement();
         String sqlFindAsset = "SELECT * from assets WHERE assetID = '" + assetID + "';";
         ResultSet getAsset = statement.executeQuery(sqlFindAsset);
 
+        // Returns new asset if found
         if (getAsset.next() && getAsset.getString("assetID") != null) {
             matchingAsset = new Asset(
                     getAsset.getString("assetID"),
@@ -231,7 +254,6 @@ public class Asset {
         } else {
             throw new InvalidAssetException("Asset not found.");
         }
-
         return matchingAsset;
     }
 }

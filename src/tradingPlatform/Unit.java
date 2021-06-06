@@ -193,7 +193,6 @@ public class Unit {
         addNewUnit.setString(2, unitName);
         addNewUnit.setDouble(3, creditBalance);
         addNewUnit.setDouble(4, limit);
-        System.out.println(assignID);
         addNewUnit.execute();
     }
 
@@ -229,7 +228,7 @@ public class Unit {
         if (creditBalance < 0) {
             throw new NegativePriceException("Asset price cannot be negative");
         } else {
-            this.creditBalance += creditBalance;
+            this.creditBalance = creditBalance;
 
             String assignNewBalance = "UPDATE units SET creditBalance = ? WHERE unitID = ?;";
             PreparedStatement updateBalance = connection.prepareStatement(assignNewBalance);
@@ -239,6 +238,32 @@ public class Unit {
             updateBalance.executeUpdate();
         }
     }
+
+
+
+    /**
+     * Allows the unit's current credit balance to be changed by Admin
+     * @param unitID
+     * @param creditBalance
+     * @throws SQLException
+     * @throws NegativePriceException
+     */
+    public void adjustBalance(String unitID, double creditBalance) throws SQLException, NegativePriceException {
+        if (creditBalance < 0) {
+            throw new NegativePriceException("Asset price cannot be negative");
+        } else {
+            this.creditBalance = creditBalance;
+
+            String assignNewBalance = "UPDATE units SET creditBalance = ? WHERE unitID = ?;";
+            PreparedStatement updateBalance = connection.prepareStatement(assignNewBalance);
+            updateBalance.clearParameters();
+            updateBalance.setDouble(1, this.creditBalance);
+            updateBalance.setString(2, unitID);
+            updateBalance.executeUpdate();
+        }
+    }
+
+
 
     /**
      * Retrieves a unit's ID from the database
