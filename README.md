@@ -10,4 +10,4 @@ Project Members
 * Nicole Truong
 
 ## Resources
-* https://dbdiagram.io/d/609f390fb29a09603d14f354
+* https://dbdiagram.io/d/60bc66bbb29a09603d182503
