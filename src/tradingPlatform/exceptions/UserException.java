@@ -15,15 +15,20 @@
 // 	**																						**
 // 	**																						**
 // 	******************************************************************************************
+
 package tradingPlatform.exceptions;
 
+/**
+ * This UserException class extends the exception class, and is triggered when an error
+ * relating to the user is found.
+ */
 public class UserException extends Exception {
     /**
      * This UserException class extends the exception class, and is triggered when an error
      * relating to the user is found.
      * @param input String input that holds the message of the error
      */
-    public  UserException(String input){
+    public UserException(String input){
         super("User exception: " + input);
     }
 }
