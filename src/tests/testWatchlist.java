@@ -70,7 +70,7 @@ public class testWatchlist{
     https://stackoverflow.com/questions/45455246/how-to-write-assert-notnull-for-the-array-list-in-junit
     */
     @Test
-    // - Test 7: Check that the list is not empty (not null)
+    // - Test 6: Check that the list is not empty (not null)
     public void notEmptyList() {
         ArrayList<Asset> assets = new ArrayList<>();
         for (Asset asset: assets) {
