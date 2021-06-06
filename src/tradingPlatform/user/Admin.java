@@ -6,16 +6,16 @@ package tradingPlatform.user;
 import tradingPlatform.Asset;
 import tradingPlatform.Unit;
 import tradingPlatform.enumerators.UserType;
-import tradingPlatform.exceptions.AssetTypeException;
-import tradingPlatform.exceptions.EditUserException;
-import tradingPlatform.exceptions.UserException;
+import tradingPlatform.exceptions.*;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.Unit.getUnit;
 
 public class Admin extends User {
     private String userID;
@@ -143,8 +143,9 @@ public class Admin extends User {
     }
 
 
-    public void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException {
-        Unit unitNew = new Unit(unitName, creditBalance, creditLimit);
+    public static void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException {
+        Unit newUnit = new Unit(unitName, creditBalance, creditLimit);
+        newUnit.addUnit(unitName, creditBalance, creditLimit);
     }
 
 
@@ -156,22 +157,20 @@ public class Admin extends User {
         Asset assetNew = new Asset(assetName, assetType, price);
     }
 
-    public static void editCredits(String unitID, double creditBalance) throws Exception {
-        if (unitID == null || unitID == "") {
-            throw new Exception("Unit ID is invalid.");
+    public static void editCredits(String unitID, String creditBalance) throws Exception, UnitException {
+        try {
+            Unit changing = getUnit(unitID);
+            changing.ChangeUnitBalance(changing.unitID, Double.parseDouble(creditBalance));
+        } catch (NegativePriceException e) {
+
+        } catch (NullPointerException e) {
+            String msg = "Edit User Error: Empty values. Please try again.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new NullPointerException(msg);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            throw new EditUserException(e.getMessage());
         }
-        if (!unitExists(unitID)) {
-            throw new Exception("Unit ID doesn't exist.");
-        }
-        if (creditBalance < 0) {
-            throw new Exception("Input credit balance cannot be under 0");
-        }
-        String sqlAccount = "UPDATE units SET creditBalance = ? WHERE unitID = ?;";
-        PreparedStatement changeAccountT = connection.prepareStatement(sqlAccount);
-        changeAccountT.clearParameters();
-        changeAccountT.setDouble(1, creditBalance);
-        changeAccountT.setString(2, unitID);
-        changeAccountT.executeUpdate();
     }
 
 
