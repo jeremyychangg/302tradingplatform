@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tradingPlatform.Request;
 import tradingPlatform.Unit;
+import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.requestType;
+import tradingPlatform.user.User;
 
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class testUnit {
     Unit unit1;
     Unit unit2;
+    Unit unit3;
 
     @BeforeEach
     @Test
@@ -24,11 +27,12 @@ class testUnit {
         unit1 = new Unit("IT00000010","IT", 20000.00, 10000.00);
         // Unit without unit ID
         unit2 = new Unit("Human Resources", 8050.28, 5000.00);
+        unit3 = new Unit();
     }
     // Construct test list of users
     @BeforeEach
     @Test
-    public List<Integer> userArray() {
+    public List<User> userArray() {
         List<tradingUser> userList = new ArrayList<String>();
         userList.add("S0001");
         userList.add("L0064");
@@ -83,39 +87,40 @@ class testUnit {
         assertTrue(unit1.getLimit() >= 0.00);
         assertTrue(unit2.getLimit() >= 0.00);
     }
-
-    // * needs to be completed * //
-
-    // check that the list is not empty
-
-    // check that the list returns a list of users that belong to a unit
+    
+    /* This test was adapted from:
+    https://stackoverflow.com/questions/45455246/how-to-write-assert-notnull-for-the-array-list-in-junit
+    */
     @Test
+    // - Test 8: Check that the list is not empty (not null)
+    public void notEmptyList() {
+        ArrayList<User> users = new ArrayList<>();
+        for (User user: users) {
+            Assert.assertNotNull(user)
+        }
+    }
+
+    @Test
+    // - Test 9: Check that the list returns a list of users that belong to a unit
     public void userInUnit() {
-        ArrayList<userList> userUnit;
+        ArrayList<User> userUnit;
         userUnit = unit1.searchUser("A0002");
     }
-    // check when you add a unit
+
+    @Test
+    // Test 10- check when you add a unit
+    public void addAUnit() throws UnitException {
+        unit3.addUnit("Consulting");
+        assertEquals("Non-existent team.", unit3.getUnitName("Consulting");,
+                "Adding unit failed");
+    }
+
     // check when you remove a unit
-
     @Test
-    public void testMyArray() {
-        Unit testUnit = new Unit();
-        assertEquals(Arrays.asList("IT00000010"), testUnit.userList);
+    // Test 11- Check if unit is able to be removed
+    public void remove() throws UnitException {
+        unit3.deleteUnit("S0005");
+        assertEquals("Non-existent team.", unit3.getUnitID("S0005");,
+        "Deleting unit failed.");
     }
-
-    // - Test :
-    @Test
-    public void noList() {
-        Unit testCases = new Unit();
-        List<String> result = testCases.userArray();
-        AssertNotNull("List shouldn't be null", result);
-    }
-
-
-    // - Test 5: check if the list of users is full of strings
-    @Test
-    public void allStrings() {
-
-    }
-
 }
