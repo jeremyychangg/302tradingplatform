@@ -18,13 +18,12 @@ public class requestAdminGUI extends JPanel {
     public requestAdminGUI() {
         frame = new JFrame();
 
-        JLabel requestHeading = new JLabel("Admin Requests");
+        JLabel requestHeading = new JLabel("");
         requestHeading.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         requestHeading.setFont(headingFont);
 
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-//        panel.setPreferredSize(new Dimension(1380, 1050));
         panel.setBorder(BorderFactory.createEmptyBorder(80, 80, 0, 80));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(requestHeading);

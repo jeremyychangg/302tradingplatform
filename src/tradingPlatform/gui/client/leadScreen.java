@@ -8,6 +8,7 @@ import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.gui.common.Screen;
 import tradingPlatform.gui.common.loginGUI;
 import tradingPlatform.gui.common.settingsGUI;
+import tradingPlatform.gui.server.requestAdminGUI;
 import tradingPlatform.user.Lead;
 
 import javax.swing.*;
@@ -241,15 +242,16 @@ public class leadScreen extends Screen {
         } else if (e.getSource() == ordersButton) {
             removePrevious();
 
-            frame.setTitle("Lead - Orders");
+            frame.setTitle("Employee - Orders");
+            String assetID = JOptionPane.showInputDialog(null,"Search Asset");
             try {
-                // Search GUI to return asset
-
-                Asset orderAsset = Asset.findAsset("CA00000001");
-
+                Asset orderAsset = Asset.findAsset(assetID);
                 panel = new orderGUI(Main.getCurrentUnit(), orderAsset.GetAssetID());
-            } catch (SQLException | InvalidAssetException | UnitException throwables) {
-                throwables.printStackTrace();
+            } catch (InvalidAssetException exception){
+                JOptionPane.showMessageDialog(null, exception.getMessage());
+                panel = new requestAdminGUI();
+            } catch (SQLException | UnitException throwables) {
+                JOptionPane.showMessageDialog(null, e.getSource());
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
@@ -265,7 +267,11 @@ public class leadScreen extends Screen {
             frame.setTitle("Lead - Requests");
             frame.remove(panel);
             panel.removeAll();
-            panel = new requestGUI();
+            try {
+                panel = new requestGUI();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
             panel.setVisible(true);

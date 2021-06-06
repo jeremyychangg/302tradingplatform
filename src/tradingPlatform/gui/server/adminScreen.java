@@ -53,7 +53,7 @@ public class adminScreen extends Screen {
     /**
      * Constructor for the administration screen calls relevant methods to initialise the GUI
      */
-    public adminScreen() {
+    public adminScreen() throws Exception {
         initUI();
         addButtonListeners();
         frame.addWindowListener(new ClosingListener());
@@ -66,7 +66,7 @@ public class adminScreen extends Screen {
      * within the frame. Sets the main panel to a preferred dimension and also initialises
      * the sidebar buttons.
      */
-    private void initUI() {
+    private void initUI() throws Exception {
         // Setting up the frame and panels
         panel = new requestGUI();
         logoutPane = new JPanel();

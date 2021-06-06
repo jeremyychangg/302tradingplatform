@@ -11,6 +11,7 @@ import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.gui.common.Screen;
 import tradingPlatform.gui.common.loginGUI;
 import tradingPlatform.gui.common.settingsGUI;
+import tradingPlatform.gui.server.requestAdminGUI;
 import tradingPlatform.user.Admin;
 
 import javax.swing.*;
@@ -233,15 +234,15 @@ public class employeeScreen extends Screen {
             removePrevious();
 
             frame.setTitle("Employee - Orders");
+            String assetID = JOptionPane.showInputDialog(null,"Search Asset");
             try {
-
-                // Search GUI to return asset
-
-                Asset orderAsset = Asset.findAsset("CA00000001");
-
+                Asset orderAsset = Asset.findAsset(assetID);
                 panel = new orderGUI(Main.getCurrentUnit(), orderAsset.GetAssetID());
-            } catch (SQLException | InvalidAssetException | UnitException throwables) {
-                throwables.printStackTrace();
+            } catch (InvalidAssetException exception){
+                JOptionPane.showMessageDialog(null, exception.getMessage());
+                panel = new requestAdminGUI();
+            } catch (SQLException | UnitException throwables) {
+                JOptionPane.showMessageDialog(null, e.getSource());
             }
             frame.add(panel, BorderLayout.CENTER);
             frame.pack();
