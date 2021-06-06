@@ -163,7 +163,7 @@ public class Unit {
             }
             unitCode = unitCode + unitCasing.charAt(0) + unitCasing.charAt(randPos);
         }
-
+        int unitNum = 0;
         // Get max ID number
         String sqlmaxID
                 = "SELECT max(substring(unitID, 3, 8)) as maxID FROM units WHERE substring(unitID, 1, 2) = '"
@@ -175,10 +175,14 @@ public class Unit {
         }
 
         // Increment current maxID
-        unitNum++;
+        if (unitNum == 0){
+            unitNum = 0;
+        } else{
+            unitNum++;
+        }
 
         // Concatenate  to create new ID
-        String assignID = unitCode + String.format("%08d", unitNum.toString());
+        String assignID = unitCode + String.format("%08d", unitNum);
         this.unitID = assignID;
 
         // Add unitID, unitName, creditBalance, limit into database
@@ -189,7 +193,7 @@ public class Unit {
         addNewUnit.setString(2, unitName);
         addNewUnit.setDouble(3, creditBalance);
         addNewUnit.setDouble(4, limit);
-
+        System.out.println(assignID);
         addNewUnit.execute();
     }
 

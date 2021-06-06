@@ -1,19 +1,14 @@
 package tradingPlatform.gui.server;
 
-import tradingPlatform.Unit;
-import tradingPlatform.exceptions.NegativePriceException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 import tradingPlatform.gui.common.Screen;
-import tradingPlatform.user.User;
+import tradingPlatform.user.Admin;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-
-import static tradingPlatform.Unit.getUnit;
 
 /**
  * A class object used to display the Admin unit related actions. Within, the user
@@ -45,13 +40,17 @@ public class unitGUI extends JPanel implements ActionListener {
     CardLayout cardLayout = new CardLayout();
 
     /**
+     * UnitGUI constructor used to call the different methods used to construct the userGUI panel
      * @throws Exception
      */
     public unitGUI() throws Exception {
         setUpPanel();
         Screen.welcomeMessage(panel);
-        buttonInit();
+        panel.add(createButton);
+        panel.add(editButton);
+        panel.add(changeButton);
         cards();
+        buttonInit();
         panel.add(functions);
         add(panel);
     }
@@ -61,9 +60,6 @@ public class unitGUI extends JPanel implements ActionListener {
      * adds them to the panel.
      */
     private void buttonInit() {
-        panel.add(createButton);
-        panel.add(editButton);
-        panel.add(changeButton);
         createButton.addActionListener(this);
         editButton.addActionListener(this);
         changeButton.addActionListener(this);
@@ -72,8 +68,10 @@ public class unitGUI extends JPanel implements ActionListener {
         changeBalanceBtn.addActionListener(this);
     }
 
+
     /**
-     *
+     * Method used to initialise and setup up the existing JPanel. Sets it at the preferred screen width and height,
+     * and adjusts the border.
      */
     private void setUpPanel() {
         this.panel = new JPanel();
@@ -92,6 +90,9 @@ public class unitGUI extends JPanel implements ActionListener {
     }
 
 
+    /**
+     * Is used to call the card layouts for each of the forms.
+     */
     private void cards() {
         newUnitCard();
         editBalanceCard();
@@ -129,6 +130,7 @@ public class unitGUI extends JPanel implements ActionListener {
         newUnitForm.add(limit);
         newUnitForm.add(submitNewUnit);
         newUnitForm.setLayout(createLayout);
+        submitNewUnit.addActionListener(this);
 
         // Layout the form create new unit
         createLayout.putConstraint(SpringLayout.NORTH, createLabel, 50, SpringLayout.NORTH, newUnitForm);
@@ -155,6 +157,11 @@ public class unitGUI extends JPanel implements ActionListener {
         functions.add(newUnitForm, "Create");
     }
 
+
+    /**
+     * A method used to produce the edit balance form for the user. Additionally, styles the
+     * layout to be more usable.
+     */
     public void editBalanceCard() {
         SpringLayout editLayout = new SpringLayout();
         JLabel editLabel = new JLabel("Edit Account Type");
@@ -198,6 +205,12 @@ public class unitGUI extends JPanel implements ActionListener {
     }
 
 
+    /**
+     * Given a button is clicked (trigggered by the actionListener initiated), the actionPerformed points
+     * the program to the sidebarListeners method to choose an outcome based on the button.
+     *
+     * @param e Action event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         // Change the card based on the card button
@@ -220,7 +233,7 @@ public class unitGUI extends JPanel implements ActionListener {
         if (e.getSource() == changeBalanceBtn) {
             try {
                 editBalance();
-            } catch (UserException | UnitException | NegativePriceException userException) {
+            } catch (UnitException | Exception userException) {
             }
         }
         if (e.getSource() == changeBalanceBtn) {
@@ -243,8 +256,8 @@ public class unitGUI extends JPanel implements ActionListener {
     private void addnewUnit() throws Exception, UnitException {
         String unitNameInput = unitName.getText();
         String creditBalanceInput = creditBalance.getText();
-        String unitInput = unitID.getText();
-        User newUnitInfo;
+        String limitInput = limit.getText();
+        Admin.newUnit(unitNameInput, Double.parseDouble(creditBalanceInput), Double.parseDouble(limitInput));
 
         // Reset Values
         unitName.setText("");
@@ -253,27 +266,16 @@ public class unitGUI extends JPanel implements ActionListener {
     }
 
 
-
     /**
      * This method is used to edit the balance of a given user ID and balance input.
+     *
      * @throws UserException
      */
-    private void editBalance() throws UserException, UnitException, NegativePriceException {
+    private void editBalance() throws Exception, UnitException {
         String unitIDInput = unitID.getText();
         String creditBalanceInput = creditBalanceChange.getText();
-        System.out.println(unitIDInput + " " + creditBalanceInput);
-        try {
-            Unit changing = getUnit(unitIDInput);
-            changing.ChangeUnitBalance(changing.unitID, Double.parseDouble(creditBalanceInput));
-        } catch (NullPointerException e) {
-            String msg = "Edit User Error: Empty values. Please try again.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new NullPointerException(msg);
-        } catch (SQLException e) {
-            String msg = "Edit User SQL Error: Could not add to database.";
-            JOptionPane.showMessageDialog(null, msg);
-            throw new UnitException(msg);
-        }
+        Admin.editCredits(unitIDInput, creditBalanceInput);
+
     }
 
 
