@@ -113,7 +113,7 @@ public class Unit {
                     unitInfo.getString("unitID"),
                     unitInfo.getString("unitName"),
                     unitInfo.getDouble("creditBalance"),
-                    unitInfo.getDouble("limit")
+                    unitInfo.getDouble("creditLimit")
             );
         } else {
             throw new UnitException("This unit does not exist.");
@@ -183,7 +183,7 @@ public class Unit {
 
         // Add unitID, unitName, creditBalance, limit into database
         PreparedStatement addNewUnit =
-                connection.prepareStatement("INSERT INTO units (unitID, unitName, creditBalance, limit) VALUES (?,?,?,?);");
+                connection.prepareStatement("INSERT INTO units (unitID, unitName, creditBalance, creditLimit) VALUES (?,?,?,?);");
 
         addNewUnit.setString(1, assignID);
         addNewUnit.setString(2, unitName);
