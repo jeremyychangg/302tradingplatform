@@ -131,12 +131,6 @@ public class Unit {
         }
     }
 
-    // method for changing the unit balance
-//    public void ChangeUnitBalance(String unitID, double checkoutPrice) {
-//        //update the table
-//        // create an object instance with + / - an amount
-//    }
-
     public void ChangeUnitBalance(String unitID, double creditBalance) throws SQLException, NegativePriceException {
         if (creditBalance < 0) {
             throw new NegativePriceException("Asset price cannot be negative");
