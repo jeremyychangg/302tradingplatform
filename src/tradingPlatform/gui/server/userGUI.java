@@ -254,13 +254,18 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     /**
-     * @throws SQLException
      */
-    private void setUpPanel() throws SQLException {
+    private void setUpPanel() {
         this.panel = new JPanel();
         functions = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
-        panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, 400, Screen.border));
+
+        int borderBottom = Screen.screenHeight/8;
+        if (Screen.screenHeight > 1400) {
+            borderBottom = Screen.screenHeight / 7;
+        }
+
+        panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, borderBottom, Screen.border));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         functions.setPreferredSize(new Dimension(600, 500));
         functions.setLayout(cardLayout);
@@ -369,6 +374,9 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     /**
+     * For the administration to change the password of a user, they are to input a valid userID and
+     * a valid password to replace the old. If valid and correct, the password will be encrypted using a
+     * salt and the combination of both the hash password and the salt key will be parsed into the database.
      *
      * @throws UserException
      */
