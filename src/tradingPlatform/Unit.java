@@ -263,6 +263,28 @@ public class Unit {
         }
     }
 
+    /**
+     * Allows the unit's current credit limit to be changed by Admin
+     * @param unitID
+     * @param creditLimit
+     * @throws SQLException
+     * @throws NegativePriceException
+     */
+    public void adjustLimit(String unitID, double creditLimit) throws SQLException, NegativePriceException {
+        if (creditLimit < 0) {
+            throw new NegativePriceException("Asset price cannot be negative");
+        } else {
+            this.limit = creditLimit;
+
+            String assignNewBalance = "UPDATE units SET creditLimit = ? WHERE unitID = ?;";
+            PreparedStatement updateBalance = connection.prepareStatement(assignNewBalance);
+            updateBalance.clearParameters();
+            updateBalance.setDouble(1, this.limit);
+            updateBalance.setString(2, unitID);
+            updateBalance.executeUpdate();
+        }
+    }
+
 
 
     /**
