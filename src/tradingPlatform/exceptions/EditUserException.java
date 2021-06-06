@@ -17,29 +17,29 @@
 // 	******************************************************************************************
 package tradingPlatform.exceptions;
 
-public class UserException extends Exception {
+public class EditUserException extends Exception {
     /**
-     * This UserException class extends the exception class, and is triggered when an error
+     * This EditUserException class extends the exception class, and is triggered when an error
      * relating to the user is found.
      * @param input String input that holds the message of the error
      */
-    public UserException(String input){
-        super("User exception: " + input);
+    public EditUserException(String input){
+        super("Edit User exception: " + input);
     }
 
-    public UserException(){
+    public EditUserException(){
 
     }
 
-    public UserException(Throwable cause){
+    public EditUserException(Throwable cause){
         super(cause);
     }
 
-    public UserException(String message, Throwable cause){
+    public EditUserException(String message, Throwable cause){
         super(message, cause);
     }
 
-    public UserException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
+    public EditUserException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
         super(message, cause, suppression, writableStackTrace);
     }
 }

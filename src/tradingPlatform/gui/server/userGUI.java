@@ -282,7 +282,8 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     /**
-     *
+     * Method used to initialise and setup up the existing JPanel. Sets it at the preferred screen width and height,
+     * and adjusts the border.
      */
     private void setUpPanel() {
         this.panel = new JPanel();

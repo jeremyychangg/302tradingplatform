@@ -1,28 +1,11 @@
-// 	******************************************************************************************
-// 	**																						**
-// 	**	Filename: Marketplace.java  													    **
-// 	**																						**
-// 	**	Description:																		**
-// 	**																						**
-// 	**																						**
-// 	**	Contributors: Jeremy Chang															**
-// 	**																						**
-// 	**																						**
-// 	**	Date Created:																		**
-// 	**																						**
-// 	**																						**
-// 	**	Change Documentation																**
-// 	**		> Initial Version																**
-// 	**																						**
-// 	**																						**
-// 	**																						**
-// 	******************************************************************************************
-
 package tradingPlatform;
 
 import tradingPlatform.enumerators.OrderStatus;
 import tradingPlatform.enumerators.OrderType;
-import tradingPlatform.exceptions.*;
+import tradingPlatform.exceptions.InvalidAssetException;
+import tradingPlatform.exceptions.InvalidOrderException;
+import tradingPlatform.exceptions.NegativePriceException;
+import tradingPlatform.exceptions.ReconciliationError;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,22 +15,9 @@ import java.util.ArrayList;
 
 import static tradingPlatform.Main.connection;
 
-/**
- * Marketplace is used to execute general functions in the trading platform regarding orders
- */
 public class Marketplace {
-    /**
-     * Used to change price of an outstanding order
-     * @param orderID
-     * @param newPrice
-     * @throws SQLException
-     * @throws InvalidOrderException
-     * @throws NegativePriceException
-     * @throws InvalidAssetException
-     * @throws UnitException
-     */
     public static void ChangeOrderPrice(String orderID, double newPrice)
-            throws SQLException, InvalidOrderException, NegativePriceException, InvalidAssetException, UnitException {
+            throws SQLException, InvalidOrderException, NegativePriceException, InvalidAssetException {
         // Current order
         Order currentOrder = Order.findOrder(orderID);
 
@@ -56,16 +26,15 @@ public class Marketplace {
             throw new InvalidOrderException("Marketplace Error: Cannot edit completed order.");
         }
 
-        // Change price in database
         Statement smt = connection.createStatement();
         String sqlchPrice
                 = "UPDATE orders SET orderPrice = " + newPrice + " WHERE orderID = '" + orderID + "';";
         smt.executeUpdate(sqlchPrice);
 
-        // Same order with updated information;
+        // Should be with updated information;
         currentOrder = Order.findOrder(orderID);
 
-        // Get order type and attempt to execute to see if new price will execute
+        // Get order type
         if (currentOrder.orderType == OrderType.BUY) {
             BuyOrder newOrder = (BuyOrder) currentOrder;
             newOrder.ExecuteBuyOrder();
@@ -73,20 +42,13 @@ public class Marketplace {
             SellOrder newOrder = (SellOrder) currentOrder;
             newOrder.ExecuteSellOrder();
         }
+
+
+        // Execute order again if price changed
     }
 
-    /**
-     * Used to change quantity involved in an order
-     * @param orderID
-     * @param newQuantity
-     * @throws SQLException
-     * @throws InvalidOrderException
-     * @throws NegativePriceException
-     * @throws InvalidAssetException
-     * @throws UnitException
-     */
     public static void ChangeOrderQuantity(String orderID, int newQuantity)
-            throws SQLException, InvalidOrderException, NegativePriceException, InvalidAssetException, UnitException, ChangeException {
+            throws SQLException, InvalidOrderException, NegativePriceException, InvalidAssetException {
         // Current order
         Order currentOrder = Order.findOrder(orderID);
 
@@ -95,24 +57,15 @@ public class Marketplace {
             throw new InvalidOrderException("Marketplace Error: Cannot edit completed order.");
         }
 
-        if (newQuantity > currentOrder.quantFilled) {
-            throw new ChangeException("Order quantity cannot be changed to less than filled amount");
-        } else {
-            currentOrder.orderQuant = newQuantity;
-            currentOrder.quantRemain = newQuantity - currentOrder.quantFilled;
-        }
-
-        // Update in database
         Statement smt = connection.createStatement();
         String sqlchQuant
-                = "UPDATE orders SET orderQuantity = " + currentOrder.orderQuant + ", quantRemain = " +
-                currentOrder.quantRemain + "  WHERE orderID = '" + orderID + "';";
+                = "UPDATE orders SET orderQuantity = " + newQuantity + " WHERE orderID = '" + orderID + "';";
         smt.executeUpdate(sqlchQuant);
 
-        // Same order with updated information;
+        // Should be with updated information;
         currentOrder = Order.findOrder(orderID);
 
-        // Get order type and attempt to execute to see if quantity price will execute
+        // Get order type
         if (currentOrder.orderType == OrderType.BUY) {
             BuyOrder newOrder = (BuyOrder) currentOrder;
             newOrder.ExecuteBuyOrder();
@@ -122,12 +75,6 @@ public class Marketplace {
         }
     }
 
-    /**
-     * Executed from admin whenever they want to reconcile the system and pull up discrepancies in marketplace
-     * @throws SQLException
-     * @throws InvalidAssetException
-     * @throws ReconciliationError
-     */
     public static void RunReconciliation() throws SQLException, InvalidAssetException, ReconciliationError {
         ArrayList<String> incompleteOrders = new ArrayList<>();
         ArrayList<String> completeOrders = new ArrayList<>();
@@ -225,5 +172,14 @@ public class Marketplace {
                 // Otherwise this asset reconciles for this unit
             }
         }
+
+
     }
+
+
+
+//    Method to check no negative quantity in orders/inventory
+
+
+        // Check sql ? in queries
 }

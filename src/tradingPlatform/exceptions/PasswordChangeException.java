@@ -17,29 +17,29 @@
 // 	******************************************************************************************
 package tradingPlatform.exceptions;
 
-public class UserException extends Exception {
+public class PasswordChangeException extends Exception {
     /**
      * This UserException class extends the exception class, and is triggered when an error
      * relating to the user is found.
      * @param input String input that holds the message of the error
      */
-    public UserException(String input){
+    public PasswordChangeException(String input){
         super("User exception: " + input);
     }
 
-    public UserException(){
+    public PasswordChangeException(){
 
     }
 
-    public UserException(Throwable cause){
+    public PasswordChangeException(Throwable cause){
         super(cause);
     }
 
-    public UserException(String message, Throwable cause){
+    public PasswordChangeException(String message, Throwable cause){
         super(message, cause);
     }
 
-    public UserException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
+    public PasswordChangeException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
         super(message, cause, suppression, writableStackTrace);
     }
 }

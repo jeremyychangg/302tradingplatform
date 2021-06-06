@@ -35,12 +35,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.user.User.getUnitID;
 
 /**
- * Super class of orders with universal functionality across different orders
+ *
  */
 public class Order {
-    // Declare fields of order
     String orderID;
     String userID;
     String unitID;
@@ -53,20 +53,6 @@ public class Order {
     int quantFilled;
     int quantRemain;
 
-    /**
-     * Creates an instance of any order that already exists. Purely for manipulation purposes.
-     * @param orderID orderID
-     * @param userID userID
-     * @param unitID unitID
-     * @param assetID assetID
-     * @param orderTime Time of order
-     * @param orderStatus Completed or Incomplete
-     * @param orderType Buy or Sell
-     * @param orderPrice Price of order
-     * @param orderQuant Quantity of order
-     * @param quantFilled Quantity of order filled
-     * @param quantRemain Quantity of order remaining
-     */
     public Order(String orderID, String userID, String unitID, String assetID, String orderTime, OrderStatus orderStatus,
             OrderType orderType, double orderPrice, int orderQuant, int quantFilled, int quantRemain) {
         this.orderID = orderID;
@@ -85,15 +71,7 @@ public class Order {
         this.quantRemain = quantRemain;
     }
 
-    /**
-     * Order instance that creates instance for new orders - setting some defaults. Some fields are implied.
-     * @param userID
-     * @param assetID
-     * @param orderType
-     * @param orderPrice
-     * @param orderQuant
-     * @throws SQLException
-     */
+
     public Order(String userID, String assetID, OrderType orderType,
                  double orderPrice, int orderQuant) throws SQLException {
         this.userID = userID;
@@ -105,18 +83,14 @@ public class Order {
         this.quantFilled = 0;           // Initial quantity filled is 0
         this.quantRemain = orderQuant;  // Quantity remaining is initial order quantity
 
-        // Get unitID from main
-        this.unitID = Main.getCurrentUnit();
+        // Get unitID from user information
+        // this.unitID = userID.GetUnitID();
+        this.unitID = getUnitID();
 
         // Get current date time
         this.orderTime = LocalDateTime.now();
     }
 
-    /**
-     * Adds any order to the database
-     * @throws SQLException
-     * @throws InvalidAssetException
-     */
     public void AddOrderDatabase() throws SQLException, InvalidAssetException {
         // Store order type
         String orderSubstring;
@@ -182,12 +156,6 @@ public class Order {
 
     }
 
-    /**
-     * Checks if asset exists in database before performing an operation
-     * @param assetID
-     * @return True: Exists, False: Does not exist
-     * @throws SQLException
-     */
     public boolean CheckAssetExists(String assetID) throws SQLException {
         Statement smt = connection.createStatement();
         String sqlCheckAsset
@@ -201,35 +169,21 @@ public class Order {
         }
     }
 
-    /**
-     * Deletes an order from the database if user decides asset not needed anymore
-     * @throws SQLException
-     * @throws MultipleRowDeletionException
-     */
     public void DeleteOrder() throws SQLException, MultipleRowDeletionException {
         Statement smt = connection.createStatement();
         String sqlDelOrder
                 = "DELETE FROM orders WHERE orderID = '" + this.orderID + "';";
         int delNum = smt.executeUpdate(sqlDelOrder);
 
-        // Throw error if more than one order was deleted
         if (delNum > 1) {
             throw new MultipleRowDeletionException("Warning: Multiple rows were deleted from this query");
         }
     }
 
-    /**
-     * Changes quantity of this order
-     * @param quantity
-     * @throws ChangeException
-     * @throws SQLException
-     */
     public void ChangeOrderQuantity(int quantity) throws ChangeException, SQLException {
-        // Store old quantities
         int oldQuantRemain = this.quantRemain;
         int oldOrderQuant = this.orderQuant;
 
-        // Check new quantity is not less than quantity already filled
         if (quantity > this.quantFilled) {
             throw new ChangeException("Order quantity cannot be changed to less than filled amount");
         } else {
@@ -237,7 +191,6 @@ public class Order {
             this.quantRemain = quantity - this.quantFilled;
         }
 
-        // Update in database
         String sqlUpdateQuant = "UPDATE orders SET orderQuantity = ?, quantRemain = ? WHERE orderID = '" + this.orderID + "';";
         PreparedStatement smt = connection.prepareStatement(sqlUpdateQuant);
         smt.setInt(1, this.orderQuant);
@@ -247,10 +200,6 @@ public class Order {
 
     /**
      * Used to changed quantity remaining and filled in order, mainly when orders are executed
-     * @param remaining New quantity remaining
-     * @param filled New quantity filled
-     * @throws InvalidOrderException
-     * @throws SQLException
      */
     public void ChangeQuantRemainFilled(int remaining, int filled) throws InvalidOrderException, SQLException {
         // If quantity filled and quantity remaining does not sum to order quantity, throw exception
@@ -258,11 +207,9 @@ public class Order {
             throw new InvalidOrderException("Order executed resulted in a quantity discrepancy");
         }
 
-        // Change quantities
         this.quantRemain = remaining;
         this.quantFilled = filled;
 
-        // Set in database
         String sqlUpdateQuant = "UPDATE orders SET quantRemain = ?, quantFilled = ? WHERE orderID = '" + this.orderID + "';";
         PreparedStatement smt = connection.prepareStatement(sqlUpdateQuant);
         smt.setInt(1, this.quantRemain);
@@ -270,17 +217,10 @@ public class Order {
         smt.executeUpdate();
     }
 
-    /**
-     * Changes the status of an order after execution
-     * @param orderStatus
-     * @throws SQLException
-     */
     public void ChangeStatus(OrderStatus orderStatus) throws SQLException {
-        // Only change if current status is different
         if (this.orderStatus != orderStatus) {
             this.orderStatus = orderStatus;
 
-            // Change in database
             String sqlUpdateStatus = "UPDATE orders SET orderStatus = ? WHERE orderID = ?;";
             PreparedStatement smt = connection.prepareStatement(sqlUpdateStatus);
             smt.setString(1, this.orderStatus.name());
@@ -289,20 +229,17 @@ public class Order {
         }
     }
 
-    /**
-     * Find an instance of existing orders from a given order ID
-     * @param orderID
-     * @return Returns an instance of an order object
-     * @throws SQLException
-     * @throws InvalidOrderException
-     */
+    public void ChangeAveragePrice(double price) {
+        // Weighted Average Price of all units
+    }
+
     public static Order findOrder(String orderID) throws SQLException, InvalidOrderException {
-        // Query orders table
+        Order matchingOrder;
+
         Statement smt = connection.createStatement();
         String findOrder = "SELECT * FROM orders WHERE orderID = '" + orderID + "';";
         ResultSet getOrder = smt.executeQuery(findOrder);
 
-        // Return order if found
         if (getOrder.next() && getOrder.getString("orderID") != null) {
             return new Order(
                     getOrder.getString("orderID"),
@@ -321,4 +258,10 @@ public class Order {
             throw new InvalidOrderException("Order Error: Order not found.");
         }
     }
+
 }
+
+//Check asset exists
+
+
+//Edit buy price edit sell price

@@ -160,12 +160,7 @@ public class Asset {
         newAsset.setString(2, assetName);
         newAsset.setDouble(3, currentPrice);
         newAsset.setString(4, assetType);
-
-        try {
-            newAsset.execute();
-        } catch (SQLException e) {
-            System.out.println("New Asset Error: " + e.getMessage());
-        }
+        newAsset.execute();
     }
 
     /**
