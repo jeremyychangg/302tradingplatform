@@ -31,12 +31,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static tradingPlatform.Main.connection;
+import static tradingPlatform.user.User.getUnitID;
 
 /**
  *
@@ -86,7 +85,7 @@ public class Order {
 
         // Get unitID from user information
         // this.unitID = userID.GetUnitID();
-        this.unitID = Main.getCurrentUnit();
+        this.unitID = getUnitID();
 
         // Get current date time
         this.orderTime = LocalDateTime.now();

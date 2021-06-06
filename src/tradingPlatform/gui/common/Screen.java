@@ -1,20 +1,15 @@
-/**
- * @author Natalie Smith
- */
 package tradingPlatform.gui.common;
 
 import tradingPlatform.user.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 /**
- * Is the
+ * Is the abstract class parent to the Employee, Admin, and Lead screens. Is used to
+ * call methods that are common among the different
  */
 public abstract class Screen implements ActionListener {
     static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -98,7 +93,7 @@ public abstract class Screen implements ActionListener {
     }
 
     /**
-     * A method used to align a list of buttons in the center of a component
+     * A method used to align a list of buttons in the center of a component.
      *
      * @param elements a JButton list of elements that are to be aligned to center
      */

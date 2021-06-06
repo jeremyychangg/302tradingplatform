@@ -249,7 +249,6 @@ public class userGUI extends JPanel implements ActionListener {
         changeLayout.putConstraint(SpringLayout.WEST, changePassBtn, 80, SpringLayout.EAST, passwordLabel);
 
         functions.add(changePass, "Change");
-
     }
 
 

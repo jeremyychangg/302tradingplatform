@@ -1,9 +1,10 @@
 package tradingPlatform.gui.server;
 
+import tradingPlatform.Unit;
+import tradingPlatform.exceptions.NegativePriceException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 import tradingPlatform.gui.common.Screen;
-import tradingPlatform.user.Admin;
 import tradingPlatform.user.User;
 
 import javax.swing.*;
@@ -12,6 +13,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import static tradingPlatform.Unit.getUnit;
+
+/**
+ * A class object used to display the Admin unit related actions. Within, the user
+ * is able to create a unit, edit credit balance, and add inventory items to the related
+ * unit ID's table. The unit GUI is displayed through a JPanel component, and constructs
+ * a card layout to sort through each of the different actions that can be applied. Action
+ * listeners are implemented to listen for buttons when processing the forms.
+ *
+ * @author Natalie Smith
+ */
 public class unitGUI extends JPanel implements ActionListener {
     private JPanel panel;
     private JButton createButton = new JButton("CREATE NEW UNIT");
@@ -20,7 +32,7 @@ public class unitGUI extends JPanel implements ActionListener {
 
     private JButton submitNewUnit = new JButton("SUBMIT NEW UNIT");
     private JButton changeBalanceBtn = new JButton("CHANGE BALANCE");
-    private JButton editBalance = new JButton("EDIT INVENTORY");
+    private JButton editBalance = new JButton("EDIT BALANCE");
 
     private JPanel functions;
 
@@ -28,6 +40,7 @@ public class unitGUI extends JPanel implements ActionListener {
     public JTextField creditBalance;
     public JTextField limit;
     private JTextField unitName;
+    private JTextField creditBalanceChange;
 
     CardLayout cardLayout = new CardLayout();
 
@@ -43,7 +56,10 @@ public class unitGUI extends JPanel implements ActionListener {
         add(panel);
     }
 
-
+    /**
+     * This method is used to initalise the relevant button listeners and also
+     * adds them to the panel.
+     */
     private void buttonInit() {
         panel.add(createButton);
         panel.add(editButton);
@@ -78,7 +94,7 @@ public class unitGUI extends JPanel implements ActionListener {
 
     private void cards() {
         newUnitCard();
-//        editBalanceCard();
+        editBalanceCard();
 //        editInventory();
     }
 
@@ -147,18 +163,20 @@ public class unitGUI extends JPanel implements ActionListener {
         editUserForm.setLayout(editLayout);
         editUserForm.setBackground(Color.white);
         JLabel unitIDLabel = new JLabel("Unit ID");
-        JLabel accountTypeEditLabel = new JLabel("Credit Balance");
+        JLabel creditLabel = new JLabel("Credit Balance");
 
         unitID = new JTextField(25);
+        creditBalanceChange = new JTextField(25);
         editBalance = new JButton("SUBMIT");
 
-        buttonStyle(editBalance);
+        buttonStyle(changeBalanceBtn);
 
         editUserForm.add(editLabel);
         editUserForm.add(unitIDLabel);
         editUserForm.add(unitID);
-        editUserForm.add(editBalance);
-
+        editUserForm.add(creditLabel);
+        editUserForm.add(creditBalanceChange);
+        editUserForm.add(changeBalanceBtn);
 
         editLayout.putConstraint(SpringLayout.NORTH, editLabel, 50, SpringLayout.NORTH, editUserForm);
         editLayout.putConstraint(SpringLayout.WEST, editLabel, 50, SpringLayout.WEST, editUserForm);
@@ -168,63 +186,16 @@ public class unitGUI extends JPanel implements ActionListener {
         editLayout.putConstraint(SpringLayout.NORTH, unitID, 90, SpringLayout.NORTH, editUserForm);
         editLayout.putConstraint(SpringLayout.WEST, unitID, 80, SpringLayout.EAST, unitIDLabel);
 
-        editLayout.putConstraint(SpringLayout.NORTH, editBalance, 60, SpringLayout.NORTH, unitIDLabel);
-        editLayout.putConstraint(SpringLayout.WEST, editBalance, 80, SpringLayout.EAST, unitIDLabel);
+        editLayout.putConstraint(SpringLayout.NORTH, creditLabel, 50, SpringLayout.NORTH, unitIDLabel);
+        editLayout.putConstraint(SpringLayout.WEST, creditLabel, 50, SpringLayout.WEST, editUserForm);
+        editLayout.putConstraint(SpringLayout.NORTH, creditBalanceChange, 50, SpringLayout.NORTH, unitID);
+        editLayout.putConstraint(SpringLayout.WEST, creditBalanceChange, 80, SpringLayout.EAST, unitIDLabel);
+
+        editLayout.putConstraint(SpringLayout.NORTH, changeBalanceBtn, 50, SpringLayout.NORTH, creditLabel);
+        editLayout.putConstraint(SpringLayout.WEST, changeBalanceBtn, 80, SpringLayout.EAST, creditLabel);
 
         functions.add(editUserForm, "Edit");
     }
-
-//
-//    public void editInventory() {
-//        SpringLayout changeLayout = new SpringLayout();
-//
-//        JLabel changeLabel = new JLabel("Change User Password");
-//        JPanel changePass = new JPanel();
-//        changePass.setLayout(changeLayout);
-//        changePass.setBackground(Color.white);
-//
-//
-//        JLabel unitIDLabel = new JLabel("User ID");
-//        unitID = new JTextField(25);
-//        JLabel passwordLabel = new JLabel("New Password");
-//        passwordChange = new JTextField(25);
-//
-//        changePass.add(changeLabel);
-//        changePass.add(unitID);
-//        changePass.add(passwordChange);
-//
-//        changeBalanceBtn = new JButton("SUBMIT");
-//        changeBalanceBtn.addActionListener(this);
-//
-//        buttonStyle(changeBalanceBtn);
-//
-//        changePass.add(changeLabel);
-//        changePass.add(unitIDLabel);
-//        changePass.add(unitID);
-//        changePass.add(passwordLabel);
-//        changePass.add(passwordChange);
-//        changePass.add(changeBalanceBtn);
-//
-//        changeLayout.putConstraint(SpringLayout.NORTH, changeLabel, 50, SpringLayout.NORTH, changePass);
-//        changeLayout.putConstraint(SpringLayout.WEST, changeLabel, 50, SpringLayout.WEST, changePass);
-//
-//        changeLayout.putConstraint(SpringLayout.NORTH, unitIDLabel, 100, SpringLayout.NORTH, changePass);
-//        changeLayout.putConstraint(SpringLayout.WEST, unitIDLabel, 50, SpringLayout.WEST, changePass);
-//        changeLayout.putConstraint(SpringLayout.NORTH, unitID, 90, SpringLayout.NORTH, changePass);
-//        changeLayout.putConstraint(SpringLayout.WEST, unitID, 90, SpringLayout.EAST, unitIDLabel);
-//
-//        changeLayout.putConstraint(SpringLayout.NORTH, passwordLabel, 50, SpringLayout.NORTH, unitIDLabel);
-//        changeLayout.putConstraint(SpringLayout.WEST, passwordLabel, 50, SpringLayout.WEST, changePass);
-//        changeLayout.putConstraint(SpringLayout.NORTH, passwordChange, 50, SpringLayout.NORTH, unitID);
-//        changeLayout.putConstraint(SpringLayout.WEST, passwordChange, 50, SpringLayout.EAST, passwordLabel);
-//
-//        changeLayout.putConstraint(SpringLayout.NORTH, changeBalanceBtn, 60, SpringLayout.NORTH, passwordLabel);
-//        changeLayout.putConstraint(SpringLayout.WEST, changeBalanceBtn, 80, SpringLayout.EAST, passwordLabel);
-//
-//        functions.add(changePass, "Change");
-//
-//    }
-
 
 
     @Override
@@ -246,10 +217,10 @@ public class unitGUI extends JPanel implements ActionListener {
             }
         }
         // If user presses edit account button - send form
-        if (e.getSource() == editBalance) {
+        if (e.getSource() == changeBalanceBtn) {
             try {
                 editBalance();
-            } catch (UserException userException) {
+            } catch (UserException | UnitException | NegativePriceException userException) {
             }
         }
         if (e.getSource() == changeBalanceBtn) {
@@ -282,62 +253,27 @@ public class unitGUI extends JPanel implements ActionListener {
     }
 
 
+
     /**
-     * For the administration to change the password of a user, they are to input a valid unitID and
-     * a valid password to replace the old. If valid and correct, the password will be encrypted using a
-     * salt and the combination of both the hash password and the salt key will be parsed into the database.
-     *
      * @throws UserException
      */
-    private void editBalance() throws UserException {
+    private void editBalance() throws UserException, UnitException, NegativePriceException {
         String unitIDInput = unitID.getText();
-        String creditInput = creditBalance.getText();
+        String creditBalanceInput = creditBalanceChange.getText();
+        System.out.println(unitIDInput + " " + creditBalanceInput);
         try {
-            Admin.changeUserPassword(unitIDInput, creditInput);
-            JOptionPane.showMessageDialog(null, "Change Password Success: " + unitIDInput + " password successfully changed");
-            // Reset Values
-            unitID.setText("");
-            creditBalance.setText("");
-        } catch (UserException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-            throw new UserException(e.getMessage());
-        } catch (SQLException throwables) {
-            throw new UserException("Change Password Error: Cannot Change" + unitIDInput + " password");
+            Unit changing = getUnit(unitIDInput);
+            changing.ChangeUnitBalance(changing.unitID, Double.parseDouble(creditBalanceInput));
         } catch (NullPointerException e) {
-            String msg = "Change Password Error: User ID " + unitIDInput + " is an invalid unitID.";
+            String msg = "Edit User Error: Empty values. Please try again.";
             JOptionPane.showMessageDialog(null, msg);
-            throw new UserException("Change Password Error: User ID " + unitIDInput + " is an invalid unitID.");
+            throw new NullPointerException(msg);
+        } catch (SQLException e) {
+            String msg = "Edit User SQL Error: Could not add to database.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UnitException(msg);
         }
     }
-
-
-//    /**
-//     * For the administration to change the password of a user, they are to input a valid unitID and
-//     * a valid password to replace the old. If valid and correct, the password will be encrypted using a
-//     * salt and the combination of both the hash password and the salt key will be parsed into the database.
-//     *
-//     * @throws UserException
-//     */
-//    private void editBalance() throws UserException {
-//        String unitIDInput = unitID.getText();
-//        String passwordInput = passwordChange.getText();
-//        try {
-//            Admin.changeUserPassword(unitIDInput, passwordInput);
-//            JOptionPane.showMessageDialog(null, "Change Password Success: " + unitIDInput + " password successfully changed");
-//            // Reset Values
-//            unitID.setText("");
-//            passwordChange.setText("");
-//        } catch (UserException e) {
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//            throw new UserException(e.getMessage());
-//        } catch (SQLException throwables) {
-//            throw new UserException("Change Password Error: Cannot Change" + unitIDInput + " password");
-//        } catch (NullPointerException e) {
-//            String msg = "Change Password Error: User ID " + unitIDInput + " is an invalid unitID.";
-//            JOptionPane.showMessageDialog(null, msg);
-//            throw new UserException("Change Password Error: User ID " + unitIDInput + " is an invalid unitID.");
-//        }
-//    }
 
     public void buttonStyle(JButton button) {
         button.setMargin(new Insets(5, 20, 5, 20));
