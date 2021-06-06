@@ -8,7 +8,6 @@ import tradingPlatform.user.User;
 import java.sql.*;
 
 import static tradingPlatform.Main.connection;
-import static tradingPlatform.Main.getCurrentUser;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -84,7 +83,7 @@ public class Unit {
     }
 
     // Construct a unit to be added into the platform
-    public Unit(String unitName, double creditBalance, double limit) throws SQLException {
+    public void addUnit(String unitName, double creditBalance, double limit) throws SQLException {
         this.unitName = unitName;
         this.creditBalance = creditBalance;
         this.limit = limit;
