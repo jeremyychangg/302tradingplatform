@@ -15,8 +15,13 @@
 // 	**																						**
 // 	**																						**
 // 	******************************************************************************************
+
 package tradingPlatform.exceptions;
 
+/**
+ * This UserException class extends the exception class, and is triggered when an error
+ * relating to the user is found.
+ */
 public class UserException extends Exception {
     /**
      * This UserException class extends the exception class, and is triggered when an error
@@ -25,21 +30,5 @@ public class UserException extends Exception {
      */
     public UserException(String input){
         super("User exception: " + input);
-    }
-
-    public UserException(){
-
-    }
-
-    public UserException(Throwable cause){
-        super(cause);
-    }
-
-    public UserException(String message, Throwable cause){
-        super(message, cause);
-    }
-
-    public UserException(String message, Throwable cause, boolean suppression, boolean writableStackTrace){
-        super(message, cause, suppression, writableStackTrace);
     }
 }

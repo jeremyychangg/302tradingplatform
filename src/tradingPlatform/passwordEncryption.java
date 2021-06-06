@@ -60,6 +60,24 @@ public class passwordEncryption {
         if (!optEncrypted.isPresent()) return false;
         return optEncrypted.get().equals(key);
     }
+
+//    public static void main(String[] args) throws Exception {
+//        try {
+//            new JBDCConnection();
+//        } catch (Exception e) {
+//        }
+////        String salt = generateSalt(100).get();
+////        String password = "Hello!";
+////        System.out.println(salt + "=Salt");
+////        String key = hashPassword(password, salt).get();
+////        System.out.println(key);
+//        String salt = "1pE3J1+xh11O1nE9lFLKLy1qxojHLIdQrypmO7XHADkOLCDLowrQ2LfTiSGplS3yhPzTQzXxl35W1gNoODN9XQA2bbQArFLiJMpalkjNl1kCet00841pQG2MmcpXetvso3AaDw==";
+//        String key = "qVgfFgS25c3ME5KqERwuQ46SUl4lkduJxCDvqQL87bzuXJYVIcuyeX/U5yBKfkvrKgiXc7Ag1E6jBiD6jYEGfg==";
+//        System.out.println(verifyPassword("hello", key, salt));
+////        String g = "hello";
+////        loginGUI.passwordCorrect("S0004", g.toCharArray());
+//
+//    }
 }
 
 
