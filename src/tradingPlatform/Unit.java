@@ -25,13 +25,18 @@ public class Unit {
     public Integer unitNum;
     public String unitCasing;
 
-
     public Unit(String unitID) throws SQLException{
         this.unitID = unitID;
         this.usersList = searchUser(unitID);
     }
 
-    // Construct an existing unit
+    /**
+     * Constructs an instance of unit in database
+     * @param unitID
+     * @param unitName
+     * @param creditBalance
+     * @param limit
+     */
     public Unit(String unitID, String unitName, double creditBalance, double limit) {
         this.unitID = unitID;
         this.unitName = unitName;
