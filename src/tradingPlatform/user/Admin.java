@@ -7,6 +7,7 @@ import tradingPlatform.Asset;
 import tradingPlatform.Unit;
 import tradingPlatform.enumerators.UserType;
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.exceptions.EditUserException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
@@ -75,12 +76,12 @@ public class Admin extends User {
      * @throws Exception
      * @throws UserException
      */
-    public static void editAccountType(String userID, String accountType) throws Exception, UserException {
+    public static void editAccountType(String userID, String accountType) throws Exception, EditUserException {
         if (userID.equals(null) || userID.equals("")) {
-            throw new UserException("User ID is invalid.");
+            throw new EditUserException("User ID is invalid.");
         }
         if (accountType.equals(null) || accountType.equals("")) {
-            throw new Exception("Account type inputted is invalid.");
+            throw new EditUserException("Account type inputted is invalid.");
         } else {
             try {
                 if (usernameExists(userID) && accountTypeValid(accountType)) {
@@ -92,7 +93,7 @@ public class Admin extends User {
                     changeAccountT.executeUpdate();
                 }
             } catch (SQLException e) {
-                throw new UserException(e.getMessage());
+                throw new EditUserException(e.getMessage());
             }
         }
     }
@@ -107,12 +108,12 @@ public class Admin extends User {
      * @throws SQLException
      * @throws UserException
      */
-    public static void changeUserPassword(String userID, String newPassword) throws SQLException, UserException {
+    public static void changeUserPassword(String userID, String newPassword) throws SQLException, EditUserException {
         if (userID.equals(null) || userID.equals(" ") || userID.equals("")) {
-            throw new UserException("User ID cannot be empty.");
+            throw new EditUserException("User ID cannot be empty.");
         }
         if (newPassword.equals(null) || newPassword.equals(" ") || newPassword.equals("")) {
-            throw new UserException("User " + userID + " cannot have empty password.");
+            throw new EditUserException("User " + userID + " cannot have empty password.");
         } else {
             Statement loginInput = connection.createStatement();
             // Determine if the value is a valid password
@@ -141,9 +142,11 @@ public class Admin extends User {
         }
     }
 
+
     public void newUnit(String unitName, double creditBalance, double creditLimit) throws SQLException {
         Unit unitNew = new Unit(unitName, creditBalance, creditLimit);
     }
+
 
     public void newAsset(String assetName, String assetType) throws SQLException, AssetTypeException {
         Asset assetNew = new Asset(assetName, assetType);

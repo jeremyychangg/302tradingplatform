@@ -255,6 +255,7 @@ public class unitGUI extends JPanel implements ActionListener {
 
 
     /**
+     * This method is used to edit the balance of a given user ID and balance input.
      * @throws UserException
      */
     private void editBalance() throws UserException, UnitException, NegativePriceException {
@@ -275,6 +276,12 @@ public class unitGUI extends JPanel implements ActionListener {
         }
     }
 
+
+    /**
+     * Method used to style a button whilst matching the style guide.
+     *
+     * @param button
+     */
     public void buttonStyle(JButton button) {
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setBackground(new Color(0, 140, 237));

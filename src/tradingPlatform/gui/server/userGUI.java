@@ -1,5 +1,6 @@
 package tradingPlatform.gui.server;
 
+import tradingPlatform.exceptions.EditUserException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 import tradingPlatform.gui.common.Screen;
@@ -14,10 +15,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * The userGUI class extends the JPanel to create a panel that would display the necessary user server
+ * related features. This would include creating new users, editing passwords and account types. This is determine
+ * to be further iterated to include a more widespread range of features. The class constructs the different forms
+ * based on a card layout, and the method implements ActionListeners to process these methods.
+ *
+ * @author Natalie Smith
+ */
 public class userGUI extends JPanel implements ActionListener {
     private JPanel panel;
     private JButton createButton = new JButton("CREATE NEW USER");
-    private JButton editButton = new JButton("EDIT USER");
+    private JButton editButton = new JButton("EDIT ACCOUNT TYPE");
     private JButton changeButton = new JButton("EDIT USER PASSWORD");
     private JButton submitNewUser = new JButton("SUBMIT NEW USER");
 
@@ -30,10 +39,12 @@ public class userGUI extends JPanel implements ActionListener {
     private JTextField lastName;
     private JTextField unitID;
     private String accountTypeValue;
+    private String accountTypeValueEdit;
     private JComboBox accountType;
     private JComboBox accountTypeEdit;
     private JTextField password;
     private JTextField userID;
+    private JTextField userIDInput;
     private JTextField passwordChange;
 
     String[] userTypes = {"Admin", "Employee", "Lead"};
@@ -41,6 +52,7 @@ public class userGUI extends JPanel implements ActionListener {
     CardLayout cardLayout = new CardLayout();
 
     /**
+     * UserGUI constructor used to call the different methods used to construct the userGUI panel
      * @throws Exception
      */
     public userGUI() throws Exception {
@@ -53,6 +65,10 @@ public class userGUI extends JPanel implements ActionListener {
     }
 
 
+    /**
+     * Method adds relevant button listeners for the userGUI screen. When pressed, would trigger the actionListener
+     * function.
+     */
     private void buttonInit() {
         panel.add(createButton);
         panel.add(editButton);
@@ -66,11 +82,15 @@ public class userGUI extends JPanel implements ActionListener {
     }
 
 
+    /**
+     * Is used to call the card layouts for each of the forms.
+     */
     private void cards() {
         newUserCard();
         editTypeCard();
         changePasswordCard();
     }
+
 
 
     /**
@@ -118,7 +138,6 @@ public class userGUI extends JPanel implements ActionListener {
         newUserForm.setLayout(createLayout);
 
         // Layout the form create new user
-
         createLayout.putConstraint(SpringLayout.NORTH, createLabel, 50, SpringLayout.NORTH, newUserForm);
         createLayout.putConstraint(SpringLayout.WEST, createLabel, 50, SpringLayout.WEST, newUserForm);
 
@@ -154,6 +173,13 @@ public class userGUI extends JPanel implements ActionListener {
 
     }
 
+
+
+    /**
+     * A method that constructs and builds the edit account type form. Once called, the card would be
+     * constructed to show the inputs related - user ID and account type. Given that these inputs are
+     * valid, and that the server does how these values, the method would set the text fields
+     */
     public void editTypeCard() {
         SpringLayout editLayout = new SpringLayout();
         JLabel editLabel = new JLabel("Edit Account Type");
@@ -164,7 +190,7 @@ public class userGUI extends JPanel implements ActionListener {
         JLabel userIDLabel = new JLabel("User ID");
         JLabel accountTypeEditLabel = new JLabel("Account Type");
 
-        userID = new JTextField(25);
+        userIDInput = new JTextField(25);
         accountTypeEdit = new JComboBox(userTypes);
         accountTypeEdit.setSelectedIndex(1);
         accountTypeEdit.addActionListener(this);
@@ -175,33 +201,36 @@ public class userGUI extends JPanel implements ActionListener {
 
         editUserForm.add(editLabel);
         editUserForm.add(userIDLabel);
-        editUserForm.add(userID);
+        editUserForm.add(userIDInput);
         editUserForm.add(accountTypeEditLabel);
         editUserForm.add(accountTypeEdit);
         editUserForm.add(editAccTypeBtn);
-
+        editAccTypeBtn.addActionListener(this);
 
         editLayout.putConstraint(SpringLayout.NORTH, editLabel, 50, SpringLayout.NORTH, editUserForm);
         editLayout.putConstraint(SpringLayout.WEST, editLabel, 50, SpringLayout.WEST, editUserForm);
 
         editLayout.putConstraint(SpringLayout.NORTH, userIDLabel, 100, SpringLayout.NORTH, editUserForm);
         editLayout.putConstraint(SpringLayout.WEST, userIDLabel, 50, SpringLayout.WEST, editUserForm);
-        editLayout.putConstraint(SpringLayout.NORTH, userID, 90, SpringLayout.NORTH, editUserForm);
-        editLayout.putConstraint(SpringLayout.WEST, userID, 80, SpringLayout.EAST, userIDLabel);
+        editLayout.putConstraint(SpringLayout.NORTH, userIDInput, 90, SpringLayout.NORTH, editUserForm);
+        editLayout.putConstraint(SpringLayout.WEST, userIDInput, 80, SpringLayout.EAST, userIDLabel);
 
         editLayout.putConstraint(SpringLayout.NORTH, accountTypeEditLabel, 50, SpringLayout.NORTH, userIDLabel);
         editLayout.putConstraint(SpringLayout.WEST, accountTypeEditLabel, 50, SpringLayout.WEST, editUserForm);
-        editLayout.putConstraint(SpringLayout.NORTH, accountTypeEdit, 50, SpringLayout.NORTH, userID);
+        editLayout.putConstraint(SpringLayout.NORTH, accountTypeEdit, 50, SpringLayout.NORTH, userIDInput);
         editLayout.putConstraint(SpringLayout.WEST, accountTypeEdit, 50, SpringLayout.EAST, accountTypeEditLabel);
 
         editLayout.putConstraint(SpringLayout.NORTH, editAccTypeBtn, 60, SpringLayout.NORTH, accountTypeEditLabel);
         editLayout.putConstraint(SpringLayout.WEST, editAccTypeBtn, 80, SpringLayout.EAST, accountTypeEditLabel);
 
         functions.add(editUserForm, "Edit");
-
     }
 
 
+    /**
+     * When called, this method is used to produce the change password form. It constructs the panel
+     * using SpringLayout to display each of the different elements. In additin
+     */
     public void changePasswordCard() {
         SpringLayout changeLayout = new SpringLayout();
 
@@ -253,13 +282,14 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     /**
+     *
      */
     private void setUpPanel() {
         this.panel = new JPanel();
         functions = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
 
-        int borderBottom = Screen.screenHeight/8;
+        int borderBottom = Screen.screenHeight / 8;
         if (Screen.screenHeight > 1400) {
             borderBottom = Screen.screenHeight / 7;
         }
@@ -293,6 +323,9 @@ public class userGUI extends JPanel implements ActionListener {
         // If the user changes combobox accounttype, change the value of account Type
         if (e.getSource() == accountType) {
             accountTypeValue = (String) accountType.getSelectedItem();
+        }
+        if (e.getSource() == accountTypeEdit) {
+            accountTypeValueEdit = (String) accountTypeEdit.getSelectedItem();
         }
         // If user presses edit account button - send form
         if (e.getSource() == editAccTypeBtn) {
@@ -379,7 +412,7 @@ public class userGUI extends JPanel implements ActionListener {
      *
      * @throws UserException
      */
-    private void changePassword() throws UserException {
+    private void changePassword() throws EditUserException {
         String userIDInput = userID.getText();
         String passwordInput = passwordChange.getText();
         try {
@@ -388,23 +421,38 @@ public class userGUI extends JPanel implements ActionListener {
             // Reset Values
             userID.setText("");
             passwordChange.setText("");
-        } catch (UserException e) {
+        } catch (EditUserException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-            throw new UserException(e.getMessage());
+            throw new EditUserException(e.getMessage());
         } catch (SQLException throwables) {
-            throw new UserException("Change Password Error: Cannot Change" + userIDInput + " password");
+            throw new EditUserException("Change Password Error: Cannot Change" + userIDInput + " password");
         } catch (NullPointerException e) {
             String msg = "Change Password Error: User ID " + userIDInput + " is an invalid userID.";
             JOptionPane.showMessageDialog(null, msg);
-            throw new UserException("Change Password Error: User ID " + userIDInput + " is an invalid userID.");
+            throw new EditUserException("Change Password Error: User ID " + userIDInput + " is an invalid userID.");
         }
     }
 
-    private void editAccountType() throws Exception {
-        String userIDInput = userID.getText();
-        String accountTypeInput = accountTypeValue;
+
+    /**
+     * This method is used to call methods related to editing the account type of the user. Given that a user
+     * has inputted valid user ID and account type, it would update the details within the server. Would throw
+     * Exception and EditUserException given that these errors occur. If successful, would output a dialog box
+     * with the userID and their new account type. Thus, the user should be able to access the new account on log
+     * in.
+     *
+     * @throws Exception
+     */
+    private void editAccountType() throws Exception, EditUserException {
+        String userChange = userIDInput.getText();
+        String accountTypeInput = accountTypeValueEdit;
         try {
-            Admin.editAccountType(userIDInput, accountTypeInput);
+            Admin.editAccountType(userChange, accountTypeInput);
+            String msg = "Change user " + userChange + " to " + accountTypeInput + " success!";
+            JOptionPane.showMessageDialog(null, msg);
+
+            // Reset values
+            userIDInput.setText("");
         } catch (NullPointerException e) {
             String msg = "Edit User Error: Empty values. Please try again.";
             JOptionPane.showMessageDialog(null, msg);
@@ -413,9 +461,17 @@ public class userGUI extends JPanel implements ActionListener {
             String msg = "Edit User SQL Error: Could not add to database.";
             JOptionPane.showMessageDialog(null, msg);
             throw new Exception(msg);
+        } catch (EditUserException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 
+
+    /**
+     * Adjusts the JButton input given and styles to suit style guide.
+     *
+     * @param button JButton that submits form
+     */
     public void buttonStyle(JButton button) {
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setBackground(new Color(0, 140, 237));
