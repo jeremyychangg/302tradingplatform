@@ -61,6 +61,28 @@ public class Unit {
         return userList;
     }
 
+    // return all information of unit given unitID
+    public static Unit getUnit(String unitID) throws SQLException, UnitException {
+        Unit currentUnit;
+
+        Statement statement = connection.createStatement();
+        String queryUnit = "SELECT * from units WHERE unitID = '" + unitID + "';";
+        ResultSet unitInfo= statement.executeQuery(queryUnit);
+
+        if (unitInfo.next() && unitInfo.getString("unitID") != null) {
+            currentUnit = new Unit(
+                    unitInfo.getString("unitID"),
+                    unitInfo.getString("unitName"),
+                    unitInfo.getDouble("creditBalance"),
+                    unitInfo.getDouble("limit")
+            );
+        } else {
+            throw new UnitException("This unit does not exist.");
+        }
+
+        return currentUnit;
+    }
+
     // Construct a unit to be added into the platform
     public Unit(String unitName, double creditBalance, double limit) throws SQLException {
         this.unitName = unitName;
@@ -93,10 +115,6 @@ public class Unit {
         addNewUnit.setDouble(4, limit);
 
         addNewUnit.execute();
-    }
-
-    public String getUnit(String unitID) {
-        return unitName;
     }
 
     public void deleteUnit(String unitID) throws SQLException, UnitException, MultipleRowDeletionException {
