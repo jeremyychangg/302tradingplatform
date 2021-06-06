@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tradingPlatform.Unit;
 import tradingPlatform.enumerators.UserType;
-import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.user.Admin;
 import tradingPlatform.user.Employee;
 import tradingPlatform.user.Lead;
@@ -73,17 +72,6 @@ public class testUsers {
         employee = new Employee("Alice", "Spring", "BSB001", "passwordOK");
         admin = new Admin("Maxwell", "Smart", "FM0001", "password99");
         lead = new Lead("Anne", "Hathaway", "IFB295", "shakespeare");
-    }
-
-    // Admin can access the add user to database method
-    @Test
-    public void addingToDatabase() throws Exception, UnitException {
-        user.addUserToDatabase(user1);
-        user.addUserToDatabase(user2);
-        user.addUserToDatabase(user3);
-        user.addUserToDatabase(employee);
-        user.addUserToDatabase(admin);
-        user.addUserToDatabase(lead);
     }
 
 
