@@ -1,71 +1,87 @@
 package tradingPlatform;
 
 import tradingPlatform.database.JBDCConnection;
-import tradingPlatform.Marketplace;
-import tradingPlatform.exceptions.InvalidOrderException;
+import tradingPlatform.gui.common.loginGUI;
 
+import javax.swing.*;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
+import java.sql.SQLException;
 
 public class Main {
-    public static Connection connection;
-
     private static String currentUser;
-    private static String currentUnit;
 
-    public static String getCurrentUser(){
+    public static String getCurrentUser() {
         return Main.currentUser;
     }
-    public static String getCurrentUnit() { return  Main.currentUnit; }
 
-    // Need methods in user and unit classes to set these variables on log in
+    public static void resetCurrentUser() {
+        setCurrentUser(null);
+    }
+
+    public static Connection connection;
+
     public static void setCurrentUser(String currentUser) {
         Main.currentUser = currentUser;
     }
-    public static void setCurrentUnit(String currentUnit) {
-        Main.currentUnit = currentUnit;
-    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         try {
-            // write your code here
             new JBDCConnection();
-
-
-            System.out.println("Test working");
-
-
-//            new Asset("Computer Mouse", "Computer Accessories");
-//            new Asset("Table", "Furniture",100.8);
-
-            // Temp set userID and unitID
-            setCurrentUser("EM00000002");
-            setCurrentUnit("IT00000045");
-
-//            Asset asset3 = new Asset( "Wireless Mouse", "Computer Accessories", 8.22);
-            BuyOrder order1 = new BuyOrder(getCurrentUser(), "CA00000001",97.34, 2);
-
-            setCurrentUser("LD00000009");
-            setCurrentUnit("FN00000061");
-
-            SellOrder order2 = new SellOrder(getCurrentUser(), "CA00000001",105.34, 2);
-
-            setCurrentUser("EM00000125");
-            setCurrentUnit("IT00000005");
-
-            SellOrder order3 = new SellOrder(getCurrentUser(), "CA00000001",65.34, 2);
-//            Marketplace.ChangeOrderQuantity("BY00000001", 6);
-            connection.close();
-
-        } catch (Exception e){
-            System.out.println("Main Error: " + e.getMessage());
-            // Add Error handling
-            // Apply overlay to text box GUI
+        } catch (Exception thr){
+            String msg = "SQL Connection Error : Program not connected to database. ";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new SQLException(msg, thr);
         }
+//        setCurrentUser("A0001");
+//        new adminScreen();
+        new loginGUI();
+//            new employeeScreen();
+//        User one = new User("Stephen", "King", "ADM00001",  " ", UserType.Employee);
+
+//        User test = new User("Angela", "Shibu", "IT00001", "hello", UserType.Employee);
+//        User one = new User("John", "Smith", "ADM00001",  "admin1", UserType.Admin);
+//        User two = new User("Peter", "La", "IT00000034",   "password.1", UserType.Admin);
+//        User three = new User("Angela", "Da Cost", "IT00001", "password", UserType.Admin);
+//        User four = new User("Pat", "Kam", "IT00001", "password", UserType.Lead);
+//        User five = new User("Ian", "Musk", "IT00001", "pass", UserType.Employee);
+//        User six = new User("Stephen", "King", "AD0001", "pass", UserType.Employee);
 
 
+//        new employeeScreen();
+
+//        Inventory values = new Inventory("IT00001");
+//        ArrayList<InventoryItem> inventory = values.unitInventory;
+//        for (InventoryItem c: inventory){
+//            System.out.println(c.asset.assetName);
+//            System.out.println(c.purchasePrice);
+//            System.out.println(c.quantity);
+//        }
+
+//        editCredits("ADM01", 1200);
+//        editAccountType("A003", "Admin");
+//        unitExists("IT00001");
+
+//        setCurrentUser("S0001");
+//        new loginGUI();
+//        new leadScreen();
+//        System.out.println(usernameExists("ADSFS"));
+//        Admin current = new Admin(getFirstName(), getLastName(), getUnitID(), getAccountType());
+//
+//        User current = new User("S0001");
+//        System.out.println(current.returnfirstName());
+
+//        Admin current = new Admin(getFirstName(), getLastName(), getUnitID());
+//        User lisa = new User("Anna", "Mia", "IT00001", "password", UserType.Lead);
+//        System.out.println(lisa.returnUserID());
+//        System.out.println(getUnitID());
+
+//        currentUser.newUser(new Employee("Lisa", "Vanderpump", "IT00001", "password"));
+//        Admin newAdmin = new Admin("Angela", "Da Cost", "IT00001", "password");
+
+
+//        new employeeScreen();
+//        new Screen();
     }
+
 }
+

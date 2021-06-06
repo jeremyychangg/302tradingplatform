@@ -33,8 +33,8 @@ import static tradingPlatform.Main.connection;
 
 public class Inventory {
     String unitID;
-    ArrayList<InventoryItem> unitInventory;
-    double inventorySize;
+    public ArrayList<InventoryItem> unitInventory;
+    public double inventorySize;
 
     public Inventory(String unitID) throws SQLException, InvalidAssetException {
         this.unitID = unitID;

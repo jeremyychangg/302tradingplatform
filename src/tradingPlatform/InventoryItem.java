@@ -33,9 +33,9 @@ import static tradingPlatform.Main.connection;
 
 public class InventoryItem {
     String unitID;
-    Asset asset;
-    double purchasePrice;
-    int quantity;
+    public Asset asset;
+    public double purchasePrice;
+    public int quantity;
     String orderID = "";    // Initialise in case null
 
     /**
