@@ -7,11 +7,18 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static tradingPlatform.user.User.getUnitID;
+
 public class Main {
     private static String currentUser;
 
     public static String getCurrentUser() {
         return Main.currentUser;
+    }
+
+
+    public static String getCurrentUnit() throws SQLException {
+        return getUnitID();
     }
 
     public static void resetCurrentUser() {
@@ -84,3 +91,4 @@ public class Main {
     }
 
 }
+
