@@ -429,6 +429,15 @@ public class User {
     }
 
 
+    /**
+     * Retrieve the order history of the associated current user, and then return
+     * their associated array list of string for each of the columns. If there is
+     * no related orders associated to the user at hand, then this returns an empty
+     * array list.
+     *
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<ArrayList<String>> retrieveOrders() throws SQLException {
         ArrayList<ArrayList<String>> orderIDs = new ArrayList<>();
         String orderID = null;
@@ -454,6 +463,12 @@ public class User {
         return orderIDs;
     }
 
+
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public static int retrieveOrderLength() throws SQLException {
         Statement statement = connection.createStatement();
         int rows = 0;
@@ -484,6 +499,7 @@ public class User {
     /**
      * A method used to take a string of a password and output an encrypted version of the password.
      * It uses a salt and key, generated using the passwordEncryption class.
+     *
      * @param password
      * @return
      */

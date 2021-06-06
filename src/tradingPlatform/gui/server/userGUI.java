@@ -113,7 +113,7 @@ public class userGUI extends JPanel implements ActionListener {
 
         accountTypeValue = "Employee";
         accountType = new JComboBox(userTypes);
-        accountType.setSelectedIndex(1);
+        accountType.setSelectedIndex(0);
         accountType.addActionListener(this);
 
         password = new JTextField(25);
@@ -282,7 +282,8 @@ public class userGUI extends JPanel implements ActionListener {
 
 
     /**
-     *
+     * Method used to initialise and setup up the existing JPanel. Sets it at the preferred screen width and height,
+     * and adjusts the border.
      */
     private void setUpPanel() {
         this.panel = new JPanel();
