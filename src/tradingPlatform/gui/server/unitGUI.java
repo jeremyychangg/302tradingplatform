@@ -226,15 +226,15 @@ public class unitGUI extends JPanel implements ActionListener {
         if (e.getSource() == submitNewUnit) {
             try {
                 addnewUnit();
-            } catch (Exception exception) {
             } catch (UnitException unitException) {
+            } catch (Exception exception) {
             }
         }
         // If user presses edit account button - send form
         if (e.getSource() == changeBalanceBtn) {
             try {
                 editBalance();
-            } catch (UnitException | Exception userException) {
+            } catch (Exception userException) {
             }
         }
         if (e.getSource() == changeBalanceBtn) {

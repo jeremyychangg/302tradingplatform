@@ -163,10 +163,10 @@ public class assetGUI extends JPanel implements ActionListener {
         if (e.getSource() == submitNewAsset) {
             try {
                 addnewAsset();
-            } catch (Exception exception) {
-                JOptionPane.showMessageDialog(null, exception.getMessage());
             } catch (UnitException unitException) {
                 JOptionPane.showMessageDialog(null, unitException.getMessage());
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(null, exception.getMessage());
             }
         }
         if (e.getSource() == assetTypeSelect){
