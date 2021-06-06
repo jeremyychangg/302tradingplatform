@@ -1,7 +1,12 @@
 package tradingPlatform.gui.server;
 
+import tradingPlatform.exceptions.UnitException;
+import tradingPlatform.exceptions.UserException;
 import tradingPlatform.gui.common.Screen;
 import tradingPlatform.user.Admin;
+import tradingPlatform.user.Employee;
+import tradingPlatform.user.Lead;
+import tradingPlatform.user.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,8 +37,7 @@ public class userGUI extends JPanel implements ActionListener {
     private JTextField passwordChange;
 
 
-
-    String[] userTypes = { "Admin", "Employee", "Lead" };
+    String[] userTypes = {"Admin", "Employee", "Lead"};
 
     CardLayout cardLayout = new CardLayout();
 
@@ -50,7 +54,7 @@ public class userGUI extends JPanel implements ActionListener {
     }
 
 
-    private void buttonInit(){
+    private void buttonInit() {
         panel.add(createButton);
         panel.add(editButton);
         panel.add(changeButton);
@@ -60,17 +64,22 @@ public class userGUI extends JPanel implements ActionListener {
         submitNewUser.addActionListener(this);
         editAccTypeBtn.addActionListener(this);
         changePassBtn.addActionListener(this);
-
     }
 
 
-    private void cards(){
+    private void cards() {
         newUserCard();
         editTypeCard();
         changePasswordCard();
     }
 
-    public void newUserCard(){
+
+    /**
+     * The new user card, when triggered will output a form for the administration to create a new user
+     * and add it to the database. Given that all the necessary inputs are valid and correct, the text inputs
+     * from the form will construct a new user that will be inputted into the database.
+     */
+    public void newUserCard() {
         SpringLayout createLayout = new SpringLayout();
         JLabel createLabel = new JLabel("Create New User");
         JLabel firstNameL = new JLabel("First Name");
@@ -83,6 +92,7 @@ public class userGUI extends JPanel implements ActionListener {
         lastName = new JTextField(25);
         unitID = new JTextField(25);
 
+        accountTypeValue = "Employee";
         accountType = new JComboBox(userTypes);
         accountType.setSelectedIndex(1);
         accountType.addActionListener(this);
@@ -108,6 +118,8 @@ public class userGUI extends JPanel implements ActionListener {
         newUserForm.add(submitNewUser);
         newUserForm.setLayout(createLayout);
 
+        // Layout the form create new user
+
         createLayout.putConstraint(SpringLayout.NORTH, createLabel, 50, SpringLayout.NORTH, newUserForm);
         createLayout.putConstraint(SpringLayout.WEST, createLabel, 50, SpringLayout.WEST, newUserForm);
 
@@ -115,7 +127,7 @@ public class userGUI extends JPanel implements ActionListener {
         createLayout.putConstraint(SpringLayout.WEST, firstNameL, 50, SpringLayout.WEST, newUserForm);
         createLayout.putConstraint(SpringLayout.NORTH, firstName, 100, SpringLayout.NORTH, newUserForm);
         createLayout.putConstraint(SpringLayout.WEST, firstName, 50, SpringLayout.EAST, firstNameL);
-//
+
         createLayout.putConstraint(SpringLayout.NORTH, lastNameL, 50, SpringLayout.NORTH, firstNameL);
         createLayout.putConstraint(SpringLayout.WEST, lastNameL, 50, SpringLayout.WEST, newUserForm);
         createLayout.putConstraint(SpringLayout.NORTH, lastName, 50, SpringLayout.NORTH, firstName);
@@ -143,7 +155,7 @@ public class userGUI extends JPanel implements ActionListener {
 
     }
 
-    public void editTypeCard(){
+    public void editTypeCard() {
         SpringLayout editLayout = new SpringLayout();
         JLabel editLabel = new JLabel("Edit Account Type");
         JPanel editUserForm = new JPanel();
@@ -191,7 +203,7 @@ public class userGUI extends JPanel implements ActionListener {
     }
 
 
-    public void changePasswordCard(){
+    public void changePasswordCard() {
         SpringLayout changeLayout = new SpringLayout();
 
         JLabel changeLabel = new JLabel("Change User Password");
@@ -210,6 +222,7 @@ public class userGUI extends JPanel implements ActionListener {
         changePass.add(passwordChange);
 
         changePassBtn = new JButton("SUBMIT");
+        changePassBtn.addActionListener(this);
 
         buttonStyle(changePassBtn);
 
@@ -260,22 +273,28 @@ public class userGUI extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == createButton){
+        if (e.getSource() == createButton) {
             cardLayout.show(functions, "Create");
-        }
-        else if (e.getSource() == editButton){
+        } else if (e.getSource() == editButton) {
             cardLayout.show(functions, "Edit");
-        }
-        else if (e.getSource() == changeButton){
+        } else if (e.getSource() == changeButton) {
             cardLayout.show(functions, "Change");
         }
-        if (e.getSource() == submitNewUser){
-            addNewUser();
+        if (e.getSource() == submitNewUser) {
+            try {
+                addNewUser();
+            } catch (UnitException unitException) {
+                String msg = "New User Error: The inputted unit ID doesn't exist currently.";
+                JOptionPane.showMessageDialog(null, msg);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
-        if (e.getSource() == accountType){
+        if (e.getSource() == accountType) {
             accountTypeValue = (String) accountType.getSelectedItem();
         }
-        if (e.getSource() == editAccTypeBtn){
+        if (e.getSource() == editAccTypeBtn) {
+            System.out.println("Working");
             try {
                 editAccountType();
             } catch (SQLException exception) {
@@ -285,20 +304,64 @@ public class userGUI extends JPanel implements ActionListener {
                 exception.printStackTrace();
             }
         }
+        if (e.getSource() == changePassBtn) {
+            try {
+                changePassword();
+            } catch (UserException userException) {
+                String msg = "Password Change Error: Unable to change user password in database";
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        }
     }
 
-    private void addNewUser(){
+    private void addNewUser() throws Exception, UnitException {
         String firstNameInput = firstName.getText();
         String lastNameInput = lastName.getText();
         String unitInput = unitID.getText();
         String accountInput = accountTypeValue;
         String passwordInput = password.getText();
-        System.out.println(accountInput);
+        User newUserInfo;
+        switch (accountInput) {
+            case "Employee":
+                newUserInfo = new Employee(firstNameInput, lastNameInput, unitInput, passwordInput);
+                break;
+            case "Lead":
+                newUserInfo = new Lead(firstNameInput, lastNameInput, unitInput, passwordInput);
+                break;
+            case "Admin":
+                newUserInfo = new Admin(firstNameInput, lastNameInput, unitInput, passwordInput);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + accountInput);
+        }
+        try {
+            Admin.addUserToDatabase(newUserInfo);
+            String msg = "New User " + firstNameInput + " " + lastNameInput + " with UserID "
+                    + newUserInfo.returnUserID() + " successfully created";
+            JOptionPane.showMessageDialog(null, msg);
+
+            // Reset Values
+            firstName.setText("");
+            lastName.setText("");
+            unitID.setText("");
+            password.setText("");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
-    private void changePassword(){
+    private void changePassword() throws UserException {
         String userIDInput = userID.getText();
         String passwordInput = passwordChange.getText();
+        try {
+            Admin.changeUserPassword(userIDInput, passwordInput);
+            JOptionPane.showMessageDialog(null, "Change Password Success: " + userIDInput + " password successfully changed");
+        } catch (SQLException throwables) {
+            JOptionPane.showMessageDialog(null, "Cannot Change" + userIDInput + " password");
+            throw new UserException("Cannot Change" + userIDInput + " password");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void editAccountType() throws Exception {
@@ -306,20 +369,18 @@ public class userGUI extends JPanel implements ActionListener {
         String accountTypeInput = accountTypeValue;
         try {
             Admin.editAccountType(userIDInput, accountTypeInput);
-        }
-        catch (NullPointerException e){
-            String msg = "Empty values. Please try again.";
+        } catch (NullPointerException e) {
+            String msg = "New User Error: Empty values. Please try again.";
             JOptionPane.showMessageDialog(null, msg);
-            throw new NullPointerException("Empty values. Please try again.");
-        }
-        catch (SQLException e){
-            String msg = "Could not add to database.";
+            throw new NullPointerException(msg);
+        } catch (SQLException e) {
+            String msg = "New User SQL Error: Could not add to database.";
             JOptionPane.showMessageDialog(null, msg);
             throw new Exception(msg);
         }
     }
 
-    public void buttonStyle(JButton button){
+    public void buttonStyle(JButton button) {
         button.setMargin(new Insets(5, 20, 5, 20));
         button.setBackground(new Color(0, 140, 237));
         button.setOpaque(true);

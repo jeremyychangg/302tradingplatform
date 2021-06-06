@@ -19,7 +19,6 @@ import static tradingPlatform.passwordEncryption.verifyPassword;
 import static tradingPlatform.user.User.getAccountType;
 
 /**
- *
  * @implements ActionListener
  */
 public class loginGUI implements ActionListener {
@@ -102,7 +101,6 @@ public class loginGUI implements ActionListener {
 
 
     /**
-     *
      * @param e
      */
     @Override
@@ -128,26 +126,22 @@ public class loginGUI implements ActionListener {
                         throw new LoginException("Not a valid user");
                 }
                 usernameField.setText("");
-            }
-            else {
+            } else {
                 String msg = "Login password doesn't match username.";
                 JOptionPane.showMessageDialog(null, msg);
             }
-        }
-        catch (LoginException | SQLException exception) {
+        } catch (LoginException | SQLException exception) {
             String msg = "User login details inputted invalid. Try again";
             try {
                 throw new LoginException(msg);
             } catch (LoginException failedLoginException) {
                 JOptionPane.showMessageDialog(null, msg);
             }
-        }
-        catch (Exception error){
+        } catch (Exception error) {
             String msg = "Login does not exist in system.";
             JOptionPane.showMessageDialog(null, msg);
         }
     }
-
 
 
     /**
@@ -185,6 +179,12 @@ public class loginGUI implements ActionListener {
 
 
     /**
+     * This function is used to verify the user login and password by finding their corresponding userID
+     * within the database and matching the values - the encrypted hash of the login password and the hash
+     * and salt kept within the database - to determine whether the hashes are equivalent to each other. Within,
+     * it retrieves the comparison data by querying the database, and returning a present username and password
+     * that matches the userID. If there is not value within, or it does not match, the method returns false
+     * as the password login is incorrect.
      *
      * @param usernameInput
      * @param passwordInput
@@ -209,19 +209,6 @@ public class loginGUI implements ActionListener {
     }
 
 
-    /**
-     *
-     * @param passwordInput
-     * @return
-     */
-    public static String getString(char[] passwordInput) {
-        StringBuilder passwordString = new StringBuilder();
-        for (Character ch : passwordInput) {
-            passwordString.append(ch);
-        }
-        return passwordString.toString();
-    }
-
 
     /**
      * Window closing listener. When the window is closed, the program exits.
@@ -231,4 +218,18 @@ public class loginGUI implements ActionListener {
             System.exit(0);
         }
     }
+
+
+//
+//    /**
+//     * @param passwordInput
+//     * @return
+//     */
+//    public static String getString(char[] passwordInput) {
+//        StringBuilder passwordString = new StringBuilder();
+//        for (Character ch : passwordInput) {
+//            passwordString.append(ch);
+//        }
+//        return passwordString.toString();
+//    }
 }

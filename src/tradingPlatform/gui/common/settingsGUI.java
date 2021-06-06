@@ -169,13 +169,22 @@ public class settingsGUI extends JPanel implements ActionListener {
                     && !String.valueOf(newPassField.getPassword()).equals("")
                     && !String.valueOf(reEnterField.getPassword()).equals("")) {
                 changePassword(String.valueOf(old), String.valueOf(newP), String.valueOf(reEnter));
+                String msg = "Change Password Success!";
+                JOptionPane.showMessageDialog(null, msg);
             } else {
                 throw new Exception("Empty string");
             }
         } catch (SQLException throwables) {
+            String msg = "Password Change Error: Unable to change";
+            JOptionPane.showMessageDialog(null, msg);
             throwables.printStackTrace();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+
+        //Reset the password fields
+        oldPassField.setText("");
+        newPassField.setText("");
+        reEnterField.setText("");
     }
 }

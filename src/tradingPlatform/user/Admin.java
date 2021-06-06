@@ -7,7 +7,6 @@ import tradingPlatform.Asset;
 import tradingPlatform.Unit;
 import tradingPlatform.enumerators.UserType;
 import tradingPlatform.exceptions.AssetTypeException;
-import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
 import java.sql.PreparedStatement;
@@ -16,9 +15,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static tradingPlatform.Main.connection;
-import static tradingPlatform.passwordEncryption.verifyPassword;
 
 public class Admin extends User{
+    private String userID;
     private String unitID;
     private UserType accountType = UserType.Employee;
 
@@ -39,101 +38,29 @@ public class Admin extends User{
         super(userID);
     }
 
-    @Override
-    public void addUserToDatabase(User user) throws Exception, UnitException {
-        // Throw exceptions if requirements not met
-        if (user.returnfirstName() == null || user.returnfirstName() == "") {
-            throw new UserException("First Name cannot be null or empty.");
+
+    public static void addUserToDatabase(User newUser) throws Exception, UserException {
+        try {
+            verifyInput(newUser.returnfirstName(), newUser.returnlastName(), newUser.returnunitID(), newUser.returnpassword(), newUser.returnAccountType());
+
+            // encrypt new password
+            String newPassword = encryptPassword(newUser.returnpassword());
+
+            PreparedStatement newUserQuery = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
+            newUserQuery.clearParameters();
+            newUserQuery.setString(1, newUser.returnUserID());
+            newUserQuery.setString(2, newUser.returnfirstName());
+            newUserQuery.setString(3, newUser.returnlastName());
+            newUserQuery.setString(4, newUser.returnunitID());
+            newUserQuery.setString(5, userTypeToS(newUser.returnAccountType()));
+            newUserQuery.setString(6, newPassword);
+
+            newUserQuery.execute();
+        } catch (UserException e){
+            throw new UserException(e);
+        } catch (Exception e){
+            throw new Exception(e);
         }
-        if (user.returnlastName() == null || user.returnlastName() == "") {
-            throw new UserException("Last Name cannot be null or empty.");
-        }
-        if (user.returnunitID() == null || user.returnunitID() == "") {
-            throw new UserException("Unit ID cannot be null or empty.");
-        }
-        if (!unitExists(user.returnunitID())) {
-            throw new UnitException("Unit ID doesn't exist. Enter in valid unitID.");
-        }
-        if (user.returnpassword() == null || user.returnpassword() == "") {
-            throw new UserException("Password cannot be null or empty.");
-        }
-        if (user.returnAccountType() == null) {
-            throw new UserException("Account Type cannot be null or empty.");
-        }
-        if (userTypeToS(user.returnAccountType()) == null) {
-            throw new UserException("Account Type not a valid Account Type.");
-        }
-
-//        Optional<String> hasedPass = hashPassword(user.returnpassword(), );
-
-        // Based on the input for the account, set the userID initial accordingly
-//        String accType = "";
-//        String intialID = "";
-//        switch (user.accountType) {
-//            case Employee:
-//                intialID = "S";
-//                accType = userTypeToS(user.accountType);
-//                break;
-//            case Admin:
-//                intialID = "A";
-//                accType = userTypeToS(user.accountType);
-//                break;
-//            case Lead:
-//                intialID = "L";
-//                accType = userTypeToS(user.accountType);
-//                break;
-//            default:
-//                throw new UserException("Not valid UserType");
-//        }
-
-//        Statement statement = connection.createStatement();
-//
-//        int maxUserID = 0;
-//        String sqlMaxUserID
-//                = "SELECT max(substring(userID, 2, 5)) as maxUserID FROM users WHERE substring(userID, 1, 1) = '"
-//                + intialID + "';";
-//        ResultSet getMaxID = statement.executeQuery(sqlMaxUserID);
-//
-//        if (getMaxID.next() && getMaxID.getString("maxUserID") != null) {
-//            maxUserID = Integer.parseInt(getMaxID.getString("maxUserID"));
-//        }
-//
-//        String newUserID = intialID + String.format("%04d", maxUserID + 1);
-//        System.out.println(newUserID);
-//        this.userID = newUserID;
-
-        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-        newUser.clearParameters();
-        newUser.setString(1, user.returnUserID());
-        newUser.setString(2, user.returnfirstName());
-        newUser.setString(3, user.returnlastName());
-        newUser.setString(4, user.returnunitID());
-        newUser.setString(5, user.userTypeToS(accountType));
-        newUser.setString(6, user.returnpassword());
-
-        newUser.execute();
-    }
-
-
-
-    public void newUser(String firstName, String lastName, String unitID, UserType accountType) throws Exception {
-        // generate a new password
-        String password = "password";
-
-        switch (accountType) {
-            case Employee:
-                Employee newEmployee = new Employee(firstName, lastName, unitID, password);
-                break;
-            case Admin:
-                Admin newAdmin = new Admin(firstName, lastName, unitID, password);
-                break;
-            case Lead:
-                Lead newLead = new Lead(firstName, lastName, unitID, password);
-                break;
-            default:
-                throw new UserException("Not valid UserType");
-        }
-
     }
 
 
@@ -217,11 +144,10 @@ public class Admin extends User{
     }
 
 
-    public static void changeUserPassword(String userID, String oldPassword, String newPassword, String reEnter)
-            throws SQLException {
+    public static void changeUserPassword(String userID, String newPassword) throws SQLException {
         Statement loginInput = connection.createStatement();
         // Determine if the value is a valid password
-        String login = "SELECT userID, password from users WHERE userID = '" + userID + "' AND password = '" + oldPassword + "';";
+        String login = "SELECT userID from users WHERE userID = '" + userID + "';";
         ResultSet loginResults = loginInput.executeQuery(login);
 
         String userReturn = null;
@@ -229,19 +155,13 @@ public class Admin extends User{
 
         while (loginResults.next()) {
             userReturn = loginResults.getString("userID");
-            passwordReturn = loginResults.getString("password");
         }
-
-        String salt = passwordReturn.substring(88);
-        String passDatabase = passwordReturn.substring(0, 88);
-        Boolean isCorrectPassword = verifyPassword(String.valueOf(passwordReturn), passDatabase, salt);
-
         // Encrypt the new password
         String encryptedPassword = encryptPassword(newPassword);
 
         // Update the dataset if the user is the one being edited, the old password matches the old and new password is same
         // as re-enter value
-        if (userReturn.equals(userID) && isCorrectPassword && newPassword.equals(reEnter)) {
+        if (userReturn.equals(userID)) {
             // input the SQL query for the database
             String passwordInputQuery = "UPDATE users SET password = ? WHERE userID = ?;";
             PreparedStatement updatePassword = connection.prepareStatement(passwordInputQuery);

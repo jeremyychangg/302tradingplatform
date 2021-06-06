@@ -80,6 +80,7 @@ public class leadScreen extends Screen {
         portfolioButton.addActionListener(this);
         watchlistButton.addActionListener(this);
         ordersButton.addActionListener(this);
+        settingsButton.addActionListener(this);
         logoutButton.addActionListener(this);
     }
 

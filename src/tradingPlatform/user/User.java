@@ -23,9 +23,9 @@
 package tradingPlatform.user;
 
 import tradingPlatform.enumerators.UserType;
-import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.exceptions.UserException;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,6 +87,49 @@ public class User {
     }
 
 
+    public static void verifyInput(String firstName, String lastName, String unitID, String password, UserType accountType) throws Exception {
+        // Throw exceptions if requirements not met
+        if (firstName.equals(null) || firstName.equals("") || firstName.equals(null) || firstName.equals(" ")) {
+            String msg = "New User Error: First Name cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (lastName.equals(null) || lastName.equals("") || lastName.equals(null) || lastName.equals(" ")) {
+            String msg = "New User Error: Last Name cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (unitID.equals(null) || unitID.equals("") || unitID.equals(null) || unitID.equals(" ")) {
+            String msg = "New User Error: Unit ID cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        try {
+            if (!unitExists(unitID)) {
+                String msg = "New User Error: Unit ID" + unitID + " doesn't exist. Enter in valid unitID.";
+//                JOptionPane.showMessageDialog(null, msg);
+                throw new UserException(msg);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "New User Error : Unit ID doesn't exist");
+        }
+        if (password.equals(null) || password.equals("") || password.equals(" ") || password.equals(null)) {
+            String msg = "New User Error: Password cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (accountType.equals(null)) {
+            String msg = "New User error: Account Type cannot be null or empty.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+        if (userTypeToS(accountType).equals(null)) {
+            String msg = "New User error: Account Type not a valid Account Type.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException(msg);
+        }
+    }
+
     /**
      * This user constructor is the sole constructor used to initiate a new User within the database. Given that all of the
      * parameters are inputted into the program, the user is able to create a new user which - if fulfils the requirements -
@@ -106,28 +149,7 @@ public class User {
         this.password = password;
         this.accountType = accountType;
 
-        // Throw exceptions if requirements not met
-        if (firstName == null || firstName.equals("")) {
-            throw new UserException("First Name cannot be null or empty.");
-        }
-        if (lastName == null || lastName == "") {
-            throw new UserException("Last Name cannot be null or empty.");
-        }
-        if (unitID == null || unitID == "") {
-            throw new UserException("Unit ID cannot be null or empty.");
-        }
-        if (!unitExists(unitID)) {
-            throw new UserException("Unit ID doesn't exist. Enter in valid unitID.");
-        }
-        if (password == null || password == "") {
-            throw new UserException("Password cannot be null or empty.");
-        }
-        if (accountType == null) {
-            throw new UserException("Account Type cannot be null or empty.");
-        }
-        if (userTypeToS(accountType) == null) {
-            throw new UserException("Account Type not a valid Account Type.");
-        }
+        verifyInput(firstName, lastName, unitID, password, accountType);
 
         // Based on the input for the account, set the userID initial accordingly
         String accType = "";
@@ -149,8 +171,6 @@ public class User {
                 throw new UserException("Not valid UserType");
         }
 
-        String newPassword = encryptPassword(password);
-
         Statement statement = connection.createStatement();
 
         int maxUserID = 0;
@@ -166,20 +186,8 @@ public class User {
         String newUserID = intialID + String.format("%04d", maxUserID + 1);
         this.userID = newUserID;
 
-        PreparedStatement newUser = connection.prepareStatement("INSERT INTO users VALUES (?,?,?,?,?,?);");
-        newUser.clearParameters();
-        newUser.setString(1, newUserID);
-        newUser.setString(2, firstName);
-        newUser.setString(3, lastName);
-        newUser.setString(4, unitID);
-        newUser.setString(5, accType);
-        newUser.setString(6, newPassword);
-
-        newUser.execute();
     }
 
-    public void addUserToDatabase(User user) throws Exception, UnitException {
-    }
 
     /**
      * This function is used to get the account type of the user
@@ -215,7 +223,7 @@ public class User {
      * @param accInput
      * @return
      */
-    public String userTypeToS(UserType accInput) {
+    public static String userTypeToS(UserType accInput) {
         for (UserType u : UserType.values()) {
             if (u.equals(accInput)) {
                 return u.name();
@@ -320,14 +328,18 @@ public class User {
             if (rs.next() && rs.getString("unitID") != null) {
                 exists = rs.getString("unitID");
             }
-            if (exists.equals(findUnitID)) {
-                return true;
-            } else {
-                return false;
+            try {
+                if (!exists.equals(null) && exists.equals(findUnitID)) {
+                    return true;
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "New User Error: The inputted unit does not exist");
+                throw new SQLException("New User Error: UnitID" + findUnitID + " does not currently exist.");
             }
-        } catch (NullPointerException e) {
-            throw new SQLException("UnitID does not currently exist.");
+        } catch (Exception exception) {
         }
+
+        return false;
     }
 
 
@@ -369,7 +381,8 @@ public class User {
     public static void changePassword(String oldPassword, String newPassword, String reEnter) throws SQLException {
         Statement loginInput = connection.createStatement();
         // Determine if the value is a valid password
-        String login = "SELECT userID, password from users WHERE userID = '" + getCurrentUser() + "' AND password = '" + oldPassword + "';";
+
+        String login = "SELECT userID, password from users WHERE userID = '" + getCurrentUser() + "';";
         ResultSet loginResults = loginInput.executeQuery(login);
 
         String userReturn = null;
@@ -379,10 +392,10 @@ public class User {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-
+        System.out.println(passwordReturn);
         String salt = passwordReturn.substring(88);
         String passDatabase = passwordReturn.substring(0, 88);
-        Boolean isCorrectPassword = verifyPassword(String.valueOf(passwordReturn), passDatabase, salt);
+        Boolean isCorrectPassword = verifyPassword(oldPassword, passDatabase, salt);
 
         // Encrypt the new password
         String encryptedPassword = encryptPassword(newPassword);
@@ -397,6 +410,8 @@ public class User {
             updatePassword.setString(1, encryptedPassword);
             updatePassword.setString(2, getCurrentUser());
             updatePassword.executeUpdate();
+        } else {
+            throw new SQLException("Password Change Error");
         }
     }
 
@@ -417,8 +432,6 @@ public class User {
 
 
     public static ArrayList<ArrayList<String>> retrieveOrders() throws SQLException {
-//        Object[][] retrievedOrders = new Object[][];
-//        List<Order> foundOrders = new ArrayList<>();
         ArrayList<ArrayList<String>> orderIDs = new ArrayList<>();
         String orderID = null;
 
@@ -428,7 +441,6 @@ public class User {
                 "FROM orders AS o LEFT JOIN assets " +
                 "AS a ON o.assetID = a.assetID " +
                 "WHERE userID = '" + getCurrentUser() + "';";
-//        getCurrentUser()
         ResultSet orderFind = statement.executeQuery(orders);
         while (orderFind.next() == true) {
             ArrayList<String> singleList = new ArrayList<>();
@@ -472,6 +484,8 @@ public class User {
 
 
     /**
+     * A method used to take a string of a password and output an encrypted version of the password.
+     * It uses a salt and key, generated using the passwordEncryption class.
      * @param password
      * @return
      */

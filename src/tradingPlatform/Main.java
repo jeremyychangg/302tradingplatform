@@ -3,7 +3,9 @@ package tradingPlatform;
 import tradingPlatform.database.JBDCConnection;
 import tradingPlatform.gui.common.loginGUI;
 
+import javax.swing.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Main {
     private static String currentUser;
@@ -25,7 +27,10 @@ public class Main {
     public static void main(String[] args) throws Exception {
         try {
             new JBDCConnection();
-        } catch (Exception e) {
+        } catch (Exception thr){
+            String msg = "SQL Connection Error : Program not connected to database. ";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new SQLException(msg, thr);
         }
 //        setCurrentUser("A0001");
 //        new adminScreen();
