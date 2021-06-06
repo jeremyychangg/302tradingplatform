@@ -5,14 +5,14 @@ import tradingPlatform.exceptions.NegativePriceException;
 import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.user.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
+import static tradingPlatform.Main.connection;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import static tradingPlatform.Main.connection;
+
 
 public class Unit {
     public String unitID;
@@ -26,12 +26,19 @@ public class Unit {
     public String unitCasing;
 
 
+
     public Unit(String unitID) throws SQLException{
         this.unitID = unitID;
         this.usersList = searchUser(unitID);
     }
 
-    // Construct an existing unit
+    /**
+     * Constructs an instance of unit in database
+     * @param unitID
+     * @param unitName
+     * @param creditBalance
+     * @param limit
+     */
     public Unit(String unitID, String unitName, double creditBalance, double limit) {
         this.unitID = unitID;
         this.unitName = unitName;
@@ -57,7 +64,7 @@ public class Unit {
                 "userID " +
                 "FROM users " +
                 "WHERE unitID = '" + unitID + "' "
-                ;
+        ;
 
         ResultSet retrieveUser = statement.executeQuery(queryUsers);
 
@@ -138,7 +145,7 @@ public class Unit {
         }
 
         // Increment current maxID
-        unitNum++;
+        unitNum ++;
 
         // Concatenate  to create new ID
         String assignID = unitCode + String.format("%08d", unitNum.toString());
@@ -273,3 +280,4 @@ public class Unit {
         // update database
         this.limit = limit;
     }
+}
