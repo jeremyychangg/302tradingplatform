@@ -12,8 +12,6 @@ import static tradingPlatform.Main.connection;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-
 public class Unit {
     public String unitID;
     public String unitName;
@@ -24,8 +22,6 @@ public class Unit {
     public Integer randPos;
     public Integer unitNum;
     public String unitCasing;
-
-
 
     public Unit(String unitID) throws SQLException{
         this.unitID = unitID;
