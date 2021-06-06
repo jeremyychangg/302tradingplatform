@@ -113,7 +113,7 @@ public class userGUI extends JPanel implements ActionListener {
 
         accountTypeValue = "Employee";
         accountType = new JComboBox(userTypes);
-        accountType.setSelectedIndex(1);
+        accountType.setSelectedIndex(0);
         accountType.addActionListener(this);
 
         password = new JTextField(25);

@@ -99,10 +99,11 @@ public class assetGUI extends JPanel implements ActionListener {
         JLabel creditL = new JLabel("Price");
         JLabel typeL = new JLabel("Asset Type");
 
+        type = "Computer Accessories";
         assetName = new JTextField(25);
         price = new JTextField(25);
         assetTypeSelect = new JComboBox(assetType);
-        assetTypeSelect.setSelectedIndex(1);
+        assetTypeSelect.setSelectedIndex(0);
         assetTypeSelect.addActionListener(this);
 
         buttonStyle(submitNewAsset);
