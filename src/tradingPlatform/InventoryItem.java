@@ -31,6 +31,9 @@ import java.util.ArrayList;
 
 import static tradingPlatform.Main.connection;
 
+/**
+ * Inventory item within inventory. This class is transactional based
+ */
 public class InventoryItem {
     String unitID;
     Asset asset;
@@ -97,17 +100,20 @@ public class InventoryItem {
         this.quantity = quantity;
         this.orderID = orderID;
 
+        // Add transaction
         try {
             AddToDatabase();
         } catch (SQLException e) {
             System.out.println("New Inventory Item Error: " + e.getMessage());
         }
-
     }
 
-
-
+    /**
+     * Adds inventory transaction into inventory table in database
+     * @throws SQLException
+     */
     public void AddToDatabase() throws SQLException {
+        // Inserts inventory transaction into database
         PreparedStatement newInvItem =
                 connection.prepareStatement("INSERT INTO inventory (unitID, assetID, orderID, quantity, price) VALUES (?,?,?,?,?);");
 
