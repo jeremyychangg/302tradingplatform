@@ -17,6 +17,7 @@ import static tradingPlatform.Main.getCurrentUser;
  * Lead class extends the User class and creates a Lead using the constructors. Given
  * that a user is a lead, the related methods can be accessed - these mostly revolvign around
  * requests.
+ *
  * @version 1
  * @author Natalie Smith
  */

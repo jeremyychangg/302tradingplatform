@@ -35,6 +35,12 @@ import java.util.ArrayList;
 import static tradingPlatform.Main.*;
 import static tradingPlatform.passwordEncryption.*;
 
+/**
+ * A general user object, who is within the system. Lead, Employee and Admin extend this
+ * class,but general methods etc. can be run and retrieved.
+ *
+ * @author Natalie Smith
+ */
 public class User {
     private String userID;
     private String firstName;
@@ -83,6 +89,11 @@ public class User {
         this.accountType = accountType;
     }
 
+    /**
+     * Construct user with userID
+     * @param userID
+     * @throws SQLException
+     */
     public User(String userID) throws SQLException {
         setCurrentUser(userID);
         if (usernameExists(userID)) {

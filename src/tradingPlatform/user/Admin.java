@@ -215,19 +215,19 @@ public class Admin extends User {
     }
 
 
-    /**
-     * Incomplete method - adding items
-     * @param unitID
-     * @param assetID
-     * @param quantity
-     * @DISCONTINUED
-     */
-    public void editInventory(String unitID, String assetID, int quantity) {
-        // retrieve their current inventory storage
-
-        // retrieve the value of their quantity
-        // do some maths
-        // if it is valid, then edit
-        // else, throw exception and return
-    }
+//    /**
+//     * Incomplete method - adding items
+//     * @param unitID
+//     * @param assetID
+//     * @param quantity
+//     * @DISCONTINUED
+//     */
+//    public void editInventory(String unitID, String assetID, int quantity) {
+//        // retrieve their current inventory storage
+//
+//        // retrieve the value of their quantity
+//        // do some maths
+//        // if it is valid, then edit
+//        // else, throw exception and return
+//    }
 }
