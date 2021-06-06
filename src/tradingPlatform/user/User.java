@@ -107,11 +107,10 @@ public class User {
         try {
             if (!unitExists(unitID)) {
                 String msg = "New User Error: Unit ID" + unitID + " doesn't exist. Enter in valid unitID.";
-//                JOptionPane.showMessageDialog(null, msg);
                 throw new UserException(msg);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "New User Error : Unit ID doesn't exist");
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
         if (password.equals(null) || password.equals("") || password.equals(" ") || password.equals(null)) {
             String msg = "New User Error: Password cannot be null or empty.";
@@ -392,7 +391,6 @@ public class User {
             userReturn = loginResults.getString("userID");
             passwordReturn = loginResults.getString("password");
         }
-        System.out.println(passwordReturn);
         String salt = passwordReturn.substring(88);
         String passDatabase = passwordReturn.substring(0, 88);
         Boolean isCorrectPassword = verifyPassword(oldPassword, passDatabase, salt);

@@ -36,7 +36,6 @@ public class userGUI extends JPanel implements ActionListener {
     private JTextField userID;
     private JTextField passwordChange;
 
-
     String[] userTypes = {"Admin", "Employee", "Lead"};
 
     CardLayout cardLayout = new CardLayout();
@@ -249,7 +248,6 @@ public class userGUI extends JPanel implements ActionListener {
         changeLayout.putConstraint(SpringLayout.NORTH, changePassBtn, 60, SpringLayout.NORTH, passwordLabel);
         changeLayout.putConstraint(SpringLayout.WEST, changePassBtn, 80, SpringLayout.EAST, passwordLabel);
 
-
         functions.add(changePass, "Change");
 
     }
@@ -259,20 +257,18 @@ public class userGUI extends JPanel implements ActionListener {
      * @throws SQLException
      */
     private void setUpPanel() throws SQLException {
-        // setting up blank JPanel
         this.panel = new JPanel();
         functions = new JPanel();
         panel.setPreferredSize(new Dimension(Screen.screenWidth, Screen.screenHeight));
         panel.setBorder(BorderFactory.createEmptyBorder(80, Screen.border, 400, Screen.border));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         functions.setPreferredSize(new Dimension(600, 500));
-//        panel.setBackground(Color.red);
-//        functions.setBorder(BorderFactory.createEmptyBorder(100,200,100,100));
         functions.setLayout(cardLayout);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Change the card based on the card button
         if (e.getSource() == createButton) {
             cardLayout.show(functions, "Create");
         } else if (e.getSource() == editButton) {
@@ -280,6 +276,7 @@ public class userGUI extends JPanel implements ActionListener {
         } else if (e.getSource() == changeButton) {
             cardLayout.show(functions, "Change");
         }
+        // If the User pressed new user button - send form
         if (e.getSource() == submitNewUser) {
             try {
                 addNewUser();
@@ -287,18 +284,18 @@ public class userGUI extends JPanel implements ActionListener {
                 String msg = "New User Error: The inputted unit ID doesn't exist currently.";
                 JOptionPane.showMessageDialog(null, msg);
             } catch (Exception exception) {
-                exception.printStackTrace();
             }
         }
+        // If the user changes combobox accounttype, change the value of account Type
         if (e.getSource() == accountType) {
             accountTypeValue = (String) accountType.getSelectedItem();
         }
+        // If user presses edit account button - send form
         if (e.getSource() == editAccTypeBtn) {
-            System.out.println("Working");
             try {
                 editAccountType();
             } catch (SQLException exception) {
-                String msg = "Unable to change user account in database";
+                String msg = "Change Account Type: Unable to change user account in database";
                 JOptionPane.showMessageDialog(null, msg);
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -307,13 +304,25 @@ public class userGUI extends JPanel implements ActionListener {
         if (e.getSource() == changePassBtn) {
             try {
                 changePassword();
-            } catch (UserException userException) {
+            } catch (Exception userException) {
                 String msg = "Password Change Error: Unable to change user password in database";
                 JOptionPane.showMessageDialog(null, msg);
             }
         }
     }
 
+
+    /**
+     * The method addNewUser is used to create a new user in the database from the server side i.e. the
+     * administration user. Given the retrieved inputs from the form GUI, a new user is constructed and
+     * a new user ID is given to this new user. If the inputs all fulfil the requirements, and no errors
+     * are thrown, the user is created in the server side. Throws a unit exception if it is found that the
+     * unit does not exist. Otherwise, throws user exceptions when the user is found to not fulfil or meet
+     * certian requirements i.e. password field is empty etc..
+     *
+     * @throws Exception
+     * @throws UnitException
+     */
     private void addNewUser() throws Exception, UnitException {
         String firstNameInput = firstName.getText();
         String lastNameInput = lastName.getText();
@@ -321,6 +330,8 @@ public class userGUI extends JPanel implements ActionListener {
         String accountInput = accountTypeValue;
         String passwordInput = password.getText();
         User newUserInfo;
+
+        // Create user type based on the commandbox input
         switch (accountInput) {
             case "Employee":
                 newUserInfo = new Employee(firstNameInput, lastNameInput, unitInput, passwordInput);
@@ -334,8 +345,12 @@ public class userGUI extends JPanel implements ActionListener {
             default:
                 throw new IllegalStateException("Unexpected value: " + accountInput);
         }
+
+        // Try adding this new user information to the database, if successful will return success prompt
         try {
             Admin.addUserToDatabase(newUserInfo);
+
+            // If successful, output message dialog
             String msg = "New User " + firstNameInput + " " + lastNameInput + " with UserID "
                     + newUserInfo.returnUserID() + " successfully created";
             JOptionPane.showMessageDialog(null, msg);
@@ -345,22 +360,36 @@ public class userGUI extends JPanel implements ActionListener {
             lastName.setText("");
             unitID.setText("");
             password.setText("");
+        } catch (UserException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
 
+
+    /**
+     *
+     * @throws UserException
+     */
     private void changePassword() throws UserException {
         String userIDInput = userID.getText();
         String passwordInput = passwordChange.getText();
         try {
             Admin.changeUserPassword(userIDInput, passwordInput);
             JOptionPane.showMessageDialog(null, "Change Password Success: " + userIDInput + " password successfully changed");
+            // Reset Values
+            userID.setText("");
+            passwordChange.setText("");
+        } catch (UserException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            throw new UserException(e.getMessage());
         } catch (SQLException throwables) {
-            JOptionPane.showMessageDialog(null, "Cannot Change" + userIDInput + " password");
-            throw new UserException("Cannot Change" + userIDInput + " password");
-        } catch (Exception e) {
-            e.printStackTrace();
+            throw new UserException("Change Password Error: Cannot Change" + userIDInput + " password");
+        } catch (NullPointerException e) {
+            String msg = "Change Password Error: User ID " + userIDInput + " is an invalid userID.";
+            JOptionPane.showMessageDialog(null, msg);
+            throw new UserException("Change Password Error: User ID " + userIDInput + " is an invalid userID.");
         }
     }
 
@@ -370,11 +399,11 @@ public class userGUI extends JPanel implements ActionListener {
         try {
             Admin.editAccountType(userIDInput, accountTypeInput);
         } catch (NullPointerException e) {
-            String msg = "New User Error: Empty values. Please try again.";
+            String msg = "Edit User Error: Empty values. Please try again.";
             JOptionPane.showMessageDialog(null, msg);
             throw new NullPointerException(msg);
         } catch (SQLException e) {
-            String msg = "New User SQL Error: Could not add to database.";
+            String msg = "Edit User SQL Error: Could not add to database.";
             JOptionPane.showMessageDialog(null, msg);
             throw new Exception(msg);
         }
