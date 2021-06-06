@@ -33,7 +33,7 @@ class testUnit {
     @BeforeEach
     @Test
     public List<User> userArray() {
-        List<tradingUser> userList = new ArrayList<String>();
+        List<User> userList = new ArrayList<String>();
         userList.add("S0001");
         userList.add("L0064");
         userList.add("A0002");
