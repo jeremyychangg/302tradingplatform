@@ -3,8 +3,11 @@
  */
 package tradingPlatform.gui.client;
 
+import tradingPlatform.Asset;
 import tradingPlatform.Main;
 import tradingPlatform.exceptions.AssetTypeException;
+import tradingPlatform.exceptions.InvalidAssetException;
+import tradingPlatform.exceptions.UnitException;
 import tradingPlatform.gui.common.Screen;
 import tradingPlatform.gui.common.loginGUI;
 import tradingPlatform.gui.common.settingsGUI;
@@ -231,8 +234,13 @@ public class employeeScreen extends Screen {
 
             frame.setTitle("Employee - Orders");
             try {
-                panel = new orderGUI();
-            } catch (SQLException throwables) {
+
+                // Search GUI to return asset
+
+                Asset orderAsset = Asset.findAsset("CA00000001");
+
+                panel = new orderGUI(Main.getCurrentUnit(), orderAsset.GetAssetID());
+            } catch (SQLException | InvalidAssetException | UnitException throwables) {
                 throwables.printStackTrace();
             }
             frame.add(panel, BorderLayout.CENTER);
